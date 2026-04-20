@@ -1,13 +1,33 @@
 # 🌱 Plant Emotion Detector  
 ### COIN Seminar 2026 – Team 1
 
-An interdisciplinary machine learning and biosensing project exploring how bioelectric signals can reflect human emotional states.
+An interdisciplinary machine learning and biosensing project exploring how bioelectric signals can be used to classify human emotional states.
+
+## Official Task Description:
+
+"Build a classifier that detects human emotions from plant bioelectric responses. Train models on voltage time-series data. Compare different ML approaches (neural networks vs. XGBoost vs. random forests)."
 
 ---
+## Setup
+1. Create virtual environment
+python -m venv .venv
+
+2. Activate virtual environment
+
+### Activate it (Windows)
+./.venv/Scripts/activate
+
+### Activate it (macOS/Linux)
+source .venv/bin/activate
+
+3. Install required packages
+python -m pip install -r requirements.txt
+---
+
 
 ## 🧠 Project Idea
 
-We investigate how plants can act as biological “sensors” of human emotions by measuring their electrical responses (voltage signals) during human interaction.
+We investigate how plants can act as biological “sensors” of human emotions by measuring their electrical responses (voltage signals) during human presencce.
 
 Humans emit multiple physiological signals linked to emotions, such as:
 - Facial expressions
@@ -18,13 +38,15 @@ Humans emit multiple physiological signals linked to emotions, such as:
 Plants respond to environmental stimuli with measurable bioelectric voltage changes.  
 The central question is:
 
-> Can we decode human emotions from plant voltage signals using machine learning (or improve existing algorithms)?
+>Can we classify human emotions with significant accuracy only from plant voltage signals using machine learning algorithms?
 
 ---
 
 ## 🎯 Objective
 
-Build and compare machine learning models that predict or classify human emotional states using plant bioelectric time-series data.
+### Primary Task: Compare Models
+
+We aim to build and compare machine learning models that predict or classify human emotional states using plant bioelectric time-series data collected with labels of human emotions based on facial impressions.
 
 We compare:
 
@@ -32,7 +54,9 @@ We compare:
 - XGBoost (gradient boosting)
 - Random Forests (baseline ensemble model)
 
-At the same time we extract our own data by measuring the voltage of the plant while measuring our emotions using not only the face impression. The core idea is to see if our data with more features create a higher accuracy in emotion detection then the available data with only face impressions.
+### Secondary Task: Extend Training Data
+
+We aim to extract our own data by recording the voltage signals of the plant while measuring our emotions using facial impressions, heart activity, exhaled CO₂ and volatile organic compounds (VOCs). The core idea is to see if the dataset with more features leads to a better classifier.
 
 ---
 
@@ -40,9 +64,8 @@ At the same time we extract our own data by measuring the voltage of the plant w
 
 The project is based on ~30 hours of exhibition data (“Silent Signals”), including:
 
-- 🌿 Plant voltage time-series signals  
-- 🎥 Video-based emotion annotations of participants ??? 
-- 🌡️ Environmental and physiological signals (partially available / extended) ???
+- Plant voltage time-series signals  
+- Emotional states of participants as labels based on facial expressions
 
 ---
 
@@ -52,26 +75,11 @@ Research suggests correlations between human stress and plant electrical activit
 
 We explore three possible channels:
 
-- ⚡ Electromagnetic coupling (heart EM field influence)
-- 🌬️ CO₂ mediation (breathing changes affecting plants)
-- 🧪 VOC signaling (chemical emissions as key driver)
+- Electromagnetic coupling (heart EM field influence)
+- CO₂ mediation (breathing changes affecting plants)
+- VOC signaling (chemical emissions as key driver)
 
 A large portion (~66%) of the interaction remains unexplained — an open research question.
-
----
-
-## 🛠️ Technology Stack
-
-- Python
-- TensorFlow / PyTorch
-- XGBoost
-- Scikit-learn
-- Time-series analysis tools
-- ESP32 microcontroller
-- AD8232 bioelectric sensor module
-- VOC & CO₂ sensors
-- Arduino IDE
-- ...
 
 ---
 
@@ -93,10 +101,7 @@ We built a low-cost plant biosensor system:
 - Displays live signal data
 - Connects electrode to plant leaf
 
-Plants used:
-- 🌿 Kalanchoe (primary)
-- 🌸 Primrose
-- 🌱 Tradescantia
+Plant used: Kalanchoe
 
 ---
 
@@ -132,7 +137,7 @@ Plants used:
 
 We aim to:
 
-- Evaluate if plant bioelectric signals carry information about human emotions  
+- Evaluate, if plant bioelectric signals carry information about human emotions  
 - Identify the best-performing ML model  
 - Test whether additional physiological signals improve performance  
 - Contribute to research in bio-inspired sensing and “honest signals”
