@@ -1,0 +1,68 @@
+Phaenomena plant bioelectric dataset — column dictionary
+========================================================
+
+Each row corresponds to one WAV recording (5 s for lamp/sound, 10 s for
+emotion), sampled by an ESP32 + AD8232 sensor and decimated to a nominal
+100 Hz rate. See the accompanying README / brief for known firmware
+caveats (real sample rate ~127 Hz, DC is preserved, 40 Hz peak = aliased
+mains).
+
+Identity / labels
+-----------------
+filename    basename of the original WAV file (no path).
+dataset     one of: lamp_training_data, sound_training_data, emotion_training_data.
+label       lamp_on, lamp_off, strike, nostrike, emotion_positive, emotion_negative.
+
+Time
+----
+ts          UTC ISO timestamp parsed from the filename.
+hour        0..23, hour of day.
+date        YYYY-MM-DD.
+
+Quality flags
+-------------
+quality     one of:
+              ok              — usable recording
+              suspect_lowamp  — very low-amplitude signal (<200 counts std);
+                                likely intermittent electrode contact
+              suspect_clipped — 20%..95% of samples at int16 rails
+              dead_flat       — signal std < 50 counts; electrode open
+              dead_saturated  — >95% of samples at int16 rails
+dead_flag   True if quality starts with "dead" — exclude from modeling.
+suspect_flag True if quality starts with "suspect" — keep with caution.
+fs          sample rate in WAV header (always 100).
+n_samples   total samples in WAV.
+duration_s  duration in seconds (n_samples / fs).
+
+Time-domain features (computed on 16-bit integer samples)
+---------------------------------------------------------
+mean, median, std, iqr, min, max, range, rms, zcr
+  Standard summary statistics on the raw ADC counts.
+  NOTE: mean / median are DC levels and drift across sessions because the
+  firmware's high-pass is disabled. For circadian or classification tasks
+  use DC-invariant features (std, iqr, zcr, bp_*) or detrend first.
+
+Saturation diagnostics
+----------------------
+sat_pos_frac  fraction of samples at int16 positive rail (+32767)
+sat_neg_frac  fraction of samples at int16 negative rail (-32768)
+const_flag    True if all samples have the exact same value
+
+Spectral band powers (integrated PSD, Welch-style, Hann window)
+---------------------------------------------------------------
+  bp_0_1     0.0 to 1.0 Hz  — slow-wave / circadian carrier band
+  bp_1_5     1.0 to 5.0 Hz  — classical plant action-potential band
+  bp_5_15    5.0 to 15.0 Hz — higher transients
+  bp_15_30   15.0 to 30.0 Hz — mostly noise / EMI
+  bp_30_50   30.0 to 50.0 Hz — dominated by aliased-mains 40 Hz peak
+                               (see caveats; do NOT treat as biology)
+  total_power sum of the bands above
+
+Sample rate caveat
+------------------
+The WAV header says 100 Hz but the real decimated rate off the ESP32 is
+~126.67 Hz (firmware bug: integer division 380/100 = 3, not 4). This
+affects the *absolute* frequency axis but not circadian analysis (which
+lives at 1/24 h, nine orders of magnitude away). To convert apparent
+frequencies to true ones, multiply by 1.2667. The "40 Hz" peak visible
+in every PSD is genuinely 50 Hz mains in the true timebase.
