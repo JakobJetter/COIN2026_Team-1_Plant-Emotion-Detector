@@ -1,6 +1,36 @@
-matplotlib
-seaborn
-scikit-learn
-pandas
-numpy
-pyarrow 
+# ══════════════════════════════════════════════════════════════
+# Messung.ipynb + Labelling.ipynb — Requirements
+# ══════════════════════════════════════════════════════════════
+
+# ── Core (immer benötigt, beide Notebooks) ─────────────────────
+numpy>=1.24,<3.0
+pandas>=2.0
+matplotlib>=3.7
+seaborn>=0.13
+
+# scipy nicht direkt importiert aber empfohlen als Dependency
+scipy>=1.11
+
+# ── Jupyter ────────────────────────────────────────────────────
+jupyter>=1.0
+ipykernel>=6.25
+notebook>=7.0
+
+# ══════════════════════════════════════════════════════════════
+# Optional — nur für echte Hardware (USE_MOCK_ENV = False / LIVE)
+# ══════════════════════════════════════════════════════════════
+
+# Polar H10 via BLE (Messung.ipynb)
+bleak>=0.21
+
+# Kamera + HSEmotion FER (Messung.ipynb + Labelling.ipynb)
+opencv-python>=4.8
+hsemotion-onnx>=0.3.1      # CPU, empfohlen
+# hsemotion>=0.4            # PyTorch-Version (schwergewichtiger)
+# torch>=2.1                # nur wenn hsemotion statt hsemotion-onnx
+
+# Umweltsensoren I²C — nur auf Raspberry Pi
+# adafruit-circuitpython-scd4x
+# adafruit-circuitpython-sgp40
+# adafruit-circuitpython-ads1x15
+# RPi.GPIO
