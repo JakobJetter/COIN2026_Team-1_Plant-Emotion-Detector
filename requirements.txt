@@ -1,10 +1,13 @@
-# ── Core (immer benötigt, beide Notebooks) ─────────────────────
+# ══════════════════════════════════════════════════════════════
+# init_recording.ipynb + ground_truth_classifier.ipynb
+# Requirements
+# ══════════════════════════════════════════════════════════════
+
+# ── Core (always needed, both notebooks) ───────────────────────
 numpy>=1.24,<3.0
 pandas>=2.0
 matplotlib>=3.7
 seaborn>=0.13
-
-# scipy nicht direkt importiert aber empfohlen als Dependency
 scipy>=1.11
 
 # ── Jupyter ────────────────────────────────────────────────────
@@ -13,20 +16,21 @@ ipykernel>=6.25
 notebook>=7.0
 
 # ══════════════════════════════════════════════════════════════
-# Optional — nur für echte Hardware (USE_MOCK_ENV = False / LIVE)
+# Hardware-side requirements (real recording, not mock)
 # ══════════════════════════════════════════════════════════════
 
-# Polar H10 via BLE (Messung.ipynb)
+# Polar H10 via BLE
 bleak>=0.21
 
-# Kamera + HSEmotion FER (Messung.ipynb + Labelling.ipynb)
+# Camera + HSEmotion FER
 opencv-python>=4.8
-hsemotion-onnx>=0.3.1      # CPU, empfohlen
-# hsemotion>=0.4            # PyTorch-Version (schwergewichtiger)
-# torch>=2.1                # nur wenn hsemotion statt hsemotion-onnx
+hsemotion-onnx>=0.3.1      # CPU, recommended
+# hsemotion>=0.4            # PyTorch variant (heavier)
+# torch>=2.1                # only if you use hsemotion instead of hsemotion-onnx
 
-# Umweltsensoren I²C — nur auf Raspberry Pi
+# ESP32 plant-voltage + VOC streamer (WebSocket client)
+websockets>=11
+
+# CO2 sensor (SCD41) — placeholder, not yet wired.
+# Uncomment once the sensor is connected to the host (NOT the ESP32):
 # adafruit-circuitpython-scd4x
-# adafruit-circuitpython-sgp40
-# adafruit-circuitpython-ads1x15
-# RPi.GPIO

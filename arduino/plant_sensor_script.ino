@@ -505,6 +505,7 @@ void sendBatchData() {
     doc["timestamp"]  = millis();
     doc["sampleRate"] = OUTPUT_RATE;
     doc["samples"]    = bufferIndex;
+    doc["voc"]        = lastVOC;   // ← latest VOC index from SGP40
     
     JsonArray voltages = doc.createNestedArray("voltages");
     for (int i = 0; i < bufferIndex; i++) {
