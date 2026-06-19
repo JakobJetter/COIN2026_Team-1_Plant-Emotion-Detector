@@ -29,19 +29,15 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <SensirionI2CSgp40.h>
-#include <VOCGasIndexAlgorithm.h>
 #include <SensirionI2cScd4x.h>
 
-VOCGasIndexAlgorithm voc_algorithm;
-SensirionI2CSgp40 sgp40;
 SensirionI2cScd4x scd4x;
 
 char errorMessage[256];
 
 // ===== WIFI CONFIGURATION =====
-const char* ssid =  "PixelDingens";
-const char* password = "SoederIstEinSaftsack";
+const char* ssid =  "";
+const char* password = "";
 
 // ===== WEBSOCKET SERVER =====
 WebSocketsServer webSocket = WebSocketsServer(81);  // WebSocket on port 81
@@ -83,7 +79,7 @@ unsigned long totalSamples = 0;
 unsigned long outputSamples = 0;
 float lastVoltage = 0.0;
 float lastFilteredVoltage = 0.0;
-float lastVOC = 0.0;
+// VOC (SGP40) removed from this build
 float lastCO2 = 0.0;
 String wifi_status = "Disconnected";
 String websocket_status = "Stopped";
@@ -205,40 +201,15 @@ void loop() {
         webSocket.loop();
     }
 
-    uint16_t error;
-    uint16_t srawVoc = 0;
-    uint16_t defaultCompensationRh = 0x8000;  // in ticks as defined by SGP40
-    uint16_t defaultCompensationT = 0x6666;   // in ticks as defined by SGP40
-
-    // 1. Sleep: Measure every second (1Hz), as defined by the Gas Index
-    // Algorithm
-    //    prerequisite
-    // Non-blocking gas sensor reads (SGP40 + SCD4x) at ~1Hz
+    // Non-blocking CO2 sensor read (SCD4x) at ~1Hz
     unsigned long nowMs = millis();
     if (nowMs - lastGasMeasure >= GAS_MEASURE_INTERVAL_MS) {
         lastGasMeasure = nowMs;
 
-        error = sgp40.measureRawSignal(defaultCompensationRh, defaultCompensationT, srawVoc);
-        if (error) {
-            Serial.print("SGP40 - Error trying to execute measureRawSignals(): ");
-            errorToString(error, errorMessage, 256);
-            Serial.println(errorMessage);
-            // Run I2C scan to help diagnose connectivity/address issues
-            i2cScan();
-        } else {
-            int32_t vocIndex = voc_algorithm.process(srawVoc);
-            Serial.print("VOC Index: ");
-            Serial.print(vocIndex);
-            Serial.print("\n");
-            lastVOC = vocIndex;
-        }
-
-        // Read SCD4x CO2 measurement (poll data-ready, then read)
         bool dataReady = false;
         int scdErr = scd4x.getDataReadyStatus(dataReady);
         if (scdErr != 0) {
             Serial.printf("SCD4x getDataReadyStatus error: %d (0x%X)\n", scdErr, scdErr);
-            // Run I2C scan to help diagnose connectivity/address issues
             i2cScan();
         } else if (dataReady) {
             uint16_t co2ppm = 0;
@@ -319,7 +290,6 @@ void setupVOC() {
     // Start I2C on custom pins (use same pins as OLED)
     Wire.begin(21, 22);   // SDA = 21, SCL = 22
 
-    sgp40.begin(Wire);
     // Initialize SCD4x CO2 sensor (use official driver API)
     scd4x.begin(Wire, 0x62);
     // Start periodic measurement on SCD4x (library will handle interval)
@@ -332,30 +302,6 @@ void setupVOC() {
     Serial.println("Retrying I2C scan with default Wire.begin() pins...");
     Wire.begin();
     i2cScan();
-
-    int32_t index_offset;
-    int32_t learning_time_offset_hours;
-    int32_t learning_time_gain_hours;
-    int32_t gating_max_duration_minutes;
-    int32_t std_initial;
-    int32_t gain_factor;
-    voc_algorithm.get_tuning_parameters(
-        index_offset, learning_time_offset_hours, learning_time_gain_hours,
-        gating_max_duration_minutes, std_initial, gain_factor);
-
-    Serial.println("\nVOC Gas Index Algorithm parameters");
-    Serial.print("Index offset:\t");
-    Serial.println(index_offset);
-    Serial.print("Learning time offset hours:\t");
-    Serial.println(learning_time_offset_hours);
-    Serial.print("Learning time gain hours:\t");
-    Serial.println(learning_time_gain_hours);
-    Serial.print("Gating max duration minutes:\t");
-    Serial.println(gating_max_duration_minutes);
-    Serial.print("Std inital:\t");
-    Serial.println(std_initial);
-    Serial.print("Gain factor:\t");
-    Serial.println(gain_factor);
 }
 
 // ═══════════════════════════════════════════════
@@ -481,11 +427,11 @@ void updateDisplay() {
         display.print("WiFi: ");
         display.println(wifi_status);
     }
-    
-    // Line 3: WebSocket clients
+
+    // Line 3: Samples collected
     display.setCursor(0, 24);
-    display.print("Clients: ");
-    display.println(connectedClients);
+    display.print("Samples: ");
+    display.println(outputSamples);
 
     // Line 4: Plant filtered voltage
     display.setCursor(0, 36);
@@ -493,15 +439,15 @@ void updateDisplay() {
     display.print(lastFilteredVoltage, 1);
     display.println(" mV");
 
-    // Line 5: VOC index
+    // Line 5: CO2 (ppm)
     display.setCursor(0, 48);
-    display.print("VOC: ");
-    display.print(lastVOC, 1);
-
-    // Line 6: CO2 (ppm)
-    display.setCursor(64, 48);
     display.print("CO2: ");
     display.print(lastCO2, 0);
+
+    // Line 6: WebSocket clients
+    display.setCursor(80, 48);
+    display.print("Clients: ");
+    display.println(connectedClients);
     display.display();
 }
 
@@ -549,7 +495,6 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
             statusDoc["batchSize"]    = BUFFER_SIZE;
             statusDoc["filterLow"]    = "0.1Hz";
             statusDoc["filterHigh"]   = "8Hz";
-            statusDoc["voc"]          = lastVOC;
             statusDoc["co2"]          = lastCO2;
             
             String statusJson;
@@ -575,8 +520,7 @@ void sendBatchData() {
     doc["timestamp"]  = millis();
     doc["sampleRate"] = OUTPUT_RATE;
     doc["samples"]    = bufferIndex;
-    doc["voc"]        = lastVOC;   // ← latest VOC index from SGP40
-    doc["co2"]        = lastCO2;  // ← latest CO2 ppm from SCD4x
+    doc["co2"]        = lastCO2;  // latest CO2 ppm from SCD4x
     
     JsonArray voltages = doc.createNestedArray("voltages");
     for (int i = 0; i < bufferIndex; i++) {
