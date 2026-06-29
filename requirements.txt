@@ -11,6 +11,7 @@ seaborn>=0.13
 scipy>=1.11
 scikit-learn>=1.4
 xgboost>=2.1
+statsmodels>=0.14
 
 # ── Jupyter ────────────────────────────────────────────────────
 jupyter>=1.0
