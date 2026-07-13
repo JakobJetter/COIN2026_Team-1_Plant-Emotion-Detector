@@ -105,7 +105,7 @@ else:
     print(f"\n✅ Using {lib_name} for emotion recognition\n")
 
 # ===== CONFIGURATION =====
-ESP32_IP = "Platzhalter"
+ESP32_IP = ""
 ESP32_PORT = 81
 
 CAMERA_INDEX = 0
