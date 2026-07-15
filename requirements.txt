@@ -43,3 +43,8 @@ websockets>=11
 # ══════════════════════════════════════════════════════════════
 flask>=3.0
 flask-socketio>=5.3
+
+# 02_emotion_labelling.ipynb — face detection (MTCNN, required to stay inside
+# HSEmotion's evaluated accuracy domain) + HRV artefact correction
+facenet-pytorch>=2.5.3
+neurokit2>=0.2.10

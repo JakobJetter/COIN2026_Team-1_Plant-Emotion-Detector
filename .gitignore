@@ -11,4 +11,7 @@ __pycache__/
 // Data
 .plant_data/
 .sessions/
-sessions/
+sessions/            # matches at any depth, incl. data/sessions/ - raw recordings, not tracked
+# data/datasets/ is intentionally NOT ignored - computed datasets (consolidated_dataset.csv,
+# correlation_results.csv, etc.) are tracked so results stay reproducible without re-running everything.
+*.mp4
