@@ -37,3 +37,9 @@ websockets>=11
 # CO2 sensor (SCD41) — placeholder, not yet wired.
 # Uncomment once the sensor is connected to the host (NOT the ESP32):
 # adafruit-circuitpython-scd4x
+
+# ══════════════════════════════════════════════════════════════
+# phaenomena/emotion_unified_phaenomena.py + emotion_live_dashboard.py
+# ══════════════════════════════════════════════════════════════
+flask>=3.0
+flask-socketio>=5.3
