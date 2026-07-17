@@ -1,145 +1,93 @@
-# 🌱 Plant Emotion Detector  
-### COIN Seminar 2026 – Team 1
+# 🌱 Plant Emotion Detector
 
-An interdisciplinary machine learning and biosensing project exploring how bioelectric signals can be used to classify human emotional states.
+**COIN Seminar 2026 – Team 1**
 
-## Official Task Description:
-
-"Build a classifier that detects human emotions from plant bioelectric responses. Train models on voltage time-series data. Compare different ML approaches (neural networks vs. XGBoost vs. random forests)."
+A biosensing + machine learning project exploring whether a plant's bioelectric
+voltage signal carries information about a nearby human's emotional state.
+A custom ESP32 sensor rig records plant voltage (plus ambient CO₂), while a
+Polar H10 chest strap and a webcam capture the participant's heart-rate
+variability and facial expression. These are combined into proxy emotion
+labels, which are then used to train and compare ML models (Random Forest,
+XGBoost, Neural Network) that predict emotion from the plant signal alone.
 
 ---
-## Setup
-1. Create virtual environment
+
+## Repository Structure
+
+```
+├── arduino/
+│   └── plant_sensor_script.ino     ESP32 firmware: reads plant voltage (AD8232)
+│                                    + CO2 (SCD4x), streams both over WebSocket
+│
+├── notebooks/                      Pipeline, run in numeric order
+│   ├── 01_init_recording.ipynb     Records one session (Polar H10, camera, ESP32)
+│   │                                → data/sessions/<session>/{events.jsonl, video.mp4}
+│   ├── 02_emotion_labelling.ipynb  Turns one session's raw signals into per-window
+│   │                                proxy emotion labels (HRV → arousal, FER → valence)
+│   ├── 03_dataset_creation.ipynb   Runs 02 over every session and merges the result
+│   │                                → data/datasets/consolidated_dataset.csv
+│   ├── 04_01/02/03_ml_pipeline_*.ipynb
+│   │                                Train & compare RF / XGBoost / NN for emotion,
+│   │                                arousal, and valence → models/*.pkl
+│   └── 06_Correlation_Analysis_V02.ipynb
+│                                    Spearman correlation of the plant signal against
+│                                    HRV, FER and CO2 (independent of the trained models)
+│
+├── models/                         Trained model artifacts (output of the 04_* notebooks)
+├── data/
+│   ├── sessions/                   Raw per-session recordings
+│   └── datasets/                   Consolidated dataset + analysis result CSVs
+│
+├── phaenomena/
+│   └── emotion_live_dashboard.py   Flask app for live sensor visualisation and
+│                                    real-time inference with the trained models
+│
+└── requirements.txt
+```
+
+---
+
+## Hardware Setup
+
+- **ESP32 DevKit** + **AD8232** bioelectric amplifier (plant leaf electrodes)
+- **SCD4x** CO₂ sensor (I2C)
+- **SSD1306** OLED display (status/IP)
+- **Polar H10** chest strap (Bluetooth LE, HRV)
+- Webcam for facial expression recognition (FER)
+- Plant used: *Kalanchoe*
+
+Flash `arduino/plant_sensor_script.ino` to the ESP32 (set your WiFi credentials at the
+top of the file); the OLED display then shows the IP address needed in Notebook 01.
+
+---
+
+## Getting Started
+
+```bash
 python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-2. Activate virtual environment
+Then run the notebooks in order:
 
-### Activate it (Windows)
-./.venv/Scripts/activate
+1. `01_init_recording.ipynb` — record a new session (skip if you just want to work with
+   the already-recorded sessions in `data/sessions/`)
+2. `03_dataset_creation.ipynb` — (re)generates labels for every session and builds
+   `consolidated_dataset.csv` (calls `02_emotion_labelling.ipynb` internally, no need to
+   run it manually)
+3. `04_01_ml_pipeline_emotion.ipynb`, `04_02_ml_pipeline_arousal.ipynb`,
+   `04_03_ml_pipeline_valence.ipynb` — train and compare the models
+4. `06_Correlation_Analysis_V02.ipynb` — correlation analysis between the plant signal
+   and HRV / FER / CO₂
 
-### Activate it (macOS/Linux)
-source .venv/bin/activate
+`data/datasets/consolidated_dataset.csv` is already included, so steps 3 and 4 can be run
+directly without re-recording or re-labelling anything.
 
-3. Install required packages
-python -m pip install -r requirements.txt
----
+To try the live dashboard (real-time sensor view + live model predictions):
 
+```bash
+python phaenomena/emotion_live_dashboard.py
+```
 
-## 🧠 Project Idea
-
-We investigate how plants can act as biological “sensors” of human emotions by measuring their electrical responses (voltage signals) during human presencce.
-
-Humans emit multiple physiological signals linked to emotions, such as:
-- Facial expressions
-- Heart activity (HRV, EM field of the heart)
-- Exhaled CO₂
-- Volatile organic compounds (VOCs)
-
-Plants respond to environmental stimuli with measurable bioelectric voltage changes.  
-The central question is:
-
->Can we classify human emotions with significant accuracy only from plant voltage signals using machine learning algorithms?
-
----
-
-## 🎯 Objective
-
-### Primary Task: Compare Models
-
-We aim to build and compare machine learning models that predict or classify human emotional states using plant bioelectric time-series data collected with labels of human emotions based on facial impressions.
-
-We compare:
-
-- Neural Networks (deep learning for time-series)
-- XGBoost (gradient boosting)
-- Random Forests (baseline ensemble model)
-
-### Secondary Task: Extend Training Data
-
-We aim to extract our own data by recording the voltage signals of the plant while measuring our emotions using facial impressions, heart activity, exhaled CO₂ and volatile organic compounds (VOCs). The core idea is to see if the dataset with more features leads to a better classifier.
-
----
-
-## 📊 Available Data
-
-The project is based on ~30 hours of exhibition data (“Silent Signals”), including:
-
-- Plant voltage time-series signals  
-- Emotional states of participants as labels based on facial expressions
-
----
-
-## 🧪 Scientific Motivation
-
-Research suggests correlations between human stress and plant electrical activity (MDPI Biomimetics, 2025), but the mechanisms remain unclear.
-
-We explore three possible channels:
-
-- Electromagnetic coupling (heart EM field influence)
-- CO₂ mediation (breathing changes affecting plants)
-- VOC signaling (chemical emissions as key driver)
-
-A large portion (~66%) of the interaction remains unexplained — an open research question.
-
----
-
-## 🔧 Hardware System (Further explanations in the provoded document)
-
-We built a low-cost plant biosensor system:
-
-### Components:
-- ESP32 DevKit
-- AD8232 ECG module (plant bioelectric pickup)
-- RC low-pass filter (~16 Hz cutoff)
-- SSD1306 OLED display
-- Gel ECG electrodes
-- Breadboard setup
-
-### Functionality:
-- Measures plant voltage signals (µV range)
-- Filters noise (50 Hz mains interference)
-- Displays live signal data
-- Connects electrode to plant leaf
-
-Plant used: Kalanchoe
-
----
-
-## 🧪 System Pipeline
-
-### Stream 1: Machine Learning
-1. Data understanding  
-2. Preprocessing & synchronization  
-3. Feature engineering  
-4. Model training (NN / XGBoost / RF)  
-5. Evaluation & comparison  
-
-### Stream 2: Field Experiments
-1. Hardware assembly  
-2. Signal testing  
-3. Real-world data collection  
-4. Integration with ML models  
-5. Final evaluation  
-
----
-
-## ⚠️ Challenges
-
-- Noisy and inconsistent sensor data  
-- Small dataset size  
-- Hardware interference (EM noise, electrode contact issues)  
-- High computational cost for training  
-- Synchronization of multi-modal signals  
-
----
-
-## 🔬 Expected Outcome
-
-We aim to:
-
-- Evaluate, if plant bioelectric signals carry information about human emotions  
-- Identify the best-performing ML model  
-- Test whether additional physiological signals improve performance  
-- Contribute to research in bio-inspired sensing and “honest signals”
-
---- 
+then open `http://localhost:5004` in a browser.
