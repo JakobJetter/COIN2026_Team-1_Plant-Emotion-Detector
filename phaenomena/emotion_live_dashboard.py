@@ -214,7 +214,9 @@ HR_CHAR_UUID = "00002a37-0000-1000-8000-00805f9b34fb"
 # (ported verbatim from notebooks/02_emotion_labelling.ipynb §4.10, so the
 #  live features are computed exactly like the ones each plant model in
 #  ../models/ was trained on: mains-notched time-domain stats, raw-signal
-#  saturation diagnostics, and the same four spectral bands + band_power_sum)
+#  saturation diagnostics, the four spectral bands + band_power_sum, two
+#  band-power ratios, Hjorth activity/mobility/complexity, spectral entropy
+#  and spike rate)
 # ═══════════════════════════════════════════════════════════════
 
 _trapz = getattr(np, "trapezoid", None) or np.trapz
@@ -229,8 +231,11 @@ def extract_plant_features(volts, fs):
 
     if n == 0:
         for k in ["plant_mean", "plant_median", "plant_std", "plant_iqr", "plant_min", "plant_max",
-                  "plant_range", "plant_rms", "plant_zcr", "plant_sat_pos_frac", "plant_sat_neg_frac",
-                  "bp_0_1", "bp_1_5", "bp_5_15", "bp_15_30", "band_power_sum"]:
+                  "plant_range", "plant_rms", "plant_zcr", "plant_detrend_std",
+                  "plant_sat_pos_frac", "plant_sat_neg_frac",
+                  "bp_0_1", "bp_1_5", "bp_5_15", "bp_15_30", "band_power_sum",
+                  "hjorth_activity", "hjorth_mobility", "hjorth_complexity", "spectral_entropy",
+                  "spike_rate", "ratio_bp1_5_bp5_15", "ratio_bp1_5_total"]:
             out[k] = np.nan
         out["plant_const_flag"] = False
         out["plant_quality"] = "dead_flat"
@@ -253,7 +258,12 @@ def extract_plant_features(volts, fs):
     rms = float(np.sqrt(np.mean(v_td ** 2)))
     vd_td = v_td - mean
     zcr = float(np.mean(np.abs(np.diff(np.sign(vd_td))) > 0)) if n > 1 else 0.0
+    # Linear (least-squares) detrend before measuring spread: strips slow
+    # within-window baseline drift so plant_detrend_std reflects fast plant
+    # fluctuation, whereas plant_std still carries that drift. Same notched input.
+    detrend_std = float(np.std(sp_signal.detrend(v_td, type="linear"), ddof=1)) if n > 1 else 0.0
     out.update(plant_mean=round(mean, 6), plant_median=round(median, 6), plant_std=round(std, 6),
+               plant_detrend_std=round(detrend_std, 6),
                plant_iqr=round(iqr, 6), plant_min=round(vmin, 6), plant_max=round(vmax, 6),
                plant_range=round(rng_, 6), plant_rms=round(rms, 6), plant_zcr=round(zcr, 6))
 
@@ -262,6 +272,7 @@ def extract_plant_features(volts, fs):
                plant_const_flag=bool(np.all(v == v[0])))
 
     vd = v - float(np.mean(v))
+    eps = 1e-12
     if n >= 16 and float(np.std(v)) > 0:
         nper = min(256, n)
         f, pxx = sp_signal.welch(vd, fs=fs, window="hann", nperseg=nper, scaling="density")
@@ -272,10 +283,47 @@ def extract_plant_features(volts, fs):
 
         bp_0_1, bp_1_5, bp_5_15, bp_15_30 = band(0, 1), band(1, 5), band(5, 15), band(15, 30)
         band_power_sum = bp_0_1 + bp_1_5 + bp_5_15 + bp_15_30
+        ratio_bp1_5_bp5_15 = bp_1_5 / (bp_5_15 + eps)
+        ratio_bp1_5_total = bp_1_5 / (band_power_sum + eps)
+
+        # Shannon entropy of the same Welch PSD, normalized to [0, 1] -
+        # reuses pxx above rather than a second Welch call.
+        _psum = pxx.sum()
+        if _psum > 0:
+            _p = pxx / _psum
+            _p = _p[_p > 0]
+            spectral_entropy = float(-(_p * np.log2(_p)).sum()) / np.log2(len(_p)) if len(_p) >= 2 else 0.0
+        else:
+            spectral_entropy = np.nan
+
+        # Hjorth activity/mobility/complexity on the notch-filtered signal.
+        if v_td.size >= 3 and np.var(v_td) > 0:
+            _dx = np.diff(v_td); _ddx = np.diff(_dx)
+            hjorth_activity = float(np.var(v_td))
+            _var_dx = float(np.var(_dx))
+            hjorth_mobility = float(np.sqrt(_var_dx / hjorth_activity)) if hjorth_activity > 0 else 0.0
+            _var_ddx = float(np.var(_ddx))
+            _mobility_dx = float(np.sqrt(_var_ddx / _var_dx)) if _var_dx > 0 else 0.0
+            hjorth_complexity = (_mobility_dx / hjorth_mobility) if hjorth_mobility > 0 else 0.0
+        else:
+            hjorth_activity = hjorth_mobility = hjorth_complexity = 0.0
+
+        # Spike rate: fraction of notch-filtered samples > 3xMAD from median.
+        _med = np.median(v_td)
+        _mad = np.median(np.abs(v_td - _med)) * 1.4826
+        spike_rate = float(np.mean(np.abs(v_td - _med) > 3.0 * _mad)) if _mad > 0 else 0.0
     else:
         bp_0_1 = bp_1_5 = bp_5_15 = bp_15_30 = band_power_sum = np.nan
+        ratio_bp1_5_bp5_15 = ratio_bp1_5_total = np.nan
+        spectral_entropy = np.nan
+        hjorth_activity = hjorth_mobility = hjorth_complexity = np.nan
+        spike_rate = np.nan
     out.update(bp_0_1=bp_0_1, bp_1_5=bp_1_5, bp_5_15=bp_5_15, bp_15_30=bp_15_30,
-               band_power_sum=band_power_sum)
+               band_power_sum=band_power_sum,
+               ratio_bp1_5_bp5_15=ratio_bp1_5_bp5_15, ratio_bp1_5_total=ratio_bp1_5_total,
+               hjorth_activity=hjorth_activity, hjorth_mobility=hjorth_mobility,
+               hjorth_complexity=hjorth_complexity, spectral_entropy=spectral_entropy,
+               spike_rate=spike_rate)
 
     lsb = ADC_VREF / 4096.0
     std_counts = std / lsb if lsb else float("inf")
@@ -295,6 +343,68 @@ def extract_plant_features(volts, fs):
     out["plant_dead_flag"] = q.startswith("dead")
     out["plant_suspect_flag"] = q.startswith("suspect")
     return out
+
+
+# ═══════════════════════════════════════════════════════════════
+# CAUSAL SESSION NORMALIZATION
+# (ported from notebooks/02_emotion_labelling.ipynb §4.10c: every continuous
+#  plant feature is re-expressed as a robust z-score against THIS live
+#  session's own PRIOR windows only -- (x - running_median) /
+#  (1.4826 * running_MAD) -- recomputed after every completed window, never
+#  from the current or a future window. This is the causal counterpart to
+#  §4.10b's offline whole-session method used to train the persisted models;
+#  it exists because a live dashboard never has "the rest of the session" to
+#  batch-normalize against. The trained models in ../models/ expect
+#  *_snorm feature names when the winning feature set was "session_norm"
+#  (raw names otherwise) -- PlantAxisModel._feature_names() reads whichever
+#  names the loaded model actually expects, so this just needs to supply
+#  both.)
+# ═══════════════════════════════════════════════════════════════
+
+SNORM_CONTINUOUS_COLS = [
+    "plant_mean", "plant_median", "plant_std", "plant_detrend_std", "plant_iqr", "plant_min", "plant_max",
+    "plant_range", "plant_rms", "plant_zcr", "bp_0_1", "bp_1_5", "bp_5_15", "bp_15_30",
+    "band_power_sum", "ratio_bp1_5_bp5_15", "ratio_bp1_5_total",
+    "hjorth_activity", "hjorth_mobility", "hjorth_complexity", "spectral_entropy", "spike_rate",
+]
+
+
+def causal_session_normalize(window_features, session_history, cols=SNORM_CONTINUOUS_COLS,
+                              min_history=MIN_ML_WINDOWS):
+    """Notebook-identical (§4.10c) causal per-session normalization.
+
+    `session_history` must hold only this session's completed PRIOR windows'
+    raw plant features -- never the current window. While fewer than
+    `min_history` prior windows exist, the raw feature value is passed
+    through unchanged for every col and `session_norm_available=False` is
+    returned, rather than inventing a reference (a disclosed tradeoff of
+    live inference, not a bug -- see §4.10c)."""
+    n_hist = len(session_history)
+    session_norm_available = n_hist >= min_history
+
+    def _get(obj, key):
+        val = obj.get(key) if isinstance(obj, dict) else obj[key]
+        try:
+            val = float(val)
+        except (TypeError, ValueError):
+            return np.nan
+        return val if val == val else np.nan  # NaN check
+
+    result = {}
+    for col in cols:
+        x = _get(window_features, col)
+        if not session_norm_available:
+            result[f"{col}_snorm"] = x
+            continue
+        hist = pd.to_numeric(pd.DataFrame(session_history)[col], errors="coerce").to_numpy(dtype=float)
+        hist = hist[~np.isnan(hist)]
+        if hist.size == 0 or np.isnan(x):
+            result[f"{col}_snorm"] = x
+            continue
+        med = float(np.median(hist))
+        mad = 1.4826 * float(np.median(np.abs(hist - med)))
+        result[f"{col}_snorm"] = round((x - med) / mad, 4) if mad > 0 else 0.0
+    return result, session_norm_available
 
 
 def _feature_row_value(features, name):
@@ -708,6 +818,12 @@ class AppState:
 
         self.fer_buffer = deque(maxlen=FER_BUFFER_MAXLEN)          # dicts, see CameraHandler
 
+        # This session's completed windows' raw plant features, oldest first -
+        # session_history for causal_session_normalize() (§4.10c). A window's
+        # own features are appended AFTER it is normalized, so a window is
+        # never part of its own reference.
+        self.plant_feature_history = []
+
         # Window-based predictions - recomputed once per WIN_S, see process_window()
         self.calibration = LiveCalibration()
         self.session_t0_ms = None
@@ -843,6 +959,14 @@ def process_window(w_start, w_end):
     else:
         measured_fs = PLANT_FS_NOMINAL_HZ
     plant_features = extract_plant_features([v for _, v in plant_slice], fs=measured_fs)
+
+    # Causal session normalization (§4.10c): normalized against this
+    # session's own prior windows only, never the current one - see
+    # state.plant_feature_history's docstring in AppState.
+    snorm, _session_norm_available = causal_session_normalize(plant_features, state.plant_feature_history)
+    plant_features = {**plant_features, **snorm}
+    state.plant_feature_history.append(dict(plant_features))
+
     state.plant_quality = plant_features.get("plant_quality")
 
     rr_vals = [rr for ts, rr in state.rr_buffer if w_start <= ts < w_end]

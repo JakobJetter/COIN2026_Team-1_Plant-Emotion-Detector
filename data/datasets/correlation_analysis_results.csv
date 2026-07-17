@@ -1,0 +1,73 @@
+analysis,variant,plant_feature,rho,p_value,n,best_lag,significant
+CO2,lag,MEAN,0.2449162825153799,,269,1.0,False
+CO2,lag,plant_max,-0.06172384535614346,0.3420456979718188,239,3.0,False
+CO2,lag,plant_mean,0.5032922631517143,1.1132468703161093e-18,269,1.0,True
+CO2,lag,plant_median,0.45469390460484366,3.945185695522985e-15,269,1.0,True
+CO2,lag,plant_min,0.10825966260943841,0.10610077286104937,224,4.0,False
+CO2,lag,plant_range,-0.09661173685475966,0.1139074237398147,269,1.0,False
+CO2,raw,MEAN,0.24280782992139405,,284,,True
+CO2,raw,plant_max,-0.03724287814856714,0.5319205358385789,284,,False
+CO2,raw,plant_mean,0.4970886532598232,3.941372364116539e-19,284,,True
+CO2,raw,plant_median,0.4682954058363234,6.931857363028677e-17,284,,True
+CO2,raw,plant_min,0.1215380220838928,0.04068210973509564,284,,True
+CO2,raw,plant_range,-0.0898741902783635,0.13079706327824006,284,,False
+CO2,std,MEAN,0.11543647234678626,,224,,False
+CO2,std,plant_max,0.06050608584240872,0.36741189992091,224,,False
+CO2,std,plant_mean,0.12752509075379034,0.05668516741084503,224,,False
+CO2,std,plant_median,0.24026478752936156,0.00028436611056041074,224,,True
+CO2,std,plant_min,-0.101090113175315,0.13145725805106306,224,,False
+CO2,std,plant_range,0.04779628443305574,0.47661711864947487,224,,False
+"FER (fer_valence, label determinant)",lag,MEAN,0.18485211617788813,,224,1.0,True
+"FER (fer_valence, label determinant)",lag,plant_max,-0.2204086112600056,0.0013420643569110598,209,5.0,True
+"FER (fer_valence, label determinant)",lag,plant_mean,0.1262304951039198,0.038548342914333546,269,1.0,True
+"FER (fer_valence, label determinant)",lag,plant_median,0.0912109650444369,0.13566859900570516,269,1.0,False
+"FER (fer_valence, label determinant)",lag,plant_min,0.23089365791159516,0.0004947999455237777,224,4.0,True
+"FER (fer_valence, label determinant)",lag,plant_range,-0.2555168515694831,0.00018847370804192783,209,5.0,True
+"FER (fer_valence, label determinant)",raw,MEAN,0.16339813597373398,,284,,True
+"FER (fer_valence, label determinant)",raw,plant_max,-0.18631811894665218,0.0016121414131564466,284,,True
+"FER (fer_valence, label determinant)",raw,plant_mean,0.15249542323267742,0.010063667171254535,284,,True
+"FER (fer_valence, label determinant)",raw,plant_median,0.1053043928919518,0.07644045439760959,284,,False
+"FER (fer_valence, label determinant)",raw,plant_min,0.1832612802129692,0.0019283070812557044,284,,True
+"FER (fer_valence, label determinant)",raw,plant_range,-0.1896114645844193,0.001325182412061049,284,,True
+"FER (fer_valence, label determinant)",std,MEAN,0.0942963912022208,,224,,False
+"FER (fer_valence, label determinant)",std,plant_max,-0.09826820414264362,0.1426302964396057,224,,False
+"FER (fer_valence, label determinant)",std,plant_mean,0.128658979286782,0.054503034851106226,224,,False
+"FER (fer_valence, label determinant)",std,plant_median,0.10749946615417469,0.10859147214888076,224,,False
+"FER (fer_valence, label determinant)",std,plant_min,-0.04629617766389068,0.49057729489526203,224,,False
+"FER (fer_valence, label determinant)",std,plant_range,0.09075912876361308,0.17587879304837642,224,,False
+"HRV (RMSSD, raw)",lag,MEAN,0.11469006087509828,,239,1.0,False
+"HRV (RMSSD, raw)",lag,plant_max,-0.07052423580506578,0.3102457981656956,209,5.0,False
+"HRV (RMSSD, raw)",lag,plant_mean,-0.180517992755916,0.005123864859590421,239,3.0,True
+"HRV (RMSSD, raw)",lag,plant_median,-0.15705121446634196,0.018673227831035737,224,4.0,True
+"HRV (RMSSD, raw)",lag,plant_min,0.10479967207766765,0.09559677768923557,254,2.0,False
+"HRV (RMSSD, raw)",lag,plant_range,-0.06055718927050003,0.3224210294924999,269,1.0,False
+"HRV (RMSSD, raw)",raw,MEAN,0.07203349586566687,,284,,False
+"HRV (RMSSD, raw)",raw,plant_max,-0.06378839236869564,0.28402041426216207,284,,False
+"HRV (RMSSD, raw)",raw,plant_mean,-0.11673493294086029,0.04937953880745097,284,,True
+"HRV (RMSSD, raw)",raw,plant_median,-0.07949929492134705,0.1815647792970104,284,,False
+"HRV (RMSSD, raw)",raw,plant_min,0.048460978615357246,0.415899807462433,284,,False
+"HRV (RMSSD, raw)",raw,plant_range,-0.05168388048207413,0.38554163700371263,284,,False
+"HRV (RMSSD, raw)",std,MEAN,0.05087742899850524,,224,,False
+"HRV (RMSSD, raw)",std,plant_max,0.09784966901558831,0.14434733225322413,224,,False
+"HRV (RMSSD, raw)",std,plant_mean,0.0010356609011317533,0.987702184279626,224,,False
+"HRV (RMSSD, raw)",std,plant_median,-0.01957399103139014,0.77078703542598,224,,False
+"HRV (RMSSD, raw)",std,plant_min,-0.12929318812726887,0.05331317846672894,224,,False
+"HRV (RMSSD, raw)",std,plant_range,0.006634635917147129,0.9213417891158742,224,,False
+"HRV (arousal_hrv, label determinant)",lag,MEAN,0.059403078770053096,,254,1.0,False
+"HRV (arousal_hrv, label determinant)",lag,plant_max,0.07270297883136297,0.2954981208876871,209,5.0,False
+"HRV (arousal_hrv, label determinant)",lag,plant_mean,-0.061531234291189216,0.32870018850253135,254,2.0,False
+"HRV (arousal_hrv, label determinant)",lag,plant_median,0.07208625431698845,0.23866495229730395,269,1.0,False
+"HRV (arousal_hrv, label determinant)",lag,plant_min,-0.057467627393952156,0.34776866707724213,269,1.0,False
+"HRV (arousal_hrv, label determinant)",lag,plant_range,0.0332272990167727,0.6329260367829703,209,5.0,False
+"HRV (arousal_hrv, label determinant)",raw,MEAN,0.023657784549462373,,284,,False
+"HRV (arousal_hrv, label determinant)",raw,plant_max,0.010441186697800933,0.8609328990185486,284,,False
+"HRV (arousal_hrv, label determinant)",raw,plant_mean,0.025742544692161806,0.665756406129718,284,,False
+"HRV (arousal_hrv, label determinant)",raw,plant_median,0.038252524814873484,0.5208504976478234,284,,False
+"HRV (arousal_hrv, label determinant)",raw,plant_min,-0.018958424766732852,0.7503995476836586,284,,False
+"HRV (arousal_hrv, label determinant)",raw,plant_range,0.024894241775742794,0.6761374303140639,284,,False
+"HRV (arousal_hrv, label determinant)",std,MEAN,0.07885778347213326,,224,,False
+"HRV (arousal_hrv, label determinant)",std,plant_max,0.1088340807174888,0.10424877331253886,224,,False
+"HRV (arousal_hrv, label determinant)",std,plant_mean,-0.07523809523809526,0.2621385584496447,224,,False
+"HRV (arousal_hrv, label determinant)",std,plant_median,0.0035991885543455054,0.9572805321855626,224,,False
+"HRV (arousal_hrv, label determinant)",std,plant_min,-0.05749839846252403,0.3917481164582046,224,,False
+"HRV (arousal_hrv, label determinant)",std,plant_range,0.14911915438821272,0.025627005966802716,224,,True
