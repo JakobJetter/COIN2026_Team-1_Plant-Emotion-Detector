@@ -148,7 +148,7 @@ logging.getLogger('werkzeug').setLevel(logging.WARNING)
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════
 
-ESP32_IP = "10.138.29.238"     # IP shown on the sensor's OLED display
+ESP32_IP = "placeholder"     # IP shown on the sensor's OLED display
 ESP32_PORT = 81                 # see arduino/plant_sensor_script.ino
 
 CAMERA_INDEX_CANDIDATES = [1, 0]   # prefer external/continuity cam, then built-in
