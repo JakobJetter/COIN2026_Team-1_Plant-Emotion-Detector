@@ -78,7 +78,7 @@ Then run the notebooks in order:
    run it manually)
 3. `04_01_ml_pipeline_emotion.ipynb`, `04_02_ml_pipeline_arousal.ipynb`,
    `04_03_ml_pipeline_valence.ipynb` — train and compare the models
-4. `06_Correlation_Analysis_V02.ipynb` — correlation analysis between the plant signal
+4. `05_Correlation_Analysis_V02.ipynb` — correlation analysis between the plant signal
    and HRV / FER / CO₂
 
 `data/datasets/consolidated_dataset.csv` is already included, so steps 3 and 4 can be run
