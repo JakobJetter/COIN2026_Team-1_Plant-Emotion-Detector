@@ -3,10 +3,13 @@
 Previous research suggests that a plant's bioelectrical activity may
 carry information about a nearby human's emotional state [@gloor2025],
 yet the underlying mechanism remains poorly understood. In particular, it is unclear whether the plant's
-electrophysiological voltage signal correlates with physiological
-indicators of human emotion, such as Heart Rate Variability (HRV), with
-environmental indicators such as CO~2~ concentration, or with the human's
-labeled emotional state. Clarifying these relationships would provide a
+electrophysiological voltage signal carries information about the human's
+emotional state as captured by physiological and behavioral indicators
+such as Heart Rate Variability (HRV) and facial expression. A finding to
+that effect would immediately have to be defended against the most
+obvious alternative: that an environmental variable the person changes
+simply by breathing, above all ambient CO~2~ concentration, accounts for
+the relationship instead. Clarifying this would provide a
 first step toward understanding whether plant bioelectrical activity can
 serve as a viable, non-invasive channel for detecting human emotional
 states.
@@ -20,10 +23,10 @@ Recognition (FER) for valence and HRV for arousal. A dedicated labeling
 algorithm, developed as part of this work, combines these two channels
 into a per-window proxy emotion label along the valence and arousal
 dimensions of the circumplex model. This leads to the
-following research question: *Are electrophysiological plant signals
-associated with a human's emotional state, as measured through FER and
-HRV, and do these signals also correlate with environmental indicators
-such as CO~2~ concentration?* To address this question, we conducted an
+following research question: *Can a human's emotional state, as measured
+through FER and HRV, be predicted above chance from electrophysiological
+plant signals alone, and does any such association persist once ambient
+CO~2~ concentration is controlled for?* To address this question, we conducted an
 experiment with 15 participants and used the resulting data to train and
 compare three machine learning models capable of predicting a human's
 emotional state exclusively from the plant's voltage signal.

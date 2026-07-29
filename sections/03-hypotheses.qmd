@@ -1,10 +1,11 @@
 # Research Hypotheses
 
 Building on the theoretical foundations above, we derive two hypotheses
-from the research gap identified in the related work. The first concerns
-the relationship between plant signals and human emotion (H1); the
-second concerns CO~2~ as an environmental factor and potential
-confounder (H2). Throughout, emotion is operationalized according to the
+from the research gap identified in the related work. The first (H1)
+states the study's primary claim, that plant signals carry information
+about human emotion. The second (H2) is subordinate to it and puts
+ambient CO~2~ forward as a competing explanation for any such
+information. Throughout, emotion is operationalized according to the
 circumplex model [@russell1980] along two dimensions: valence, measured
 via FER using HSEmotion [@savchenko2022], and arousal, measured via HRV,
 which is a valid indicator mainly at higher arousal levels [@choi2017].
@@ -14,30 +15,49 @@ which is a valid indicator mainly at higher arousal levels [@choi2017].
 The pilot study shows that bioelectrical plant signals could classify
 "happy" and "sad" with 72.8–73.8% accuracy using ResNet18 and
 mel-spectrograms, providing initial empirical evidence of an association
-[@gloor2025]. Building on this, we test whether the plant signal is
-associated with the operationalized emotional state.
+[@gloor2025]. Building on this, we test whether the plant signal on its
+own is sufficient to recover the operationalized emotional state.
 
 Based on this reasoning, we formulate the following hypothesis:
 
-**H1:** There is a correlation between a person's emotional state and
-their electrophysiological plant signals.
+```{=latex}
+\begin{hypothesis}
+\textbf{H1:} A person's emotional state can be predicted above chance from
+their electrophysiological plant signals alone.
+\end{hypothesis}
+```
 
-## Secondary Hypothesis: CO~2~ Concentration and Valence
+Above chance here means above the distribution of scores the same
+classification procedure attains on randomly relabeled data, rather than
+above an assumed baseline such as the majority-class rate.
 
-In addition to the primary hypothesis, we formulate a secondary
-hypothesis regarding CO~2~ concentration. Since breathing patterns may
-change with emotional state and may in turn affect ambient CO~2~ levels,
-CO~2~ is treated both as a relevant environmental factor and as a
-potential confounder of the relationship between plant signals and
-valence. We therefore expect CO~2~ concentration to be associated with
-valence, and additionally examine whether the plant–valence association
-remains robust after controlling for CO~2~.
+## Secondary Hypothesis: Ambient CO~2~ as a Confounding Variable
+
+The second hypothesis concerns a competing explanation for any
+association H1 may yield. The plant is exposed not only to the person but
+also to the air in the room they breathe in, and ambient CO~2~ is related
+to both sides of the comparison H1 draws. It rises and falls with the
+participant's respiration, which itself changes with emotional state, and
+it plausibly affects the voltage measured between plant and electrode
+directly. CO~2~ therefore occupies the position of a classical
+confounder, a variable associated with both the predictor and the
+outcome, and any association observed under H1 could be an artifact of
+that shared dependence rather than evidence that the plant tracks the
+person.
 
 Therefore, we formulate the following hypothesis:
 
-**H2:** There is an association between CO~2~ concentration and a
-person's valence.
+```{=latex}
+\begin{hypothesis}
+\textbf{H2:} The association between plant bioelectrical activity and
+human emotional state is confounded by ambient CO\textsubscript{2}
+concentration.
+\end{hypothesis}
+```
 
-CO~2~ is additionally considered as a potential confounding factor in the
-analysis of the primary hypothesis, because it may influence both the
-plant signal and the measured valence.
+The two hypotheses are tested with different instruments and in a fixed
+order. H1 is evaluated by supervised classification of the proxy labels
+from the plant features alone, scored against a permutation null. H2 is
+then evaluated by partial correlation, restricted to the emotional
+dimension for which H1 yields an association, since an axis without an
+effect offers nothing for a confounder to explain.

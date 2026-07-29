@@ -2,19 +2,27 @@
 
 Returning to the hypotheses, the results provide partial support for
 **H1**: the plant signal predicts valence above chance (p = 0.005) and,
-more weakly, the combined emotion label (p = 0.015), whereas arousal
+more weakly, the crossed emotion label (p = 0.015), whereas arousal
 does not reach conventional significance (p = 0.055). H1 is therefore
-supported for the valence dimension but not for arousal. For **H2**,
-CO~2~ concentration correlates with valence ($\rho$ = 0.308,
-p \< 0.0001); the
-partial-correlation analysis nonetheless shows that this CO~2~–valence
-association does not account for the plant–valence relationship.
+supported for valence and for the crossed emotion label, but not for
+arousal.
+
+The secondary analysis addresses the most plausible alternative
+explanation for that result. **H2** is rejected, tested on valence as the
+dimension for which H1 holds. Both
+branches of the confounding pathway are in fact present — CO~2~
+correlates with valence ($\rho$ = 0.308, p \< 0.0001) and, in the raw
+analysis, with most plant features — so the alternative explanation was
+not implausible a priori. The decisive condition nonetheless fails: the
+plant–valence association remains essentially unchanged once CO~2~ is
+controlled for, so it is not an artifact of a shared dependence on
+ambient CO~2~.
 
 ## Interpretation of our Findings
 
 For each target variable, two feature representations were compared:
 raw, in which plant-derived features enter the model on their original
-absolute scale, and session_norm, in which each feature is expressed as
+absolute scale, and session-normalized, in which each feature is expressed as
 a robust z-score relative to the median and spread of its respective
 recording session. This distinction addresses a key property of the
 sensing setup: the DC level of the plant voltage drifts between sessions
@@ -36,20 +44,23 @@ The results support this interpretation. For valence, session
 normalization increased the average macro-F1 score across all three
 classifiers by 0.031, with the largest gain observed for Random Forest
 (+0.068). For arousal, the average macro-F1 score improved by 0.035. In
-both cases, the best-performing models used session-normalized features.
+both cases, the best-performing models used session-normalized features,
+and the features those models ranked highest are either level-invariant by
+construction or expressed relative to the session's own baseline — which
+is what the leakage argument above predicts.
 
 Emotion classification is the only case in which this pattern did not
 hold: Random Forest performed slightly better on raw features (0.21)
 than on session-normalized features (0.19). However, this difference is
 small relative to the overall variation across all six model-feature
-combinations (macro-F1 approximately 0.18-0.21) and is therefore more
+combinations (macro-F1 0.17 to 0.21) and is therefore more
 likely attributable to performance variability among similarly
 performing models than to a failure of session normalization for this
 target variable.
 
 Arousal remained the weakest target variable overall, with performance
 close to chance and the best result narrowly missing statistical
-significance (p = 0.0547). This is consistent with a known limitation of
+significance (p = 0.055). This is consistent with a known limitation of
 the arousal axis, which relies exclusively on RMSSD and mean heart rate:
 the work of Choi et al. [@choi2017] suggests these markers are reliable
 indicators of emotional state only for unpleasant, highly arousing stimuli, not for
@@ -90,7 +101,8 @@ first place.
 Both studies validate their findings via permutation testing, supporting
 the conclusion that the reported results in either case are unlikely to
 be driven by data leakage. However, a direct comparison of raw accuracy
-values (72.8-73.8% in Gloor [@gloor2025] versus 36-43% in the present study) is
+values (72.8-73.8% in Gloor [@gloor2025] versus 36-43% across the six
+valence combinations in the present study) is
 complicated by differences in class distribution and evaluation metrics:
 Gloor [@gloor2025] reports accuracy figures from an imbalanced (60/40)
 classification task without a macro-F1 or comparable metric. Because

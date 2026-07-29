@@ -1,7 +1,16 @@
 ---
 title: "Plant Emotion Detector: Do Plants Detect Human Emotions?"
-authorline: "Group 1 — [Full names of all group members]"   # TODO: replace placeholder with real names
-studentids: "XXX, XXX, 7380297, 7443682"   # TODO: replace the two XXX with the missing student IDs
+group: "Group 1"
+# One line per member on the title page: name first, then student ID.
+members:
+  - name: "Nils Bringewatt"
+    id: "7443820"
+  - name: "Jakob Jetter"
+    id: "7443798"
+  - name: "Sarah Löhnert"
+    id: "7380297"
+  - name: "Elisabeth Stein"
+    id: "7443682"
 supervisor: "Prof. Dr. Peter Gloor"
 cosupervisor: "Simon Wolf"
 affiliation: "Department of Information Systems for Sustainable Society, Faculty of Management, Economics and Social Sciences, University of Cologne"
@@ -15,8 +24,8 @@ paperabstract: >
   ambient CO~2~ were recorded. Emotion was operationalized along the
   circumplex dimensions of valence (from facial expression via HSEmotion)
   and arousal (from HRV), yielding proxy labels for 284 thirty-second
-  windows. Three classifiers --- Random Forest, XGBoost, and a neural
-  network --- were trained to predict valence, arousal, and a combined
+  windows. Three classifiers --- Random Forest, XGBoost, and Neural
+  Network --- were trained to predict valence, arousal, and a combined
   emotion label from plant-derived features alone, using
   participant-grouped nested cross-validation and permutation testing.
   The plant signal predicted valence above chance (macro-F1 = 0.42,
@@ -36,6 +45,8 @@ paperabstract: >
   because Quarto concatenates them before rendering.
 -->
 
+
+
 {{< include sections/00-statement-of-authorship.qmd >}}
 
 {{< include sections/00-ai-declaration.qmd >}}
@@ -54,11 +65,18 @@ paperabstract: >
 
 {{< include sections/07-weaknesses-future-work.qmd >}}
 
+{{< include sections/08-conclusion.qmd >}}
+
 ```{=latex}
+\clearpage
 \appendix
 ```
 
-{{< include sections/08-appendix.qmd >}}
+{{< include sections/09-appendix.qmd >}}
+
+```{=latex}
+\clearpage
+```
 
 # References {.unnumbered}
 

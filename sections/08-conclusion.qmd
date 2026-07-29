@@ -1,0 +1,53 @@
+# Conclusion
+
+This study asked whether a human's emotional state, as measured through
+FER and HRV, can be predicted above chance from a plant's
+electrophysiological signal alone, and whether any such association
+survives controlling for ambient CO~2~. A multimodal pilot study with 15
+participants was conducted, combining heart rate variability, facial
+expression recognition, and ambient CO~2~ as proxy indicators of arousal
+and valence. The plant signal was evaluated against these indicators
+since no self-reported ground truth was collected.
+
+The answer to the study's main question is a qualified yes, and it is
+qualified by dimension rather than by degree. Across the three prediction
+targets, the plant signal showed a consistent but modest predictive
+relationship with human emotion. Valence classification produced the
+clearest result (macro-F1 = 0.42, permutation p = 0.005), recognizing all
+three classes with comparable reliability. The five-class emotion label
+was likewise statistically significant (p = 0.015) but much weaker in
+practice, because the dominant neutral class drives an accuracy of 42%
+that a macro-F1 of 0.21 does not support. Arousal prediction, resting
+solely on HRV, did not reach conventional significance (p = 0.055).
+**H1 is therefore supported for valence and, more weakly, for the crossed
+emotion label, but not for arousal.** Feature importance was dominated by
+shape: the winning valence model ranked the Hjorth dynamics descriptors
+highest, and the amplitude descriptors behind them entered only in their
+session-normalized form. This suggests that the model captures genuine
+signal dynamics rather than session-specific baseline drift, an
+interpretation reinforced by the fact that session normalization improved
+performance in most model-target combinations.
+
+The secondary analysis examined the most plausible alternative
+explanation for the valence finding: that ambient CO~2~, rather than the
+plant, tracked the participant's breathing and, thus, their emotional
+state. Both branches of that pathway are
+genuinely present — CO~2~ correlates with valence ($\rho$ = 0.308,
+p \< 0.0001) and, in the raw analysis, with most plant features — so the
+alternative was not implausible a priori. The decisive test nonetheless
+fails to support it: the plant--valence association survives controlling
+for CO~2~ almost unchanged, at both the raw and the within-session level,
+while the plant--CO~2~ coupling itself turns out to be largely a
+between-session, room-level effect. **H2 is therefore rejected**, and the
+weak valence signal in the plant cannot be dismissed as a CO~2~ artifact.
+
+These findings must be read against several structural limitations. The
+absence of a ground truth means that all results are validated only
+against proxy labels; the sample is small, single-cohort, and recorded on
+a single day; and no sham or shielding control rules out electromagnetic
+artifacts. Future work should prioritize collecting a larger cohort with
+self-assessment ratings and directly recording respiration to strengthen
+the arousal axis. The design presented in this study should be replicated
+across a broader population to determine whether the weak but
+statistically robust valence signal detected here reflects a reproducible
+phenomenon.

@@ -1,3 +1,7 @@
+```{=latex}
+\clearpage
+```
+
 # Declaration on the Use of Generative AI {.unnumbered .unlisted}
 
 In accordance with the course's requirements on the disclosure of generative AI use, we declare
@@ -6,7 +10,7 @@ areas:
 
 - **Coding**: Assisting with writing, debugging, and refactoring code across the recording,
   labeling, dataset-creation, and machine-learning notebooks (sensor recording, emotion
-  labeling, feature engineering, and the Random Forest / XGBoost / neural network
+  labeling, feature engineering, and the Random Forest / XGBoost / Neural Network
   classification pipelines for valence, arousal, and emotion), the CO~2~ correlation analysis,
   and the live dashboard.
 - **Writing**: Drafting sections of this report and supporting documentation, including
@@ -18,3 +22,24 @@ All analytical decisions, model design choices, interpretation of results, and c
 presented in this report reflect the judgment of the team members. Generative AI outputs were
 reviewed, verified, and edited by the team before inclusion; the team takes full responsibility
 for the accuracy and integrity of the final content.
+
+```{=latex}
+\clearpage
+% Compact table of contents: article inserts 1em of vertical padding before
+% every top-level entry, which is enough to push the final line onto a page
+% of its own. Scaling that padding down keeps the contents on one page. The
+% redefinition is scoped to this group, so no other list is affected.
+\begingroup
+\let\coinaddvspace\addvspace
+\renewcommand{\addvspace}[1]{\coinaddvspace{0.35em}}
+\tableofcontents
+\endgroup
+
+\clearpage
+\listoffigures
+\listoftables
+
+\clearpage
+\pagenumbering{arabic}   % body starts over at page 1 on the Introduction
+\pagestyle{fancy}        % running head only from the Introduction onwards
+```

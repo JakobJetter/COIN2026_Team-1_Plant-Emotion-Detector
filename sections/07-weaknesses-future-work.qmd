@@ -14,7 +14,7 @@ specific to either channel propagates directly into the resulting
 emotion label, without a means of cross-validation between them.
 
 Construct validity represents a related concern. HSEmotion achieves only
-approximately 65% accuracy in benchmark evaluations [@savchenko2022],
+around 55-70% accuracy in benchmark evaluations [@savchenko2022],
 implying that a non-trivial proportion of valence labels may be
 misclassified independently of any plant signal. Similarly, the arousal
 axis relies exclusively on RMSSD and mean heart rate, whose limitations
@@ -93,9 +93,9 @@ organic compound (VOC) measurements alongside CO~2~ to assess whether
 other airborne chemical signals mediate or confound the plant-emotion
 relationship in ways that CO~2~ alone cannot capture.
 
-Fourth, the finding that DC-invariant, shape- and amplitude-based
-features (e.g., `plant_detrend_std`, `hjorth_mobility`) consistently
-outperformed level-based features contributes to feature engineering in
+Fourth, the finding that level-invariant and session-relative features,
+above all the Hjorth dynamics descriptors, consistently outranked
+absolute-level features contributes to feature engineering in
 this domain and helps explain why session-normalized features tend to
 yield better performance. Future work could investigate this pattern
 using more precise, higher-resolution plant bioelectrical sensors, which

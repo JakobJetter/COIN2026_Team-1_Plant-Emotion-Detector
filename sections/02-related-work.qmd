@@ -1,10 +1,10 @@
 # Related Work
 
-This paper investigates whether electrophysiological plant signals
-correlate with human emotional states, how they are labeled by Facial
-Emotion Recognition (FER) and Heart Rate Variability (HRV), and if
-additionally recorded CO~2~ concentrations correlate with these
-emotional states. This chapter reviews the relevant background in four
+This paper investigates whether electrophysiological plant signals carry
+information about human emotional states, how those states are labeled by
+Facial Emotion Recognition (FER) and Heart Rate Variability (HRV), and
+whether ambient CO~2~ concentration, recorded alongside, could account for
+any such relationship. This chapter reviews the relevant background in four
 areas: plant bioelectricity and human–plant interaction, the theoretical
 structure of human emotions, automated emotion recognition via FER, and
 HRV as a scale for emotional arousal. It closes by identifying the
@@ -43,6 +43,24 @@ provides the theoretical justification for grouping heterogeneous
 emotion categories (e.g., "happy/surprise" vs. "fear/anger/sad/disgust")
 into higher-order valence classes.
 
+![The two-dimensional circumplex structure of affect, spanned by a valence and an arousal axis, following Russell [@russell1980]. Emotion words within one quadrant agree in the sign of both axes and differ mainly in intensity. Figure reproduced from Lee et al. [@lee2025].](figures/circumplex_model.png){#fig-circumplex width=80%}
+
+@fig-circumplex shows this space. The two axes divide it into four
+quadrants, each collecting emotion words that agree in the sign of both
+valence and arousal: *excited*, *delighted*, and *happy* differ in
+intensity but all combine positive valence with high arousal, and the
+same holds for the remaining three quadrants. It is this quadrant, rather
+than the individual emotion word, that the present study treats as the
+classification target. A recorded window therefore counts as emotionally
+classified when the classifier places it in one of the four quadrants —
+high-arousal positive (I), high-arousal negative (II), low-arousal
+negative (III), or low-arousal positive (IV), referred to below as
+*positive activated*, *negative activated*, *negative calm*, and
+*positive calm*. Windows that stay near the neutral centre of either axis
+carry no directional information and are assigned the neutral class
+instead. @sec-labeling-algorithm describes the rule that implements this
+crossing.
+
 ## Automated Emotion Recognition Using HSEmotion
 
 Savchenko [@savchenko2022] presents HSEmotion, an open-source library
@@ -56,8 +74,8 @@ perform significantly below perfect classification accuracy and may
 contain systematic, data-set-dependent bias. This is of central
 importance for the evaluation of automatically generated emotion labels,
 such as those used in this study, since false classifications of the FER
-component directly influence the validity of subsequent correlation
-analyses with physiological or bioelectrical signals.
+component directly influence the validity of every subsequent analysis
+that relates those labels to physiological or bioelectrical signals.
 
 ## Heart Rate Variability as Emotional Scale
 

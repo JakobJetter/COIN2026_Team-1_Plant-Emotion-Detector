@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1770 900" width="1770" height="900" font-family="'Times New Roman', Times, serif">
+
+  <defs>
+    <marker id="A-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0.7 L10,5 L0,9.3 z" fill="#5A6068"/>
+    </marker>
+    <marker id="A-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0.7 L10,5 L0,9.3 z" fill="#2E7D32"/>
+    </marker>
+    <marker id="A-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0.7 L10,5 L0,9.3 z" fill="#1A5FA8"/>
+    </marker>
+    <marker id="A-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0.7 L10,5 L0,9.3 z" fill="#7B2D8E"/>
+    </marker>
+  </defs>
+
+  <rect width="1770" height="900" fill="#FFFFFF"/>
+
+  <!-- ============ column bands ============ -->
+  <g>
+    <rect x="34" y="86" width="320" height="714" rx="14" fill="#F7F8F9"/>
+    <rect x="366" y="86" width="296" height="714" rx="14" fill="#F7F8F9"/>
+    <rect x="672" y="86" width="340" height="714" rx="14" fill="#F7F8F9"/>
+    <rect x="1040" y="86" width="350" height="714" rx="14" fill="#F7F8F9"/>
+    <rect x="1452" y="86" width="290" height="714" rx="14" fill="#EDF2F8"/>
+    <line x1="1421" y1="86" x2="1421" y2="800" stroke="#B3BCC6" stroke-width="1.6" stroke-dasharray="9 7"/>
+  </g>
+
+  <!-- ============ column headers ============ -->
+  <g font-size="18" font-weight="bold" fill="#3A4046" letter-spacing="1" text-anchor="middle">
+    <text x="194" y="62">1 SENSING</text>
+    <text x="514" y="62">2 PREPROCESSING</text>
+    <text x="842" y="62">3 LABELLING PROXY LABELS</text>
+    <text x="1215" y="62">4 MODELLING</text>
+    <text x="1597" y="62">5 LIVE APPLICATION</text>
+  </g>
+
+  <!-- ============ 1 sensing ============ -->
+  <g fill="#FFFFFF" stroke-width="2">
+    <rect x="48" y="150" width="290" height="92" rx="10" stroke="#2E7D32"/>
+    <rect x="48" y="272" width="290" height="92" rx="10" stroke="#1A5FA8"/>
+    <rect x="48" y="394" width="290" height="92" rx="10" stroke="#1A5FA8"/>
+    <rect x="48" y="516" width="290" height="92" rx="10" stroke="#7B2D8E"/>
+  </g>
+  <g text-anchor="middle" fill="#14181C">
+    <text x="193" y="192" font-size="18">Plant electrodes</text>
+    <text x="193" y="216" font-size="15">(AD8232 + ESP32, 100 Hz)</text>
+    <text x="193" y="314" font-size="18">Webcam</text>
+    <text x="193" y="338" font-size="15">(facial expression)</text>
+    <text x="193" y="436" font-size="18">Polar H10</text>
+    <text x="193" y="460" font-size="15">(HR, R–R intervals)</text>
+    <text x="193" y="558" font-size="18">SCD41</text>
+    <text x="193" y="582" font-size="15">(ambient CO₂)</text>
+  </g>
+
+  <!-- sensing -> preprocessing -->
+  <g fill="none" stroke-width="2">
+    <polyline points="338,196 356,196 356,292 376,292" stroke="#2E7D32" marker-end="url(#A-green)"/>
+    <polyline points="338,318 356,318 356,352 376,352" stroke="#1A5FA8" marker-end="url(#A-blue)"/>
+    <polyline points="338,440 356,440 356,412 376,412" stroke="#1A5FA8" marker-end="url(#A-blue)"/>
+    <polyline points="338,562 356,562 356,472 376,472" stroke="#7B2D8E" marker-end="url(#A-purple)"/>
+  </g>
+
+  <!-- ============ 2 preprocessing (combined box) ============ -->
+  <rect x="380" y="240" width="270" height="290" rx="12" fill="#EFF1F3" stroke="#5A6068" stroke-width="2"/>
+  <text x="515" y="272" font-size="14" font-style="italic" fill="#6B7278" text-anchor="middle">common time base</text>
+  <rect x="400" y="290" width="230" height="88" rx="9" fill="#FFFFFF" stroke="#5A6068" stroke-width="1.8"/>
+  <text x="515" y="330" font-size="17" fill="#14181C" text-anchor="middle">Synchronized event log</text>
+  <text x="515" y="352" font-size="17" fill="#14181C" text-anchor="middle">+ video</text>
+  <line x1="515" y1="378" x2="515" y2="404" stroke="#5A6068" stroke-width="2" marker-end="url(#A-gray)"/>
+  <rect x="400" y="408" width="230" height="88" rx="9" fill="#FFFFFF" stroke="#5A6068" stroke-width="1.8"/>
+  <text x="515" y="458" font-size="17" fill="#14181C" text-anchor="middle">30-second windows</text>
+
+  <!-- ============ 3 labeling ============ -->
+  <g fill="#FFFFFF" stroke="#1A5FA8" stroke-width="2">
+    <rect x="692" y="190" width="300" height="92" rx="10"/>
+    <rect x="692" y="312" width="300" height="92" rx="10"/>
+  </g>
+  <rect x="692" y="470" width="300" height="102" rx="10" fill="#DCE8F6" stroke="#1A5FA8" stroke-width="2.6"/>
+  <g text-anchor="middle" fill="#14181C">
+    <text x="842" y="228" font-size="17">Facial expression → HSEmotion</text>
+    <text x="842" y="252" font-size="17">→ Valence</text>
+    <text x="842" y="350" font-size="17">HRV (RMSSD, HR)</text>
+    <text x="842" y="374" font-size="17">→ Arousal</text>
+    <text x="842" y="514" font-size="19">Emotion label</text>
+    <text x="842" y="540" font-size="17">(5 classes)</text>
+  </g>
+
+  <!-- preprocessing -> labeling -->
+  <g fill="none" stroke="#1A5FA8" stroke-width="2">
+    <polyline points="650,300 668,300 668,236 688,236" marker-end="url(#A-blue)"/>
+    <polyline points="650,400 676,400 676,358 688,358" marker-end="url(#A-blue)"/>
+  </g>
+  <!-- valence + arousal -> emotion label (merge trunk) -->
+  <g fill="none" stroke="#1A5FA8" stroke-width="2">
+    <polyline points="992,236 1002,236 1002,440 842,440 842,466" marker-end="url(#A-blue)"/>
+    <polyline points="992,358 1002,358"/>
+  </g>
+  <circle cx="1002" cy="358" r="3.4" fill="#1A5FA8"/>
+
+  <!-- ============ 4 model training / correlation ============ -->
+  <rect x="1050" y="160" width="330" height="116" rx="10" fill="#E7F1E7" stroke="#2E7D32" stroke-width="2"/>
+  <g text-anchor="middle" fill="#14181C">
+    <text x="1215" y="198" font-size="17">Plant voltage → features</text>
+    <text x="1215" y="222" font-size="17">(statistical, spectral,</text>
+    <text x="1215" y="246" font-size="17">Hjorth dynamics)</text>
+  </g>
+
+  <rect x="1050" y="326" width="330" height="92" rx="10" fill="#FFFFFF" stroke="#5A6068" stroke-width="2"/>
+  <text x="1215" y="364" font-size="19" fill="#14181C" text-anchor="middle">ML models</text>
+  <text x="1215" y="390" font-size="17" fill="#14181C" text-anchor="middle">RF · XGBoost · NN</text>
+
+  <rect x="1050" y="468" width="330" height="92" rx="10" fill="#FFFFFF" stroke="#5A6068" stroke-width="2"/>
+  <text x="1215" y="506" font-size="18" fill="#14181C" text-anchor="middle">Best model per axis</text>
+  <text x="1215" y="530" font-size="17" fill="#14181C" text-anchor="middle">(macro-F1)</text>
+
+  <rect x="1050" y="640" width="330" height="116" rx="10" fill="#F5E9F7" stroke="#7B2D8E" stroke-width="2"/>
+  <text x="1215" y="686" font-size="17" fill="#14181C" text-anchor="middle">CO₂ correlation analysis</text>
+  <text x="1215" y="712" font-size="17" fill="#14181C" text-anchor="middle">(confound test)</text>
+
+  <!-- green: plant signal -> feature extraction -->
+  <polyline points="600,240 600,124 1215,124 1215,156" fill="none" stroke="#2E7D32" stroke-width="2" marker-end="url(#A-green)"/>
+  <!-- features -> models -> best model -->
+  <line x1="1215" y1="276" x2="1215" y2="322" stroke="#2E7D32" stroke-width="2" marker-end="url(#A-green)"/>
+  <line x1="1215" y1="418" x2="1215" y2="464" stroke="#5A6068" stroke-width="2" marker-end="url(#A-gray)"/>
+  <!-- emotion label -> models (train / evaluate) -->
+  <polyline points="992,521 1026,521 1026,372 1046,372" fill="none" stroke="#1A5FA8" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#A-blue)"/>
+  <text transform="translate(1017,447) rotate(-90)" text-anchor="middle" font-size="13" font-style="italic" fill="#1A5FA8">train / evaluate</text>
+  <!-- purple: CO2 -> confound test -->
+  <polyline points="470,530 470,698 1046,698" fill="none" stroke="#7B2D8E" stroke-width="2" marker-end="url(#A-purple)"/>
+
+  <!-- ============ 5 live application ============ -->
+  <rect x="1462" y="380" width="270" height="200" rx="12" fill="#FFFFFF" stroke="#2C5C8A" stroke-width="2.6"/>
+  <g text-anchor="middle" fill="#14181C">
+    <text x="1597" y="488" font-size="20">Live dashboard</text>
+  </g>
+  <polyline points="1380,514 1414,514 1414,470 1458,470" fill="none" stroke="#5A6068" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#A-gray)"/>
+  <polyline points="1380,698 1560,698 1560,584" fill="none" stroke="#7B2D8E" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#A-purple)"/>
+
+  <!-- ============ legend ============ -->
+  <g font-size="15" fill="#3A4046">
+    <line x1="48" y1="855" x2="86" y2="855" stroke="#2E7D32" stroke-width="2.4"/>
+    <text x="96" y="860">plant signal (model input)</text>
+    <line x1="440" y1="855" x2="478" y2="855" stroke="#1A5FA8" stroke-width="2.4"/>
+    <text x="488" y="860">human reference (proxy labels)</text>
+    <line x1="900" y1="855" x2="938" y2="855" stroke="#7B2D8E" stroke-width="2.4"/>
+    <text x="948" y="860">environmental variable (CO₂)</text>
+    <line x1="1330" y1="855" x2="1368" y2="855" stroke="#5A6068" stroke-width="2.4" stroke-dasharray="8 6"/>
+    <text x="1378" y="860">evaluation / downstream use</text>
+  </g>
+</svg>

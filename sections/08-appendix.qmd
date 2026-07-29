@@ -1,9 +1,0 @@
-# Appendix
-
-*Not yet written in the source seminar paper (the appendix there
-currently only contains a placeholder "...").*
-
-Put supplementary material here (full classification reports, confusion
-matrices, hyperparameter grids, feature lists). Because `\appendix`
-precedes this include in `report.qmd`, this section is lettered
-(A, B, ...) like the original paper.
