@@ -1,0 +1,24 @@
+%% partials/title.tex
+%% Overrides Quarto's default PDF title block with the left-aligned
+%% Springer T1-book opening: big bold title, bold author line, small
+%% italic affiliation, and a bold run-in "Abstract" label.
+%% Driven by the metadata keys set in report.qmd:
+%%   title, authorline, affiliation, email, runningtitle, paperabstract
+%%
+%% IMPORTANT: pandoc injects this partial into the PREAMBLE (it is the slot
+%% that normally holds \title/\author/\date), so it must contain declarations
+%% only -- any text typeset here lands before \begin{document} and aborts the
+%% run with "Missing \begin{document}". The visible block therefore goes into
+%% \maketitle, which the template calls immediately after \begin{document}.
+\gdef\runningtitle{$if(runningtitle)$$runningtitle$$else$$title$$endif$}
+\renewcommand{\maketitle}{%
+  \thispagestyle{empty}%
+  {\fontsize{16}{18}\selectfont\bfseries\noindent $title$\par}%
+  \vspace{1.4em}%
+  $if(authorline)${\noindent\bfseries $authorline$\par}$endif$%
+  $if(affiliation)$\vspace{0.2em}{\footnotesize\itshape\noindent $affiliation$\par}$endif$%
+  $if(email)${\footnotesize\noindent $email$\par}$endif$%
+  \vspace{1.4em}%
+  $if(paperabstract)${\noindent\textbf{Abstract}\quad $paperabstract$\par}$endif$%
+  \vspace{1.2em}%
+}

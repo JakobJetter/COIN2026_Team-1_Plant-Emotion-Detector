@@ -1,0 +1,43 @@
+# Method
+
+Describe the experimental setup. To include an existing image (EPS, PDF,
+PNG, or high-resolution JPEG), drop it in `figures/` and reference it as
+below. The caption is rendered with a bold "Fig. N." label.
+
+<!-- TODO: add figures/pipeline.png, then uncomment the figure and the
+     @fig-pipeline cross-reference below. Referencing a missing image file
+     aborts the pdflatex run.
+
+![Overview of the system pipeline.](figures/pipeline.png){#fig-pipeline width=70%}
+
+As shown in @fig-pipeline, the pipeline transforms raw multimodal sensor
+recordings into a trained plant-based emotion classifier.
+-->
+
+The pipeline transforms raw multimodal sensor recordings into a trained
+plant-based emotion classifier.
+
+## Sensor Setup
+
+Plant electrodes, a camera, a Polar H10 chest strap, and an SCD41 CO~2~
+sensor.
+
+## Field Work
+
+Fifteen participants each completed one session while watching a fixed
+sequence of emotion-eliciting clips.
+
+## Labeling Algorithm
+
+Valence is derived from facial expression; arousal from HRV. The two
+axes are crossed into a five-class emotion label.
+
+## Feature Engineering
+
+Every session is labeled and merged into one consolidated,
+machine-learning-ready dataset.
+
+## Machine Learning Models
+
+Random Forest, XGBoost, and a neural network are trained per target
+variable, using only plant-bioelectric features.

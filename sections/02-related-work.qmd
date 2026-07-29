@@ -1,0 +1,23 @@
+# Related Work
+
+Introduce the strands of prior work your study builds on. Subsection
+headings below are rendered in bold italic and numbered automatically.
+
+## Human Emotion Classification based on Plant Bioelectrical Signals
+
+Summarize the pilot investigation you replicate [@gloor2025], including
+sensor setup, model, and reported accuracy.
+
+## The Circumplex Model
+
+Affective states can be represented in a two-dimensional space of valence
+and arousal [@russell1980].
+
+## Automated Emotion Recognition
+
+Describe the FER system used for the valence channel [@savchenko2022].
+
+## Heart Rate Variability as Emotional Scale
+
+Describe HRV as a proxy for arousal and its known limitations
+[@choi2017].

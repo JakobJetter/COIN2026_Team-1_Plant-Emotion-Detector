@@ -1,0 +1,19 @@
+# Research Hypotheses
+
+State the research question and derive the hypotheses.
+
+## Primary Hypothesis: Plant Signals and Human Emotions
+
+**H0:** There is no correlation between a person's emotional state and
+their electrophysiological plant signals.
+
+**H1:** There is a correlation between a person's emotional state and
+their electrophysiological plant signals.
+
+## Secondary Hypothesis: CO~2~ Concentration and Emotional States
+
+**H0:** There is no association between CO~2~ concentration and a
+person's emotional state.
+
+**H1:** There is an association between CO~2~ concentration and a
+person's emotional state.

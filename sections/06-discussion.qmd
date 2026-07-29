@@ -1,0 +1,23 @@
+# Discussion
+
+Interpret the findings, compare with previous studies, and state
+implications.
+
+## Interpretation of our Findings
+
+Discuss what the per-target results mean.
+
+## Comparison with Previous Studies
+
+Contrast your multi-participant, grouped-cross-validation results with the
+single-subject pilot [@gloor2025].
+
+## Implications for the Academic Literature / Future Research
+
+Larger samples, controlled conditions, alternative HRV markers, and
+explicit environmental controls.
+
+## Limitations
+
+Note the absence of a ground-truth measure, the small sample, the reused
+stimulus, and the lack of sham / shielding controls.

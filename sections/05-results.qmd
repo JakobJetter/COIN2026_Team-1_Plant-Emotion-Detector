@@ -1,0 +1,47 @@
+# Results
+
+This section shows both a generated figure (produced by a Python code
+cell, which is why the project uses `uv`) and a hand-written table.
+
+```{python}
+#| label: fig-valence
+#| fig-cap: "Classifier comparison for the target variable valence (example)."
+#| echo: false
+#| fig-width: 4.2
+#| fig-height: 2.6
+import matplotlib.pyplot as plt
+
+models = ["RF (snorm)", "XGB (raw)", "XGB (snorm)", "NN (snorm)", "RF (raw)", "NN (raw)"]
+f1 = [0.42, 0.39, 0.39, 0.36, 0.35, 0.34]
+
+fig, ax = plt.subplots()
+ax.bar(range(len(models)), f1)
+ax.set_xticks(range(len(models)))
+ax.set_xticklabels(models, rotation=45, ha="right", fontsize=7)
+ax.set_ylabel("f1 macro")
+ax.set_ylim(0, 0.6)
+fig.tight_layout()
+plt.show()
+```
+
+As shown in @fig-valence, Random Forest on session-normalized features
+performed best. If you prefer not to run code, delete the cell above and
+use a static image instead (see `04-method.qmd`).
+
+## Model Performance
+
+: Model performance by target variable. Table captions carry a bold
+"Table N." label and no terminal punctuation {#tbl-perf}
+
+| Target   | Best model            | Accuracy | f1 macro |
+|----------|-----------------------|:--------:|:--------:|
+| Valence  | RandomForest (snorm)  |  36–43%  |   0.42   |
+| Arousal  | NeuralNet (snorm)     |  32–37%  |   0.36   |
+| Emotion  | RandomForest (raw)    |   42%    |   0.21   |
+
+@tbl-perf summarizes the best combination per target variable.
+
+## Correlation Analysis
+
+Report the CO~2~ triangle and the partial correlation
+$\rho(\text{plant}, \text{valence} \mid \text{CO}_2)$ here.

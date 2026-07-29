@@ -1,8 +1,23 @@
-.venv/ venv/ 
-__pycache__/ 
+.venv/ venv/
+__pycache__/
 .ipynb_checkpoints/
 // Data
 .plant_data/
 .sessions/
 sessions/            # matches at any depth, incl. data/sessions/ - raw recordings, not tracked
 *.mp4
+
+# Quarto / build artifacts
+/_output/
+/.quarto/
+*_files/
+report.tex
+report.pdf
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+uv.lock
+
+**/*.quarto_ipynb

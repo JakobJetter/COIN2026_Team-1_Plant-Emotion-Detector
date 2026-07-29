@@ -1,0 +1,14 @@
+# Introduction
+
+Previous research suggests that plants are capable of perceiving human
+emotions [@gloor2025], yet the underlying mechanism remains poorly
+understood. This first paragraph after a heading is intentionally *not*
+indented, matching the Springer style; every following paragraph is
+indented by 0.42 cm with no extra vertical space.
+
+In this paper we develop a plant emotion detector that takes the plant's
+voltage signal as input and infers the emotional state of a human seated
+in front of the plant. The remainder of this paper is structured as
+follows. Section 2 reviews related work, Section 3 derives the
+hypotheses, Section 4 presents the method, Section 5 reports the results,
+and Section 6 discusses implications and limitations.

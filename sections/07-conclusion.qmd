@@ -1,0 +1,6 @@
+# Conclusion
+
+Summarize the contribution: a plant's bioelectric signal shows a modest
+but consistent predictive relationship with human valence, robust to
+CO~2~ control, while arousal remains close to chance. State what future
+work should prioritize.

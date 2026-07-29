@@ -1,0 +1,43 @@
+---
+title: "Detecting Human Emotions from Plant Bioelectrical Signals"
+authorline: "Blinded for Review"
+affiliation: "Your Institution, Street 1, 12345 City, Country"
+email: "you@example.com"
+runningtitle: "Plant Emotion Detector"
+paperabstract: >
+  Replace this with your abstract. It is rendered as a bold run-in
+  "Abstract" label followed by the text, matching the COINs / Springer
+  T1-book template. Keep it to a single paragraph of plain text.
+---
+
+<!--
+  This file only wires the paper together. Write your content in the
+  per-section files under sections/. Each `{{< include >}}` pulls one
+  section in; numbering, citations and cross-references work across files
+  because Quarto concatenates them before rendering.
+-->
+
+{{< include sections/01-introduction.qmd >}}
+
+{{< include sections/02-related-work.qmd >}}
+
+{{< include sections/03-hypotheses.qmd >}}
+
+{{< include sections/04-method.qmd >}}
+
+{{< include sections/05-results.qmd >}}
+
+{{< include sections/06-discussion.qmd >}}
+
+{{< include sections/07-conclusion.qmd >}}
+
+```{=latex}
+\appendix
+```
+
+{{< include sections/08-appendix.qmd >}}
+
+# References {.unnumbered}
+
+::: {#refs}
+:::

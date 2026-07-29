@@ -1,0 +1,6 @@
+# Appendix
+
+Put supplementary material here (full classification reports, confusion
+matrices, hyperparameter grids, feature lists). Because `\appendix`
+precedes this include in `report.qmd`, this section is lettered
+(A, B, ...) like the original paper.
