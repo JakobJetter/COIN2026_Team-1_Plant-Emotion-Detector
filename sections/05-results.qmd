@@ -1,47 +1,168 @@
 # Results
 
-This section shows both a generated figure (produced by a Python code
-cell, which is why the project uses `uv`) and a hand-written table.
-
-```{python}
-#| label: fig-valence
-#| fig-cap: "Classifier comparison for the target variable valence (example)."
-#| echo: false
-#| fig-width: 4.2
-#| fig-height: 2.6
-import matplotlib.pyplot as plt
-
-models = ["RF (snorm)", "XGB (raw)", "XGB (snorm)", "NN (snorm)", "RF (raw)", "NN (raw)"]
-f1 = [0.42, 0.39, 0.39, 0.36, 0.35, 0.34]
-
-fig, ax = plt.subplots()
-ax.bar(range(len(models)), f1)
-ax.set_xticks(range(len(models)))
-ax.set_xticklabels(models, rotation=45, ha="right", fontsize=7)
-ax.set_ylabel("f1 macro")
-ax.set_ylim(0, 0.6)
-fig.tight_layout()
-plt.show()
-```
-
-As shown in @fig-valence, Random Forest on session-normalized features
-performed best. If you prefer not to run code, delete the cell above and
-use a static image instead (see `04-method.qmd`).
-
 ## Model Performance
 
-: Model performance by target variable. Table captions carry a bold
-"Table N." label and no terminal punctuation {#tbl-perf}
+To answer the research question of whether the bioelectrical plant
+signal correlates with the participant's emotional state, three machine
+learning model architectures are compared (RandomForest, XGBoost,
+NeuralNetwork), each of them tested on two feature representations (raw,
+session_norm), resulting in six combinations for each of the three
+target variables: valence (Section 5.1.1), arousal (Section 5.1.2), and
+proxy emotion label (Section 5.1.3).
+
+Data recording resulted in a dataset including 284 windows from 15
+participants. The evaluation was performed using a nested five-fold
+cross-validation procedure grouped by participants, ensuring that no
+participant appeared in both the training and test data simultaneously
+and that the hyperparameter tuning never utilized information from the
+test data used to evaluate how well the model performs. This ensures
+that the reported values are reliable and avoids leakage. For statistical
+validation, a permutation test with 200 label permutations was
+additionally performed to assess how likely the obtained result would be
+under the null hypothesis of "no correlation."
+
+### Valence Classification
+
+The target variable valence, determined by FER (HSEmotion), contains
+three classes: negative, neutral, and positive. The classifiers are able
+to predict valence at a significant accuracy between 36-43%. @fig-valence
+represents all six combinations sorted by their f1 macro value.
+
+![Classifier comparison: target variable valence.](figures/valence_comparison.png){#fig-valence width=80%}
+
+Of the six (model, feature set) combinations compared, RandomForest on
+the "session_norm" feature set performed the best with an f1 macro of
+approximately 0.42. The permutation test confirms that this result is
+statistically significant (p = 0.0050). Zero out of 200 random label
+permutations matched or exceeded the result actually observed.
+Therefore, valence is the target variable for which the plant signal
+shows the clearest and most robustly validated predictability. In
+addition, all three classes of valence were recognized with similar
+accuracy. The RandomForest "session_norm" combination predicted the
+three classes with an F1-score between 40-45%, which further emphasizes
+this combination. In contrast to the emotion classification
+(Section 5.1.3), there was no significant bias toward a dominant class
+in this case. Averaged across all models, the effect of session
+normalization increases the f1 macro scores by 0.031 for this target
+variable. For RandomForest, the improvement compared to the raw feature
+set of 0.068 is the highest and highlights the strongest individual case
+across all target variables.
+
+: Model performance by target variable {#tbl-perf}
 
 | Target   | Best model            | Accuracy | f1 macro |
-|----------|-----------------------|:--------:|:--------:|
-| Valence  | RandomForest (snorm)  |  36–43%  |   0.42   |
-| Arousal  | NeuralNet (snorm)     |  32–37%  |   0.36   |
-| Emotion  | RandomForest (raw)    |   42%    |   0.21   |
+|----------|------------------------|:--------:|:--------:|
+| Valence  | RandomForest (snorm)   |  36-43%  |   0.42   |
+| Arousal  | NeuralNet (snorm)      |  32-37%  |   0.36   |
+| Emotion  | RandomForest (raw)     |   42%    |   0.21   |
 
 @tbl-perf summarizes the best combination per target variable.
 
+The Direct Current (DC) level of the plant voltage drifts between
+sessions, because of changes in temperature, CO~2~ baseline in the room,
+etc. This is not related to the person's emotions but is background
+noise from the measuring equipment. Therefore, it is important that the
+most important predictors are shape- or amplitude-based, not
+level-based, features, such as `plant_detrend_std` (standard deviation of
+the plant voltage after the baseline drift has been subtracted) and
+`hjorth_mobility` (indicating how quickly/frequently the signal
+changes), while `plant_max` (the maximum plant voltage value within the
+30-second window) is still part of the most important features. The
+model therefore relies mainly on how the curve moves within the window,
+not on where it lies overall. This is an indication that the model is
+learning about the actual signal dynamics and not recognizing a session
+based on its random baseline.
+
+### Arousal Classification
+
+The target variable arousal, derived from HRV (RMSSD) and the mean heart
+rate, contains three classes: calm, neutral, and activated. None of the
+classifiers are able to predict arousal better than random, as the
+accuracies range between 32-37%, which is close to random (approximately
+0.33) with three classes (see @fig-arousal).
+
+![Classifier comparison: target variable arousal.](figures/arousal_comparison.png){#fig-arousal width=80%}
+
+Nevertheless, NeuralNet on the "session_norm" feature set combination
+performed the best at an f1 macro of approximately 0.36. The result does
+not quite reach the threshold to be statistically significant
+(p = 0.0547). The classification report concludes that all three classes
+were classified with similarly low accuracy (F1 0.18-0.46) and no model
+performs significantly better on any one class. However, it must be
+noted that there is an unbalanced distribution of the classes: "neutral"
+is clearly the largest class, with 115 out of 284 cases (approximately
+40.5%), while
+80 cases are labeled activated, and 89 calm. The approach of session
+normalization is most effective and consistent for the target variable
+arousal, improving the f1 macro scores of all three models by an average
+of 0.035. As with valence, the same applies here: DC-invariant, shape-
+and amplitude-based features, such as `plant_max`, `spectral_entropy`
+(spectral disorder), `spike_rate_snorm` (frequency of transient
+amplitude fluctuations, session-normalized), and
+`hjorth_activity_snorm` (signal variance in the time window,
+session-normalized), dominate the classification.
+
+### Emotion Classification
+
+Regarding our research question, our most important target variable is
+emotion. Similar to the Circumplex Model [@russell1980], our emotion
+label is created by combining the valence- and arousal-result, leading to
+five classes: negative activated, negative calm, neutral, positive
+activated, positive calm. The best-performing combination is
+RandomForest on the "raw" feature set, with an accuracy of 42% and an f1
+macro score of 0.21 (see @fig-emotion).
+
+![Classifier comparison: target variable emotion.](figures/emotion_comparison.png){#fig-emotion width=80%}
+
+This is the only case where the "raw" feature set performs better than
+the "session_norm" feature set, contradicting the otherwise consistent
+trend. Regarding the target variable emotion, there is a significant
+class imbalance, as "neutral" dominates (177 out of 284 cases, F1
+0.6-0.75). This is the reason why the accuracy of 42% appears so much
+higher than the macro-F1 score of 0.21. Therefore, the model largely
+predicts the majority class well while barely distinguishing the
+minority classes (e.g. F1 0.08 for "positive activated"), as reflected in
+the much lower macro-F1 of 0.211. So while emotion prediction is
+statistically better than a random classifier, accuracy alone overstates
+how much the model actually understands about emotional states. The
+permutation test verified the statistical significance (p = 0.0149), but
+it is weaker than for valence. As with valence and arousal, dynamics-based
+features dominate the most important features for classification of the
+emotional state.
+
 ## Correlation Analysis
 
-Report the CO~2~ triangle and the partial correlation
-$\rho(\text{plant}, \text{valence} \mid \text{CO}_2)$ here.
+![Confounding triangle (plant, valence, CO~2~) and the per-feature partial correlation with valence before and after removing CO~2~.](figures/co2_correlation.jpeg){#fig-co2 width=95%}
+
+@fig-co2 summarizes the confounding triangle and the per-feature partial
+correlation results discussed below.
+
+The correlation analysis is conducted in two complementary variants. In
+the raw analysis, plant features showed a weak but frequently
+significant correlation with valence (mean $|\rho|$ = 0.140, significant
+in 13 of 22 features), while the correlation between plant features and
+CO~2~ concentration was substantially stronger (mean $|\rho|$ = 0.420,
+significant in 18 of 22 features). CO~2~ itself was also correlated with
+valence ($\rho$ = 0.308, p < 0.0001). Together, these three pairwise
+relationships form a plausible confounding triangle: CO~2~ correlates
+with both the plant signal and valence, raising the question of whether
+the plant-valence relationship is genuine or merely an artifact of CO~2~
+acting on both variables independently. To test this directly, we
+computed the partial correlation between plant features and valence
+while controlling for CO~2~. If CO~2~ were the true driver of the
+plant-valence association, this partial correlation should collapse
+toward zero. Instead, it remained almost unchanged, with a change of
+only -3% (0.140 -> 0.145) after CO~2~ control, and is not a confounding
+artifact.
+
+The session-normalized analysis provided further insight into the nature
+of the CO~2~ effect. Once between-session variance (e.g., differences in
+room climate across recording days) was removed, the plant-CO~2~
+correlation dropped sharply to a mean $|\rho|$ of 0.101 and was no longer
+classified as a robust, present effect. This indicates that most of the
+raw plant-CO~2~ coupling reflects slow, session-level environmental
+drift rather than a genuine within-session physiological interaction.
+Despite this reduction, the plant-valence partial correlation remained
+stable even after CO~2~ control within sessions (0.075 -> 0.074, a
+change of only -1%), confirming the confound-rejection result at both
+the between- and within-session level.

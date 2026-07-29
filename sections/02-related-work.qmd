@@ -1,23 +1,79 @@
 # Related Work
 
-Introduce the strands of prior work your study builds on. Subsection
-headings below are rendered in bold italic and numbered automatically.
+This paper investigates whether electrophysiological plant signals
+correlate with human emotional states, how they are labeled by Facial
+Emotion Recognition (FER) and Heart Rate Variability (HRV), and if
+additionally recorded CO~2~ concentrations correlate with these
+emotional states. In this chapter, the related work is presented and
+analyzed regarding plant bioelectricity and human-plant interaction in
+Section 2.1, the theoretical foundation of the structure of human
+emotions in Section 2.2, automated emotion recognition using FER in
+Section 2.3, and HRV as a scale for emotions in Section 2.4.
+Furthermore, the resulting research gap is concluded.
 
 ## Human Emotion Classification based on Plant Bioelectrical Signals
 
-Summarize the pilot investigation you replicate [@gloor2025], including
-sensor setup, model, and reported accuracy.
+The most important foundation for this study is the pilot investigation
+about human emotion classification based on plant bioelectrical signals
+[@gloor2025]. Gloor examines whether bioelectrical signals from a single
+plant could be used to classify environmental conditions (light on/off)
+and human emotions. Using an AD8232 ECG sensor, mel-spectrograms, and a
+ResNet18 CNN, lamp detection was achieved with an accuracy of
+85.4-85.9%. For emotion classification, it is distinguished between
+happy and sad based on automated FER labels, resulting in an accuracy of
+72.8-73.8%. In addition, different time delays between emotional
+expression and the plant signal are used. The optimal time delay is
+identified as one second. @gloor2025 used a vehicle acting as a Faraday
+cage as well as aluminum foil acting as dummy electrodes for control
+experiments to reduce (but not completely eliminate) the possibility of
+trivial electromagnetic artifacts. The study explicitly emphasizes the
+preliminary, exploratory nature of the findings and the need for further
+replication [@gloor2025].
 
 ## The Circumplex Model
 
-Affective states can be represented in a two-dimensional space of valence
-and arousal [@russell1980].
+Both the categorization of emotions into positive and negative valence
+classes used by @gloor2025 and the IAPS/SAM methodology developed by
+@choi2017 are based on the influential circumplex model presented by
+@russell1980. Using four methodologically independent scaling
+procedures, @russell1980 shows that affective states can consistently be
+represented as a two-dimensional, bipolar space along the axes of
+valence (pleasure-displeasure) and arousal (arousal-sleep). This model
+provides the theoretical justification for grouping heterogeneous
+emotion categories (e.g., "happy/surprise" vs. "fear/anger/sad/disgust")
+into higher-order valence classes.
 
-## Automated Emotion Recognition
+## Automated Emotion Recognition Using HSEmotion
 
-Describe the FER system used for the valence channel [@savchenko2022].
+@savchenko2022 presents an open-source software for FER called
+HSEmotion. It is based on Efficient-Net architectures and is optimized
+for speed and mobile use. The models were first trained on a face
+identification task (VGGFace2 dataset) and then fine-tuned on images from
+AffectNet to classify emotions. HSEmotion achieved accuracies ranging
+from approximately 55-70% and inference times of 59-191 ms on mobile
+devices. These figures illustrate that even highly developed FER systems
+perform significantly below perfect classification accuracy and may
+contain systematic, data-set-dependent bias. This is of central
+importance for the evaluation of automatically generated emotion labels,
+such as those used in this study, since false classifications of the FER
+component directly influence the validity of subsequent correlation
+analyses with physiological or bioelectrical signals.
 
 ## Heart Rate Variability as Emotional Scale
 
-Describe HRV as a proxy for arousal and its known limitations
-[@choi2017].
+HRV is frequently used to supplement or validate subjective measures of
+emotion. @choi2017 evaluated the validity of HRV to label human emotions
+with 30 participants. Five photos were selected for each of the
+categories of "happy," "unhappy," and "neutral" from among the images
+provided by the International Affective Picture System (IAPS)
+[@choi2017]. The extracted R-R interval (RRI) value is compared to the
+valence, arousal, and dominance value from the self-assessment. The
+results show a significant correlation between RRI and the subjective
+ratings of valence and dominance only for the category of unpleasant and
+highly arousing stimuli. In contrast, no significant correlations are
+found for neutral and pleasant stimuli. The authors conclude that HRV
+can serve as a valid measure of emotion, but only when emotional arousal
+is high enough. This finding is relevant to the research question of
+this study, because it suggests that the correlation between plant
+signals and HRV data may also be modulated by arousal and is not
+expected to be linear across all emotion categories.

@@ -1,13 +1,11 @@
 ---
-title: "Detecting Human Emotions from Plant Bioelectrical Signals"
-authorline: "Blinded for Review"
-affiliation: "Your Institution, Street 1, 12345 City, Country"
-email: "you@example.com"
+title: "Plant Emotion Detector: Do Plants Detect Human Emotions?"
+authorline: "Group 1"
+affiliation: "Department of Information Systems for Sustainable Society, Faculty of Management, Economics and Social Sciences, University of Cologne"
 runningtitle: "Plant Emotion Detector"
 paperabstract: >
-  Replace this with your abstract. It is rendered as a bold run-in
-  "Abstract" label followed by the text, matching the COINs / Springer
-  T1-book template. Keep it to a single paragraph of plain text.
+  Abstract goes here (max. 1 page). Not yet drafted in the source
+  seminar paper.
 ---
 
 <!--
@@ -16,6 +14,10 @@ paperabstract: >
   section in; numbering, citations and cross-references work across files
   because Quarto concatenates them before rendering.
 -->
+
+{{< include sections/00-statement-of-authorship.qmd >}}
+
+{{< include sections/00-ai-declaration.qmd >}}
 
 {{< include sections/01-introduction.qmd >}}
 

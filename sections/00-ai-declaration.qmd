@@ -1,0 +1,20 @@
+# Declaration on the Use of Generative AI {.unnumbered .unlisted}
+
+In accordance with the course's requirements on the disclosure of generative AI use, we declare
+that generative AI tools were used during the preparation of this project, in the following
+areas:
+
+- **Coding**: Assisting with writing, debugging, and refactoring code across the recording,
+  labeling, dataset-creation, and machine-learning notebooks (sensor recording, emotion
+  labeling, feature engineering, and the Random Forest / XGBoost / neural network
+  classification pipelines for valence, arousal, and emotion), the CO~2~ correlation analysis,
+  and the live dashboard.
+- **Writing**: Drafting sections of this report and supporting documentation, including
+  explanatory text and descriptions of methods and results.
+- **Rewriting/editing**: Revising, restructuring, and improving the clarity, grammar, and
+  conciseness of previously written text and code produced by the team.
+
+All analytical decisions, model design choices, interpretation of results, and conclusions
+presented in this report reflect the judgment of the team members. Generative AI outputs were
+reviewed, verified, and edited by the team before inclusion; the team takes full responsibility
+for the accuracy and integrity of the final content.

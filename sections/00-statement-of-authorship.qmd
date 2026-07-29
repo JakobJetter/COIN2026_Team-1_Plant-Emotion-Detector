@@ -1,0 +1,23 @@
+```{=latex}
+\clearpage
+\thispagestyle{empty}
+\section*{Statement of Original Authorship}
+\label{sec:SOOA}
+
+\vspace{2.5cm}
+
+I hereby declare in lieu of oath that I have completed the present work independently and without the use of any aids other than those specified. All passages that have been taken, either literally or in substance, from published or unpublished writings are identified as such. The work has not previously been submitted, in the same or a similar form, in whole or in part, as part of another examination. I affirm that the submitted electronic version of this work is fully identical to the submitted printed version.
+
+\vspace{1cm}
+
+\noindent
+I am aware that a false declaration in lieu of oath is a punishable offense, in particular the penalty pursuant to \S~156 of the German Criminal Code (StGB) of imprisonment of up to three years or a fine in case of an intentional false declaration, or pursuant to \S~161~(1) StGB of imprisonment of up to one year or a fine in case of a negligent false declaration.
+
+\vspace{3cm}
+\noindent
+\textbf{Group 1}
+
+\vspace{0.5cm}
+\noindent
+Cologne, xx.xx.20xx
+```
