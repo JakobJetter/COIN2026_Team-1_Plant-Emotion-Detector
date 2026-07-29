@@ -1,8 +1,8 @@
 # Introduction
 
-Previous research suggests that plants are capable of perceiving human
-emotions [@gloor2025], yet the underlying mechanism remains poorly
-understood. In particular, it is unclear whether the plant's
+Previous research suggests that a plant's bioelectrical activity may
+carry information about a nearby human's emotional state [@gloor2025],
+yet the underlying mechanism remains poorly understood. In particular, it is unclear whether the plant's
 electrophysiological voltage signal correlates with physiological
 indicators of human emotion, such as Heart Rate Variability (HRV), with
 environmental indicators such as CO~2~ concentration, or with the human's
@@ -16,7 +16,10 @@ plant's voltage signal as input and, based on this signal alone, infers
 the emotional state of a human seated in front of the plant. Rather than
 relying on a single subjective report, the human's emotional state is
 operationalized through two independent measures: Facial Emotion
-Recognition (FER) for valence and HRV for arousal. This leads to the
+Recognition (FER) for valence and HRV for arousal. A dedicated labeling
+algorithm, developed as part of this work, combines these two channels
+into a per-window proxy emotion label along the valence and arousal
+dimensions of the circumplex model. This leads to the
 following research question: *Are electrophysiological plant signals
 associated with a human's emotional state, as measured through FER and
 HRV, and do these signals also correlate with environmental indicators
@@ -24,8 +27,3 @@ such as CO~2~ concentration?* To address this question, we conducted an
 experiment with 15 participants and used the resulting data to train and
 compare three machine learning models capable of predicting a human's
 emotional state exclusively from the plant's voltage signal.
-
-The remainder of this paper is structured as follows. Section 2 reviews
-related work. Section 3 derives the research hypotheses. Section 4
-presents the experimental method. Section 5 reports the results, and
-Section 6 discusses their implications and limitations.

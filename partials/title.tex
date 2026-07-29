@@ -16,7 +16,10 @@
   {\fontsize{16}{18}\selectfont\bfseries\noindent $title$\par}%
   \vspace{1.4em}%
   $if(authorline)${\noindent\bfseries $authorline$\par}$endif$%
-  $if(affiliation)$\vspace{0.2em}{\footnotesize\itshape\noindent $affiliation$\par}$endif$%
+  $if(studentids)${\footnotesize\noindent Student IDs: $studentids$\par}$endif$%
+  $if(supervisor)$\vspace{0.4em}{\footnotesize\noindent Supervisor: $supervisor$\par}$endif$%
+  $if(cosupervisor)${\footnotesize\noindent Co-Supervisor: $cosupervisor$\par}$endif$%
+  $if(affiliation)$\vspace{0.4em}{\footnotesize\itshape\noindent $affiliation$\par}$endif$%
   $if(email)${\footnotesize\noindent $email$\par}$endif$%
   \vspace{1.4em}%
   $if(paperabstract)${\noindent\textbf{Abstract}\quad $paperabstract$\par}$endif$%

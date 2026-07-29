@@ -1,11 +1,32 @@
 ---
 title: "Plant Emotion Detector: Do Plants Detect Human Emotions?"
-authorline: "Group 1"
+authorline: "Group 1 — [Full names of all group members]"   # TODO: replace placeholder with real names
+studentids: "XXX, XXX, 7380297, 7443682"   # TODO: replace the two XXX with the missing student IDs
+supervisor: "Prof. Dr. Peter Gloor"
+cosupervisor: "Simon Wolf"
 affiliation: "Department of Information Systems for Sustainable Society, Faculty of Management, Economics and Social Sciences, University of Cologne"
 runningtitle: "Plant Emotion Detector"
 paperabstract: >
-  Abstract goes here (max. 1 page). Not yet drafted in the source
-  seminar paper.
+  This paper investigates whether a plant's bioelectrical voltage signal
+  carries information about the emotional state of a nearby human. In a
+  multimodal experiment, 15 participants each watched a fixed sequence of
+  emotion-eliciting video clips while a *Kalanchoe* plant's voltage, the
+  participant's heart-rate variability (HRV), facial expression, and
+  ambient CO~2~ were recorded. Emotion was operationalized along the
+  circumplex dimensions of valence (from facial expression via HSEmotion)
+  and arousal (from HRV), yielding proxy labels for 284 thirty-second
+  windows. Three classifiers --- Random Forest, XGBoost, and a neural
+  network --- were trained to predict valence, arousal, and a combined
+  emotion label from plant-derived features alone, using
+  participant-grouped nested cross-validation and permutation testing.
+  The plant signal predicted valence above chance (macro-F1 = 0.42,
+  p = 0.005) and the combined label more weakly (p = 0.015), whereas
+  arousal did not reach significance (p = 0.055). A partial-correlation
+  analysis ruled out ambient CO~2~ as a confounder of the plant--valence
+  relationship. The results indicate a weak but statistically robust
+  association between plant bioelectrical activity and human valence,
+  warranting replication with larger samples and validated ground-truth
+  measures.
 ---
 
 <!--
@@ -31,7 +52,7 @@ paperabstract: >
 
 {{< include sections/06-discussion.qmd >}}
 
-{{< include sections/07-conclusion.qmd >}}
+{{< include sections/07-weaknesses-future-work.qmd >}}
 
 ```{=latex}
 \appendix

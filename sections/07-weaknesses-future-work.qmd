@@ -1,0 +1,103 @@
+# Weaknesses and Future Work
+
+## Limitations
+
+Several limitations qualify the interpretation of the present findings.
+Most fundamentally, the design of the present study did not incorporate
+a ground-truth measure of emotional state against which the derived
+labels could be validated. Valence and arousal labels are instead
+derived from two independent proxy measures — facial expression via
+HSEmotion and HRV via RMSSD, respectively — rather than from validated
+psychological assessments. Because these channels are measured
+independently and combined only after processing, any inaccuracy
+specific to either channel propagates directly into the resulting
+emotion label, without a means of cross-validation between them.
+
+Construct validity represents a related concern. HSEmotion achieves only
+approximately 65% accuracy in benchmark evaluations [@savchenko2022],
+implying that a non-trivial proportion of valence labels may be
+misclassified independently of any plant signal. Similarly, the arousal
+axis relies exclusively on RMSSD and mean heart rate, whose limitations
+at lower arousal levels are well documented [@choi2017] and are
+reflected in the comparatively weak arousal classification result.
+
+The stimulus itself constitutes a further limitation. The video used to
+elicit emotional responses was reused from an earlier, unrelated COIN
+seminar project [@schafer2025], rather than being validated specifically
+for the present study using a standardized emotion induction protocol
+such as IAPS or a comparable normed stimulus set. Its capacity to
+reliably elicit the intended range of valence and arousal states across
+a heterogeneous participant sample was therefore not independently
+confirmed.
+
+The sample size of 15 participants, yielding 284 analyzable windows,
+results in comparatively wide confidence intervals, particularly evident
+in the arousal classification result. This limits the statistical power
+to detect smaller effects and constrains the precision of the reported
+effect size estimates. Relatedly, the correlation analysis evaluated 22
+plant-derived features across two complementary analysis variants
+without applying a correction for multiple comparisons, which should be
+taken into account when interpreting the reported significance levels.
+
+The experimental setup itself imposes additional constraints. As in
+Gloor [@gloor2025], a single plant species (*Kalanchoe*) was used throughout all
+recording sessions. Consequently, the extent to which the observed
+plant-valence association generalizes across different plant species or
+individual specimens remains untested. Unlike Gloor [@gloor2025], the present
+study did not include sham or shielding controls, such as electrodes
+attached to a non-living conductor or recordings inside a Faraday cage,
+to rule out the possibility that classification performance is partly
+driven by electromagnetic artifacts rather than genuine plant
+physiology. Furthermore, all sessions were conducted on a single day in
+a room that was not otherwise isolated from external environmental
+influences. While this ensured that broad conditions such as outdoor
+weather remained comparatively constant across sessions, factors such as
+room temperature, humidity, and air movement were neither held constant
+nor systematically recorded. Their precise influence on the plant signal
+therefore cannot be determined from the present data.
+
+## Future Research
+
+Several directions follow from these findings. First, the comparison
+with Gloor [@gloor2025] suggests that the lower accuracy observed here is more
+plausibly attributable to a more conservative and generalizable
+evaluation framework — grouped cross-validation across 15 participants
+and permutation testing — than to a weaker underlying effect. Future
+studies should build on this by using larger and more diverse
+participant samples to narrow the wide confidence intervals observed for
+arousal and emotion classification, ideally under professionally
+controlled laboratory conditions with stable air quality, humidity, and
+temperature, so as to minimize session-level environmental drift and
+isolate the physiological signal of interest more effectively.
+
+Second, operationalizing emotion via the dimensional valence-arousal
+model [@russell1980] revealed differential sensitivity across affective
+dimensions that would likely have remained obscured under a combined
+categorical label. Valence and arousal should therefore be treated as
+analytically distinct constructs and modeled as separate targets with
+dimension-specific refinements: alternative HRV-based markers for
+arousal could be evaluated beyond RMSSD, given its documented
+limitations [@choi2017], and higher-performing FER models than HSEmotion
+could be tested for valence. Complementing the physiological channels
+with validated self-report instruments such as the Self-Assessment
+Manikin [@bradleylang1994] may further strengthen interpretation,
+provided such measures are used in addition to, rather than instead of,
+the physiological channels employed here.
+
+Third, environmental variables such as CO~2~ should be recorded
+explicitly and controlled statistically, an issue that has received
+little attention in research on plant bioelectrical signals; the present
+analysis indicates that CO~2~ does not confound the plant-valence
+relationship. Future studies could extend this by including volatile
+organic compound (VOC) measurements alongside CO~2~ to assess whether
+other airborne chemical signals mediate or confound the plant-emotion
+relationship in ways that CO~2~ alone cannot capture.
+
+Fourth, the finding that DC-invariant, shape- and amplitude-based
+features (e.g., `plant_detrend_std`, `hjorth_mobility`) consistently
+outperformed level-based features contributes to feature engineering in
+this domain and helps explain why session-normalized features tend to
+yield better performance. Future work could investigate this pattern
+using more precise, higher-resolution plant bioelectrical sensors, which
+may improve the signal-to-noise ratio and reveal finer temporal dynamics
+than the current AD8232-based setup permits.

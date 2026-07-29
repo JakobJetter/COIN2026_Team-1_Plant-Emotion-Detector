@@ -1,63 +1,43 @@
 # Research Hypotheses
 
-Building on the theoretical foundations presented above, the following
-chapter derives the primary and secondary hypotheses. To address the
-research gap identified in the related work, we formulate the following
-research question: *Are electrophysiological plant signals associated
-with a human's emotional state, as measured through Facial Emotion
-Recognition (FER) and Heart Rate Variability (HRV), and do these signals
-also correlate with environmental indicators such as CO~2~
-concentration?* This research question comprises two distinct parts,
-from which the primary and secondary hypotheses are derived. The primary
-hypothesis (H1) refers to the relationship between plant signals and
-emotions, while the secondary hypothesis (H2) refers to CO~2~ as an
-environmental factor. Our work is based on preliminary work on the
-classification of emotions from plant signals [@gloor2025]. In this
-study, emotions are operationalized according to the Circumplex Model
-[@russell1980], which conceptualizes emotion along the dimensions of
-valence and arousal. We use HSEmotion to measure valence via FER
-[@savchenko2022] and HRV to measure arousal, with limitations at low
-arousal levels [@choi2017].
+Building on the theoretical foundations above, we derive two hypotheses
+from the research gap identified in the related work. The first concerns
+the relationship between plant signals and human emotion (H1); the
+second concerns CO~2~ as an environmental factor and potential
+confounder (H2). Throughout, emotion is operationalized according to the
+circumplex model [@russell1980] along two dimensions: valence, measured
+via FER using HSEmotion [@savchenko2022], and arousal, measured via HRV,
+which is a valid indicator mainly at higher arousal levels [@choi2017].
 
 ## Primary Hypothesis: Plant Signals and Human Emotions
 
-The pilot study shows that bioelectrical plant signals were able to
-classify "happy" and "sad" with 72.8-73.8% accuracy using ResNet18/mel
-spectrograms, providing initial empirical evidence of an association
-[@gloor2025]. As described in the Method chapter, emotion in this paper
-is operationalised as a combined measure of valence, measured via
-FER/HSEmotion, and arousal, measured via HRV. This is based on the
-Circumplex Model, which provides a theoretical framework for measuring
-and defining emotions using valence and arousal [@russell1980].
+The pilot study shows that bioelectrical plant signals could classify
+"happy" and "sad" with 72.8–73.8% accuracy using ResNet18 and
+mel-spectrograms, providing initial empirical evidence of an association
+[@gloor2025]. Building on this, we test whether the plant signal is
+associated with the operationalized emotional state.
 
-Based on these findings, we formulate the following hypotheses:
-
-**H0:** There is no correlation between a person's emotional state and
-their electrophysiological plant signals.
+Based on this reasoning, we formulate the following hypothesis:
 
 **H1:** There is a correlation between a person's emotional state and
 their electrophysiological plant signals.
 
-## Secondary Hypothesis: CO~2~ Concentration and Emotional States
+## Secondary Hypothesis: CO~2~ Concentration and Valence
 
 In addition to the primary hypothesis, we formulate a secondary
 hypothesis regarding CO~2~ concentration. Since breathing patterns may
 change with emotional state and may in turn affect ambient CO~2~ levels,
 CO~2~ is treated both as a relevant environmental factor and as a
-potential confounder in the relationship between plant signals and
-emotional state. Therefore, we expect CO~2~ concentration to be
-associated with emotional state, while also examining whether the
-association between plant signals and emotions remains robust after
-controlling for CO~2~.
+potential confounder of the relationship between plant signals and
+valence. We therefore expect CO~2~ concentration to be associated with
+valence, and additionally examine whether the plant–valence association
+remains robust after controlling for CO~2~.
 
-Therefore, we formulate the following hypotheses:
+Therefore, we formulate the following hypothesis:
 
-**H0:** There is no association between CO~2~ concentration and a
-person's emotional state.
-
-**H1:** There is an association between CO~2~ concentration and a
-person's emotional state.
+**H2:** There is an association between CO~2~ concentration and a
+person's valence.
 
 CO~2~ is additionally considered as a potential confounding factor in the
-analysis of the primary hypothesis, because it may influence both plant
-signals and the measured emotional state.
+analysis of the primary hypothesis, because it may influence both the
+plant signal and the measured valence.

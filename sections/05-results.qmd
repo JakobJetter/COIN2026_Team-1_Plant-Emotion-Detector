@@ -7,8 +7,7 @@ signal correlates with the participant's emotional state, three machine
 learning model architectures are compared (RandomForest, XGBoost,
 NeuralNetwork), each of them tested on two feature representations (raw,
 session_norm), resulting in six combinations for each of the three
-target variables: valence (Section 5.1.1), arousal (Section 5.1.2), and
-proxy emotion label (Section 5.1.3).
+target variables: valence, arousal, and proxy emotion label.
 
 Data recording resulted in a dataset including 284 windows from 15
 participants. The evaluation was performed using a nested five-fold
@@ -24,8 +23,8 @@ under the null hypothesis of "no correlation."
 ### Valence Classification
 
 The target variable valence, determined by FER (HSEmotion), contains
-three classes: negative, neutral, and positive. The classifiers are able
-to predict valence at a significant accuracy between 36-43%. @fig-valence
+three classes: negative, neutral, and positive. The classifiers predict
+valence with accuracies between 36–43%. @fig-valence
 represents all six combinations sorted by their f1 macro value.
 
 ![Classifier comparison: target variable valence.](figures/valence_comparison.png){#fig-valence width=80%}
@@ -40,9 +39,8 @@ shows the clearest and most robustly validated predictability. In
 addition, all three classes of valence were recognized with similar
 accuracy. The RandomForest "session_norm" combination predicted the
 three classes with an F1-score between 40-45%, which further emphasizes
-this combination. In contrast to the emotion classification
-(Section 5.1.3), there was no significant bias toward a dominant class
-in this case. Averaged across all models, the effect of session
+this combination. In contrast to the emotion classification,
+there was no significant bias toward a dominant class in this case. Averaged across all models, the effect of session
 normalization increases the f1 macro scores by 0.031 for this target
 variable. For RandomForest, the improvement compared to the raw feature
 set of 0.068 is the highest and highlights the strongest individual case
@@ -141,9 +139,11 @@ The correlation analysis is conducted in two complementary variants. In
 the raw analysis, plant features showed a weak but frequently
 significant correlation with valence (mean $|\rho|$ = 0.140, significant
 in 13 of 22 features), while the correlation between plant features and
-CO~2~ concentration was substantially stronger (mean $|\rho|$ = 0.420,
-significant in 18 of 22 features). CO~2~ itself was also correlated with
-valence ($\rho$ = 0.308, p < 0.0001). Together, these three pairwise
+CO~2~ concentration, evaluated at its optimal time lag (a change in
+ambient CO~2~ is expected to affect the plant voltage only after a short
+delay), was substantially stronger (mean $|\rho|$ = 0.420, significant in
+18 of 22 features). CO~2~ itself was also correlated with valence
+($\rho$ = 0.308, p < 0.0001). Together, these three pairwise
 relationships form a plausible confounding triangle: CO~2~ correlates
 with both the plant signal and valence, raising the question of whether
 the plant-valence relationship is genuine or merely an artifact of CO~2~
@@ -158,7 +158,8 @@ artifact.
 The session-normalized analysis provided further insight into the nature
 of the CO~2~ effect. Once between-session variance (e.g., differences in
 room climate across recording days) was removed, the plant-CO~2~
-correlation dropped sharply to a mean $|\rho|$ of 0.101 and was no longer
+correlation (at optimal lag) dropped sharply to a mean $|\rho|$ of 0.101
+and was no longer
 classified as a robust, present effect. This indicates that most of the
 raw plant-CO~2~ coupling reflects slow, session-level environmental
 drift rather than a genuine within-session physiological interaction.

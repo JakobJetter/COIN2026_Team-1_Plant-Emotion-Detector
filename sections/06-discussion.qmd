@@ -1,5 +1,15 @@
 # Discussion
 
+Returning to the hypotheses, the results provide partial support for
+**H1**: the plant signal predicts valence above chance (p = 0.005) and,
+more weakly, the combined emotion label (p = 0.015), whereas arousal
+does not reach conventional significance (p = 0.055). H1 is therefore
+supported for the valence dimension but not for arousal. For **H2**,
+CO~2~ concentration correlates with valence ($\rho$ = 0.308,
+p \< 0.0001); the
+partial-correlation analysis nonetheless shows that this CO~2~–valence
+association does not account for the plant–valence relationship.
+
 ## Interpretation of our Findings
 
 For each target variable, two feature representations were compared:
@@ -7,11 +17,10 @@ raw, in which plant-derived features enter the model on their original
 absolute scale, and session_norm, in which each feature is expressed as
 a robust z-score relative to the median and spread of its respective
 recording session. This distinction addresses a key property of the
-sensing setup: as described in Section 5.1.1, the DC level of the plant
-voltage drifts between sessions due to factors such as ambient
-temperature and room-level CO~2~ baseline. These factors are unrelated
-to emotional state but can shift the absolute voltage range across
-sessions.
+sensing setup: the DC level of the plant voltage drifts between sessions
+due to factors such as ambient temperature and room-level CO~2~
+baseline. These factors are unrelated to emotional state but can shift
+the absolute voltage range across sessions.
 
 Since each session corresponds to exactly one participant, a classifier
 trained on raw voltage levels could implicitly associate specific
@@ -27,45 +36,42 @@ The results support this interpretation. For valence, session
 normalization increased the average macro-F1 score across all three
 classifiers by 0.031, with the largest gain observed for Random Forest
 (+0.068). For arousal, the average macro-F1 score improved by 0.035. In
-both cases, the best-performing models used session-normalized
-features.
+both cases, the best-performing models used session-normalized features.
 
-Emotion classification (Section 5.1.3) is the only case in which this
-pattern did not hold: Random Forest performed slightly better on raw
-features (0.21) than on session-normalized features (0.19). However,
-this difference is small relative to the overall variation across all
-six model-feature combinations (macro-F1 approximately 0.18-0.21). It is
-therefore
-more likely attributable to performance variability among similarly
+Emotion classification is the only case in which this pattern did not
+hold: Random Forest performed slightly better on raw features (0.21)
+than on session-normalized features (0.19). However, this difference is
+small relative to the overall variation across all six model-feature
+combinations (macro-F1 approximately 0.18-0.21) and is therefore more
+likely attributable to performance variability among similarly
 performing models than to a failure of session normalization for this
 target variable.
 
 Arousal remained the weakest target variable overall, with performance
 close to chance and the best result narrowly missing statistical
-significance (p = 0.0547). This is consistent with a methodological
-limitation already noted in Section 6.4: the arousal axis relies
-exclusively on RMSSD and mean heart rate, and @choi2017's work suggests
-these markers are reliable indicators of emotional state only for
-unpleasant, highly arousing stimuli, not for neutral or pleasant ones.
-Since the video stimulus combines strongly negative segments with
-comparatively mild or neutral ones, only part of the recorded material
-may fall within the range where HRV is expected to track arousal at
-all, independently of any limitation in the plant signal itself.
+significance (p = 0.0547). This is consistent with a known limitation of
+the arousal axis, which relies exclusively on RMSSD and mean heart rate:
+the work of Choi et al. [@choi2017] suggests these markers are reliable
+indicators of emotional state only for unpleasant, highly arousing stimuli, not for
+neutral or pleasant ones. Since the video stimulus combines strongly
+negative segments with comparatively mild or neutral ones, only part of
+the recorded material may fall within the range where HRV is expected to
+track arousal at all, independently of any limitation in the plant
+signal itself.
 
-The correlation analysis (Section 5.2) complements these findings. While
-CO~2~ showed substantial correlations with plant features in the raw
-analysis, these associations decreased markedly after removing
-between-session variance. This suggests that most of the observed
-plant-CO~2~ coupling reflects slow session-level drift rather than
-within-session physiological interaction. Importantly, the
-plant-valence relationship remained stable under CO~2~ control at both
-levels, indicating that this association is not an artifact of shared
-environmental influences.
+The correlation analysis complements these findings. While CO~2~ showed
+substantial correlations with plant features in the raw analysis, these
+associations decreased markedly after removing between-session variance.
+This suggests that most of the observed plant-CO~2~ coupling reflects
+slow session-level drift rather than within-session physiological
+interaction. Importantly, the plant-valence relationship remained stable
+under CO~2~ control at both levels, indicating that this association is
+not an artifact of shared environmental influences.
 
 ## Comparison with Previous Studies
 
 The present study directly addresses the two central limitations that
-@gloor2025 explicitly identified: the lack of a standardized elicitation
+Gloor [@gloor2025] explicitly identified: the lack of a standardized elicitation
 protocol and the single-subject design. By employing a fixed, ten-minute
 video stimulus instead of post-hoc labeling of unconstrained behaviour,
 and by recording 15 participants with grouped cross-validation to
@@ -79,130 +85,18 @@ replication methodologically: it allows for a more fine-grained analysis
 than Gloor's binary scheme permitted, and reveals that plant signals are
 informative for valence but not for arousal — a distinction that could
 not have been captured within a binary classification framework in the
-first place (see Section 5.1.1).
+first place.
 
 Both studies validate their findings via permutation testing, supporting
 the conclusion that the reported results in either case are unlikely to
 be driven by data leakage. However, a direct comparison of raw accuracy
-values (72.8-73.8% in @gloor2025 versus 36-43% in the present study) is
-complicated by differences in class distribution and evaluation
-metrics: @gloor2025 report accuracy figures from an imbalanced (60/40)
-classification task without a macro-F1 or comparable metric. As
-discussed in Section 5.1.3, accuracy alone may overestimate performance
-when classifiers favor the majority class, making it difficult to assess
-to what extent the accuracy reported by @gloor2025 reflects genuinely
-balanced discriminative performance rather than class-imbalance effects.
-This limits the comparability of the two accuracy figures beyond a
-coarse indication that both are above chance level.
-
-## Implications for the Academic Literature / Future Research
-
-First, the comparison with @gloor2025 suggests that the lower accuracy
-observed in the present study is more plausibly attributable to a more
-conservative and generalizable evaluation framework than to a weaker
-underlying effect. In particular, grouped cross-validation across 15
-participants and permutation testing were used to mitigate
-session-specific leakage that a single-subject design cannot address.
-Future studies should therefore build on these findings by using larger
-and more diverse participant samples to reduce the wide confidence
-intervals observed for arousal and emotion classification. Ideally, such
-studies should also be conducted under professionally controlled
-laboratory conditions, with stable air quality, humidity, and
-temperature, in order to minimize the session-level environmental drift
-identified in Section 5.2 and to isolate the physiological signal of
-interest more effectively.
-
-Second, operationalizing emotion via the dimensional valence-arousal
-model [@russell1980] revealed differential sensitivity across affective
-dimensions that would likely have remained obscured under a combined
-categorical label. This indicates that valence and arousal should be
-treated as analytically distinct constructs in this line of research.
-Future work should therefore model valence and arousal as separate
-targets and incorporate dimension-specific refinements. For example,
-alternative HRV-based markers for arousal could be evaluated beyond
-RMSSD, given its documented limitations at lower arousal levels
-[@choi2017], and higher-performing FER models than HSEmotion could be
-tested for the valence dimension. Complementing physiological measures
-with validated self-report instruments such as the Self-Assessment
-Manikin [@bradleylang1994] may further strengthen interpretation,
-provided that such measures are used in addition to, rather than instead
-of, the physiological channels employed here.
-
-Third, the correlation analysis identified an additional methodological
-issue that has received little attention in research on plant
-bioelectrical signals: environmental variables such as CO~2~ should be
-recorded explicitly and controlled statistically, as the present
-analysis indicates that CO~2~ does not confound the plant-valence
-relationship. Future studies could extend this approach by including
-volatile organic compound (VOC) measurements alongside CO~2~, which
-would make it possible to assess whether other airborne chemical signals
-mediate or confound the plant-emotion relationship in ways that CO~2~
-alone cannot capture.
-
-Fourth, the finding that DC-invariant, shape- and amplitude-based
-features (e.g., `plant_detrend_std`, `hjorth_mobility`) consistently
-outperformed level-based features provides a substantive contribution to
-feature engineering in this domain and helps explain why
-session-normalized features tend to yield better performance. Future
-work could further investigate this pattern using more precise,
-higher-resolution plant bioelectrical sensors, which may improve the
-signal-to-noise ratio and reveal finer temporal dynamics than the
-current AD8232-based setup permits.
-
-## Limitations
-
-Several limitations qualify the interpretation of the present findings.
-Most fundamentally, the design of the present study did not incorporate
-a ground-truth measure of emotional state against which the derived
-labels could be validated. Valence and arousal labels are instead
-derived from two independent proxy measures — facial expression via
-HSEmotion and HRV via RMSSD, respectively — rather than from validated
-psychological assessments. Because these channels are measured
-independently and combined only after processing, any inaccuracy
-specific to either channel propagates directly into the resulting
-emotion label, without a means of cross-validation between them.
-
-Construct validity represents a related concern. HSEmotion achieves only
-approximately 65% accuracy in benchmark evaluations [@savchenko2022],
-implying that a non-trivial proportion of valence labels may be
-misclassified independently of any plant signal. Similarly, the arousal
-axis relies exclusively on RMSSD and mean heart rate. The limitations of
-these markers at lower arousal levels are well documented [@choi2017]
-and are reflected in the comparatively weak arousal classification
-result reported in Section 5.1.2.
-
-The stimulus itself constitutes a further limitation. The video used to
-elicit emotional responses was reused from an earlier, unrelated COIN
-seminar project [@schafer2025], rather than being validated specifically
-for the present study using a standardized emotion induction protocol
-such as IAPS or a comparable normed stimulus set. Its capacity to
-reliably elicit the intended range of valence and arousal states across
-a heterogeneous participant sample was therefore not independently
-confirmed.
-
-The sample size of 15 participants, yielding 284 analyzable windows,
-results in comparatively wide confidence intervals, particularly
-evident in the arousal classification result discussed in
-Section 5.1.2. This limits the statistical power to detect smaller
-effects and constrains the precision of the reported effect size
-estimates. Relatedly, the correlation analysis in Section 5.2 evaluated
-22 plant-derived features across two complementary analysis variants,
-without applying a correction for multiple comparisons. This should be
-taken into account when interpreting the reported significance levels.
-
-The experimental setup itself imposes additional constraints. As in
-@gloor2025, a single plant species (*Kalanchoe*) was used throughout all
-recording sessions. Consequently, the extent to which the observed
-plant-valence association generalizes across different plant species or
-individual specimens remains untested. Unlike @gloor2025, the present
-study did not include sham or shielding controls, such as electrodes
-attached to a non-living conductor or recordings inside a Faraday cage,
-to rule out the possibility that classification performance is partly
-driven by electromagnetic artifacts rather than genuine plant
-physiology. Furthermore, all sessions were conducted on a single day in
-a room that was not otherwise isolated from external environmental
-influences. While this ensured that broad conditions such as outdoor
-weather remained comparatively constant across sessions, factors such as
-room temperature, humidity, and air movement were neither held constant
-nor systematically recorded. Their precise influence on the plant signal
-therefore cannot be determined from the present data.
+values (72.8-73.8% in Gloor [@gloor2025] versus 36-43% in the present study) is
+complicated by differences in class distribution and evaluation metrics:
+Gloor [@gloor2025] reports accuracy figures from an imbalanced (60/40)
+classification task without a macro-F1 or comparable metric. Because
+accuracy alone may overestimate performance when classifiers favor the
+majority class, it is difficult to assess to what extent the accuracy
+reported by Gloor [@gloor2025] reflects genuinely balanced discriminative
+performance rather than class-imbalance effects. This limits the
+comparability of the two accuracy figures beyond a coarse indication
+that both are above chance level.
