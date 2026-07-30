@@ -4,8 +4,7 @@
 
 # Declaration on the Use of Generative AI {.unnumbered .unlisted}
 
-In accordance with the course's requirements on the disclosure of generative AI use, we declare
-that generative AI tools were used during the preparation of this project, in the following
+We declare that generative AI tools were used during the preparation of this project, in the following
 areas:
 
 - **Coding**: Assisting with writing, debugging, and refactoring code across the recording,
