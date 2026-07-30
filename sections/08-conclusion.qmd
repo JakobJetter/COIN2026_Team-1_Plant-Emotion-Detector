@@ -8,40 +8,49 @@ expression recognition into proxy indicators of arousal and valence, with
 ambient CO~2~ recorded alongside. The plant signal was evaluated against
 these indicators since no self-reported ground truth was collected.
 
-The answer to the study's main question is a qualified yes, and it is
-qualified by dimension rather than by degree. Across the three prediction
-targets, the plant signal showed a consistent but modest predictive
-relationship with human emotion. Valence classification produced the
-clearest result (macro-F1 = 0.42, permutation p = 0.005), recognizing all
-three classes with comparable reliability. The five-class emotion label
-was likewise statistically significant (p = 0.015) but much weaker in
-practice, because the dominant neutral class drives an accuracy of 42%
-that a macro-F1 of 0.21 does not support. Arousal prediction, resting
-solely on HRV, did not reach conventional significance (p = 0.055).
-**H1 is therefore supported for valence and, more weakly, for the crossed
-emotion label, but not for arousal.** Feature importance was dominated by
-shape: the winning valence model ranked the Hjorth dynamics descriptors
-highest, and the amplitude descriptors behind them entered only in their
-session-normalized form. This suggests that the model captures genuine
-signal dynamics rather than session-specific baseline drift, an
-interpretation reinforced by the fact that session normalization improved
-performance in most model-target combinations.
+The answer to the study's main question is a qualified yes. The
+qualification is twofold: the effect is modest across all three targets,
+and it is not equally pronounced across affective dimensions. The latter
+should not be read as evidence about the dimensions themselves, since
+valence and arousal were operationalized through proxies of unequal
+quality, a facial expression model on the one hand and a single HRV
+measure on the other. Valence classification produced the clearest result
+(macro-F1 = 0.42, permutation p = 0.005), recognizing all three classes
+with comparable reliability. The five-class emotion label likewise
+reached significance (p = 0.015), but a macro-F1 of 0.21 across five
+classes lies close to the uniform-chance expectation of approximately
+0.20 and should not be read as substantive support, notwithstanding an
+accuracy of 42% driven by the dominant neutral class. Arousal prediction,
+resting solely on HRV, did not reach conventional significance
+(p = 0.055). **H1 is therefore supported for valence, only nominally for
+the crossed emotion label, and not for arousal.**
+
+Feature importance was dominated by shape: the winning valence model
+ranked Hjorth mobility and complexity highest, and the amplitude
+descriptors behind them entered only in their session-normalized form.
+This suggests that the model captures genuine signal dynamics rather than
+session-specific baseline drift, an interpretation reinforced by the fact
+that session normalization improved performance in most model-target
+combinations, though conditional on the band-limited measurement chain
+discussed above.
 
 The secondary analysis tested the most plausible alternative explanation
 for the valence finding, that ambient CO~2~ rather than the plant tracked
 the participant's breathing and thus their emotional state. It does not
 hold: the plant--valence association survives controlling for CO~2~
 almost unchanged at both the raw and the within-session level, while the
-plant--CO~2~ coupling itself proves to be largely a between-session,
-room-level effect. **H2 is therefore rejected.**
+plant--CO~2~ coupling itself appears to be largely a between-session,
+room-level effect. **The data therefore provide no support for H2,**
+which given the sample size should be read as absence of evidence rather
+than as evidence of absence.
 
-These findings must be read against several structural limitations. The
-absence of a ground truth means that all results are validated only
-against proxy labels; the sample is small, single-cohort, and recorded on
-a single day; and no sham or shielding control rules out electromagnetic
-artifacts. Future work should prioritize collecting a larger cohort with
-self-assessment ratings and directly recording respiration to strengthen
-the arousal axis. The design presented in this study should be replicated
-across a broader population to determine whether the weak but
-statistically robust valence signal detected here reflects a reproducible
+These findings must be read against several structural limitations. All
+results are validated only against proxy labels; the sample is small,
+single-cohort, and recorded on a single day; the fixed stimulus order
+leaves session time as an unresolved confound; and no sham or shielding
+control rules out electromagnetic artifacts. Future work should
+prioritize a larger cohort with self-assessment ratings and directly
+recorded respiration to strengthen the arousal axis, and should replicate
+the present design across a broader population to determine whether the
+weak but statistically robust valence signal reflects a reproducible
 phenomenon.

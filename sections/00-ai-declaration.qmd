@@ -47,6 +47,7 @@ for the accuracy and integrity of the final content.
 ADC          & Analog-to-digital converter \\
 AI           & Artificial intelligence \\
 bpm          & Beats per minute \\
+CAM          & Crassulacean acid metabolism \\
 CNN          & Convolutional neural network \\
 CO\textsubscript{2} & Carbon dioxide \\
 COIN         & Collaborative Innovation Networks \\
