@@ -5,14 +5,10 @@ carry information about a nearby human's emotional state [@gloor2025],
 yet the underlying mechanism remains poorly understood. In particular, it is unclear whether the plant's
 electrophysiological voltage signal carries information about the human's
 emotional state as captured by physiological and behavioral indicators
-such as Heart Rate Variability (HRV) and facial expression. A finding to
-that effect would immediately have to be defended against the most
-obvious alternative: that an environmental variable the person changes
-simply by breathing, above all ambient CO~2~ concentration, accounts for
-the relationship instead. Clarifying this would provide a
-first step toward understanding whether plant bioelectrical activity can
-serve as a viable, non-invasive channel for detecting human emotional
-states.
+such as Heart Rate Variability (HRV) and facial expression. Clarifying
+this would provide a first step toward understanding whether plant
+bioelectrical activity can serve as a viable, non-invasive channel for
+detecting human emotional states.
 
 In this paper, we develop a plant emotion detector that takes the
 plant's voltage signal as input and, based on this signal alone, infers

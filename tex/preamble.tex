@@ -44,5 +44,36 @@
 \fancyhead[L]{\small\itshape\runningtitle}
 \fancyhead[R]{\small\thepage}
 
+% ---- Short List-of-Figures / List-of-Tables entries ----
+%      A caption written as "Short Title: full descriptive caption." keeps its
+%      full text under the float but contributes only "Short Title" to the
+%      list. Quarto emits \caption{\label{fig-x}Short Title: ...} for figures
+%      (label inside, first) and \caption{Short Title: ...}\label{tbl-x} for
+%      tables, so a leading \label is skipped before the text is split at the
+%      first colon. Captions without a colon are passed through unchanged.
+%      The patch is deferred to \AtBeginDocument because hyperref and the
+%      float packages redefine \caption after this file is read.
+\makeatletter
+\def\coin@short{}
+\def\coin@dosplit#1:#2\@nil{\gdef\coin@short{#1}}
+\def\coin@split#1\@nil{\coin@dosplit#1:\@nil}
+\def\coin@eatlabel\label#1{\coin@split}
+\def\coin@trylabel{\@ifnextchar\label{\coin@eatlabel}{\coin@split}}
+\newcommand{\coin@setshort}[1]{\coin@trylabel#1\@nil}
+\newcommand{\coin@autocaption}[1]{%
+  \coin@setshort{#1}%
+  \expandafter\coin@caption\expandafter[\coin@short]{#1}%
+}
+\AtBeginDocument{%
+  \let\coin@caption\caption
+  % A caption that already carries an explicit short form, or a starred one,
+  % is passed straight through untouched.
+  \renewcommand{\caption}{%
+    \@ifstar{\coin@caption*}%
+            {\@ifnextchar[{\coin@caption}{\coin@autocaption}}%
+  }%
+}
+\makeatother
+
 % ---- Black links, like the printed template ----
 \AtBeginDocument{\hypersetup{hidelinks}}

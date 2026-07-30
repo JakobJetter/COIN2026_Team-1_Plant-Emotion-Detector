@@ -10,9 +10,9 @@ arousal.
 The secondary analysis addresses the most plausible alternative
 explanation for that result. **H2** is rejected, tested on valence as the
 dimension for which H1 holds. Both
-branches of the confounding pathway are in fact present — CO~2~
+branches of the confounding pathway are in fact present. CO~2~
 correlates with valence ($\rho$ = 0.308, p \< 0.0001) and, in the raw
-analysis, with most plant features — so the alternative explanation was
+analysis, with most plant features, so the alternative explanation was
 not implausible a priori. The decisive condition nonetheless fails: the
 plant–valence association remains essentially unchanged once CO~2~ is
 controlled for, so it is not an artifact of a shared dependence on
@@ -46,7 +46,7 @@ classifiers by 0.031, with the largest gain observed for Random Forest
 (+0.068). For arousal, the average macro-F1 score improved by 0.035. In
 both cases, the best-performing models used session-normalized features,
 and the features those models ranked highest are either level-invariant by
-construction or expressed relative to the session's own baseline — which
+construction or expressed relative to the session's own baseline, which
 is what the leakage argument above predicts.
 
 Emotion classification is the only case in which this pattern did not
@@ -70,14 +70,12 @@ the recorded material may fall within the range where HRV is expected to
 track arousal at all, independently of any limitation in the plant
 signal itself.
 
-The correlation analysis complements these findings. While CO~2~ showed
-substantial correlations with plant features in the raw analysis, these
-associations decreased markedly after removing between-session variance.
-This suggests that most of the observed plant-CO~2~ coupling reflects
-slow session-level drift rather than within-session physiological
-interaction. Importantly, the plant-valence relationship remained stable
-under CO~2~ control at both levels, indicating that this association is
-not an artifact of shared environmental influences.
+The correlation analysis adds one nuance to the H2 verdict. The
+substantial raw correlations between CO~2~ and the plant features shrink
+markedly once between-session variance is removed, so most of that
+coupling is slow, room-level drift rather than a within-session
+physiological interaction. The plant-valence relationship is stable
+under CO~2~ control at either level.
 
 ## Comparison with Previous Studies
 
@@ -94,7 +92,7 @@ The shift from a binary "happy"/"sad" classification to a dimensional
 valence-arousal framework [@russell1980] further extends this
 replication methodologically: it allows for a more fine-grained analysis
 than Gloor's binary scheme permitted, and reveals that plant signals are
-informative for valence but not for arousal — a distinction that could
+informative for valence but not for arousal, a distinction that could
 not have been captured within a binary classification framework in the
 first place.
 

@@ -43,7 +43,7 @@ provides the theoretical justification for grouping heterogeneous
 emotion categories (e.g., "happy/surprise" vs. "fear/anger/sad/disgust")
 into higher-order valence classes.
 
-![The two-dimensional circumplex structure of affect, spanned by a valence and an arousal axis, following Russell [@russell1980]. Emotion words within one quadrant agree in the sign of both axes and differ mainly in intensity. Figure reproduced from Lee et al. [@lee2025].](figures/circumplex_model.png){#fig-circumplex width=80%}
+![Circumplex model of affect: the two-dimensional structure of affect, spanned by a valence and an arousal axis, following Russell [@russell1980]. Emotion words within one quadrant agree in the sign of both axes and differ mainly in intensity. Figure reproduced from Lee et al. [@lee2025].](figures/circumplex_model.png){#fig-circumplex width=80%}
 
 @fig-circumplex shows this space. The two axes divide it into four
 quadrants, each collecting emotion words that agree in the sign of both
@@ -52,7 +52,7 @@ intensity but all combine positive valence with high arousal, and the
 same holds for the remaining three quadrants. It is this quadrant, rather
 than the individual emotion word, that the present study treats as the
 classification target. A recorded window therefore counts as emotionally
-classified when the classifier places it in one of the four quadrants —
+classified when the classifier places it in one of the four quadrants:
 high-arousal positive (I), high-arousal negative (II), low-arousal
 negative (III), or low-arousal positive (IV), referred to below as
 *positive activated*, *negative activated*, *negative calm*, and

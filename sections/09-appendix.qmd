@@ -53,7 +53,7 @@ powers stop at 30 Hz and no band covering the mains frequency is formed.
 | `plant_dead_flag` | Quality | Derived from `plant_quality`: signal unusable |
 | `plant_suspect_flag` | Quality | Derived from `plant_quality`: signal usable but degraded |
 
-: Feature columns extracted from the plant voltage signal per 30-second window. The 22 continuous columns additionally exist in a session-normalised variant with the suffix `_snorm`. {#tbl-features tbl-colwidths="[33,13,54]"}
+: Plant feature columns: features extracted from the plant voltage signal per 30-second window. The 22 continuous columns additionally exist in a session-normalised variant with the suffix `_snorm`. {#tbl-features tbl-colwidths="[33,13,54]"}
 
 ## Labeling Equations {#sec-appendix-labeling}
 
@@ -184,9 +184,9 @@ x^{\mathrm{snorm}}_w \;=\;
   \frac{x_w - \mathrm{med}_s(x)}{1.4826 \cdot \mathrm{MAD}_s(x)}
 $$ {#eq-snorm}
 
-This removes constant offsets between sessions — electrode placement,
-plant state, and ambient conditions differ from one recording to the
-next — while preserving the within-session variation that the classifier
+This removes constant offsets between sessions, since electrode
+placement, plant state, and ambient conditions differ from one recording
+to the next, while preserving the within-session variation that the classifier
 is meant to exploit.
 
 ## Experimental Setup and Live Dashboard {#sec-appendix-figures}
@@ -195,18 +195,17 @@ The two figures below document the physical side of the study.
 @fig-setup shows the sensor setup described in the Sensor Setup and Field
 Work sections, and @fig-live-dashboard the real-time component of
 @sec-live-demonstration. Neither is required to follow the argument of
-the paper — the live component demonstrates the trained models rather
-than contributing evidence for the hypotheses — which is why both are
-collected here rather than in the method chapter.
+the paper, since the live component demonstrates the trained models
+rather than contributing evidence for the hypotheses. That is why both
+are collected here rather than in the method chapter.
 
 ![Physical setup of the experiment: the *Kalanchoe* plant with its three leaf electrodes, the AD8232 and the ESP32 on the breadboard, and the laptop the participant faces during a session. The photograph was taken while the reduced demonstration configuration was running, so the CO~2~ sensor is not attached and the screen shows the Phaenomena variant of the dashboard rather than the recording software.](figures/setup_without_co2_with_phaenomena.png){#fig-setup width=95%}
 
-![The live dashboard. The camera panel shows the HSEmotion result for the current frame, the centre column contrasts the plant-model prediction with the labeling algorithm's proxy label for each of the three axes, and the remaining panels show the live plant voltage, heart rate, and CO~2~ streams. The footer of the prediction column reports the window counter and the time until the next update.](figures/live_demo.png){#fig-live-dashboard width=95%}
+![The live dashboard: the camera panel shows the HSEmotion result for the current frame, the centre column contrasts the plant-model prediction with the labeling algorithm's proxy label for each of the three axes, and the remaining panels show the live plant voltage, heart rate, and CO~2~ streams. The footer of the prediction column reports the window counter and the time until the next update.](figures/live_demo.png){#fig-live-dashboard width=95%}
 
 ## Code Availability {#sec-appendix-code}
 
-All code written for this study is publicly available in the project
-repository [@repo2026] at
+Every component described in this paper is hosted at
 
 ```{=latex}
 \begin{center}

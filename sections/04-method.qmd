@@ -16,12 +16,12 @@ The system is organized as a sequential data pipeline that transforms
 raw multimodal sensor recordings into a trained plant-based emotion
 classifier, complemented by a separate real-time inference component, a
 live dashboard. @fig-pipeline provides an overview. The pipeline consists
-of five stages — sensing, preprocessing, labeling, modeling, and live
-application — each described in turn below. The CO~2~ correlation
+of five stages, described in turn below: sensing, preprocessing,
+labeling, modeling, and live application. The CO~2~ correlation
 analysis branches off the same recorded data as a separate confound test
 rather than forming a stage of its own.
 
-![Overview of the system pipeline. Colour marks the role each stream plays: green is the plant signal, the only family the classifiers ever see; blue is the human reference from which the proxy labels are derived; purple is the environmental variable used for the confound test. Dashed arrows denote evaluation and downstream use rather than data flow.](figures/pipeline.png){#fig-pipeline width=100%}
+![System pipeline overview: colour marks the role each stream plays: green is the plant signal, the only family the classifiers ever see; blue is the human reference from which the proxy labels are derived; purple is the environmental variable used for the confound test. Dashed arrows denote evaluation and downstream use rather than data flow.](figures/pipeline.png){#fig-pipeline width=100%}
 
 **Sensing.** Four independent sensors capture the raw data: plant
 electrodes record the plant bioelectric voltage at a nominal 100 Hz, a
@@ -46,8 +46,8 @@ two are crossed into a five-class emotion label.
 **Modeling.** The plant voltage of each window is reduced to a set of
 statistical, spectral, and signal-dynamics features, and the labeled
 windows of all sessions are merged into a single consolidated dataset.
-Three classifiers — Random Forest, XGBoost, and Neural Network — are then
-trained and compared separately for emotion, arousal, and valence, using
+Three classifiers, namely Random Forest, XGBoost, and Neural Network,
+are then trained and compared separately for emotion, arousal, and valence, using
 plant-bioelectric features only, and the best model per axis is selected
 by macro-averaged F1.
 
@@ -61,11 +61,11 @@ ambient CO~2~, rather than the person, could account for whatever
 association the classifiers establish. It therefore addresses H2 and
 contributes nothing to the classifier itself.
 
-The complete implementation of every stage described in this chapter —
-firmware, recording, labeling, dataset creation, the three model
-pipelines, the correlation analysis, and the live dashboard — is publicly
-available in the project repository [@repo2026]; @sec-appendix-code maps
-each stage to the file that implements it.
+The complete implementation of every stage described in this chapter is
+publicly available in the project repository. This covers the firmware,
+recording, labeling, dataset creation, the three model pipelines, the
+correlation analysis, and the live dashboard. @sec-appendix-code gives
+the address and maps each stage to the file that implements it.
 
 ## Sensor Setup
 
@@ -287,7 +287,7 @@ The classifier predicts the arousal, valence, and emotion label of each
 30-second window from the plant-bioelectric features only. For a given
 target, the other label axis, the crossed emotion label, and all HRV-
 and FER-derived columns are excluded from the features, so the model
-sees nothing derived from heart rate or facial expression — the plant
+sees nothing derived from heart rate or facial expression. The plant
 signal is the sole predictor family. The classes are: arousal (calm,
 neutral, activated), valence (negative, neutral, positive), and emotion
 (negative calm, negative activated, neutral, positive calm, positive
@@ -311,8 +311,8 @@ These three names are used throughout the paper. The comparison figures in
 same models with their code identifiers `RandomForest`, `XGBoost`, and
 `NeuralNet`, and the two representations as `raw` and `session_norm`.
 
-Because the classes are imbalanced — a large neutral class dominates
-each target — overall accuracy would largely reflect the majority class.
+Because the classes are imbalanced, with a large neutral class dominating
+each target, overall accuracy would largely reflect the majority class.
 Macro-averaged F1, which weights every class equally, is therefore used
 as the primary selection and comparison metric, complemented by
 accuracy, one-vs-rest ROC-AUC, a confusion matrix, and a per-class
@@ -362,8 +362,8 @@ Placing the two values per axis directly next to each other makes the
 comparison between the plant model and the labeling algorithm the visual
 centre of the display. @fig-live-dashboard in @sec-appendix-figures shows
 the dashboard during a session, captured in a window in which the two
-agree on positive valence but disagree on arousal — the qualitative
-pattern that the quantitative results in @sec-results reproduce.
+agree on positive valence but disagree on arousal, which is the
+qualitative pattern that the quantitative results in @sec-results reproduce.
 
 Every live signal updates continuously. Only the two predictions per
 axis are window-based. Both recompute once every window of data has been
@@ -391,30 +391,18 @@ screen runs a German-language variant of the dashboard, built for the
 Phaenomena exhibition, at which a comparable live plant-emotion
 demonstration was shown in 2025. It reduces the
 panel layout of @fig-live-dashboard to the single comparison that carries
-the project's message — what the camera-based FER recognizes ("Das
-erkennt die KI") next to what the plant model infers ("Das spürt die
-Pflanze") — above one live voltage trace and a confidence bar. The plant,
+the project's message. What the camera-based FER recognizes ("Das
+erkennt die KI") is placed next to what the plant model infers ("Das
+spürt die Pflanze"), above one live voltage trace and a confidence bar. The plant,
 electrodes, AD8232, and ESP32 are unchanged, so the signal path feeding
 the models is identical to the one used during recording.
 
 ## Correlation Analysis
 
 The correlation analysis is the study's secondary test. It examines H2,
-the possibility that ambient CO~2~ rather than the person accounts for
-the association established under H1, and it is carried out on valence,
-because valence is the dimension for which that association holds; on an
-axis where no effect is found there is nothing for a confounder to
-explain.
+and is run on valence only.
 
-The confounding structure under test is the following. When a
-participant's emotional state changes, their breathing changes, which in
-turn alters the CO~2~ concentration in the room, and that concentration
-may affect the voltage measured between plant and electrode. CO~2~ is
-thus associated with both sides of the plant–valence comparison, and were
-that shared dependence the whole story, the plant would appear to track
-valence without responding to the person at all.
-
-We therefore test the three pairwise relationships forming this triangle
+We test the three pairwise relationships forming the confounding triangle
 (plant–valence, plant–CO~2~, CO~2~–valence) and use the partial Spearman
 correlation $\rho(\text{plant}, \text{valence} \mid \text{CO}_2)$ as the
 decisive test. It is computed across all 22 plant features

@@ -13,6 +13,11 @@ number-sections: true
 indent: true            # keep Springer-style first-line paragraph indents
 jupyter: python3        # only needed if you use executable code cells
 
+filters:                # `quarto` first: shortcaps must see the final captions
+  - quarto
+  - shortcaps.lua       # "Short Title: ..." -> short List-of-Tables entry
+
+
 format:
   pdf:
     pdf-engine: pdflatex          # mathptmx (Times) works cleanly with pdflatex

@@ -28,7 +28,7 @@ three classes: negative, neutral, and positive. Across the six
 combinations, accuracy ranges from 36% to 43%. @fig-valence
 represents all six combinations sorted by their macro-F1 value.
 
-![Classifier comparison: target variable valence.](figures/valence_comparison.png){#fig-valence width=80%}
+![Classifier comparison for the target variable valence.](figures/valence_comparison.png){#fig-valence width=80%}
 
 Of the six (model, representation) combinations compared, Random Forest on
 the session-normalized features performed the best, with an accuracy of
@@ -53,15 +53,13 @@ individual case across all target variables.
 | Arousal  | Neural Network (session-normalized)  |   37%    |   0.36   |  0.055  |
 | Emotion  | Random Forest (raw)                  |   42%    |   0.21   |  0.015  |
 
-: Best (model, representation) combination per target variable, with its pooled nested cross-validation scores and its permutation-test p-value. {#tbl-perf}
+: Model performance by target variable: best (model, representation) combination per target, with its pooled nested cross-validation scores and its permutation-test p-value. {#tbl-perf}
 
 @tbl-perf summarizes the best combination per target variable.
 
-The Direct Current (DC) level of the plant voltage drifts between
-sessions, because of changes in temperature, CO~2~ baseline in the room,
-etc. This is not related to the person's emotions but is background
-noise from the measuring equipment, so it matters which features the
-winning model actually leans on. Its two highest-ranked predictors are the
+The plant voltage carries a session-dependent baseline that has nothing
+to do with the participant's emotions, so which features the winning
+model leans on is itself informative. Its two highest-ranked predictors are the
 Hjorth dynamics descriptors `hjorth_mobility` (how quickly the signal
 changes) and `hjorth_complexity` (how that rate of change itself varies),
 followed by `plant_min` and `plant_range`. The dynamics descriptors are
@@ -84,15 +82,15 @@ classifiers are able to predict arousal better than random: across the six
 combinations, accuracy ranges from 32% to 37%, which is close to the
 approximately 33% expected by chance with three classes (see @fig-arousal).
 
-![Classifier comparison: target variable arousal.](figures/arousal_comparison.png){#fig-arousal width=80%}
+![Classifier comparison for the target variable arousal.](figures/arousal_comparison.png){#fig-arousal width=80%}
 
 Nevertheless, the Neural Network on the session-normalized features
 performed the best, at an accuracy of 37% and a macro-F1 of 0.36. The
 result does not quite reach the threshold to be statistically significant
 (p = 0.055; 10 of 200 permutations matched or exceeded it). The
 classification report shows that this combination classified all three
-classes with similarly low accuracy — per-class F1 scores of 0.35
-(activated), 0.30 (calm), and 0.42 (neutral) — so no class is recognized
+classes with similarly low accuracy, at per-class F1 scores of 0.35
+(activated), 0.30 (calm), and 0.42 (neutral), so no class is recognized
 appreciably better than the others. However, it must be
 noted that there is an unbalanced distribution of the classes: "neutral"
 is clearly the largest class, with 115 out of 284 cases (approximately
@@ -117,7 +115,7 @@ activated, positive calm. The best-performing combination is
 Random Forest on the raw representation, with an accuracy of 42% and a
 macro-F1 score of 0.21 (see @fig-emotion).
 
-![Classifier comparison: target variable emotion.](figures/emotion_comparison.png){#fig-emotion width=80%}
+![Classifier comparison for the target variable emotion.](figures/emotion_comparison.png){#fig-emotion width=80%}
 
 This is the only case where the raw representation performs better than
 the session-normalized one, contradicting the otherwise consistent
@@ -135,16 +133,16 @@ states. The permutation test verified the statistical significance
 (p = 0.015), but it is weaker than for valence. The feature ranking for
 this target is led by `plant_max`, `ratio_bp1_5_bp5_15`, and
 `plant_median`, that is by amplitude and spectral-shape descriptors, with
-the Hjorth dynamics descriptors following — a different profile from the
-other two targets, and one to be read with the caveat that this model
+the Hjorth dynamics descriptors following. This is a different profile
+from the other two targets, and one to be read with the caveat that this model
 largely reproduces the majority class.
 
 ## Correlation Analysis
 
-The valence result of the previous section is the one for which a
-confounder could matter, and it is therefore the one H2 is tested on.
+H2 is tested on valence, the target for which the plant signal predicts
+above chance.
 
-![Confounding triangle (plant, valence, CO~2~) and the per-feature partial correlation with valence before and after removing CO~2~.](figures/co2_correlation.jpeg){#fig-co2 width=95%}
+![Confounding triangle and partial correlations: the plant, valence and CO~2~ triangle, and the per-feature partial correlation with valence before and after removing CO~2~.](figures/co2_correlation.jpeg){#fig-co2 width=95%}
 
 @fig-co2 summarizes the confounding triangle and the per-feature partial
 correlation results discussed below.

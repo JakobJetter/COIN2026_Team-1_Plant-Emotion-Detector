@@ -1,13 +1,13 @@
 # Weaknesses and Future Work
 
-## Limitations
+## Weaknesses
 
 Several limitations qualify the interpretation of the present findings.
 Most fundamentally, the design of the present study did not incorporate
 a ground-truth measure of emotional state against which the derived
 labels could be validated. Valence and arousal labels are instead
-derived from two independent proxy measures — facial expression via
-HSEmotion and HRV via RMSSD, respectively — rather than from validated
+derived from two independent proxy measures, facial expression via
+HSEmotion and HRV via RMSSD respectively, rather than from validated
 psychological assessments. Because these channels are measured
 independently and combined only after processing, any inaccuracy
 specific to either channel propagates directly into the resulting
@@ -16,9 +16,9 @@ emotion label, without a means of cross-validation between them.
 Construct validity represents a related concern. HSEmotion achieves only
 around 55-70% accuracy in benchmark evaluations [@savchenko2022],
 implying that a non-trivial proportion of valence labels may be
-misclassified independently of any plant signal. Similarly, the arousal
-axis relies exclusively on RMSSD and mean heart rate, whose limitations
-at lower arousal levels are well documented [@choi2017] and are
+misclassified independently of any plant signal. The arousal axis is
+narrow in the same way: it rests on two HRV measures whose validity at
+lower arousal levels is well documented as limited [@choi2017], which is
 reflected in the comparatively weak arousal classification result.
 
 The stimulus itself constitutes a further limitation. The video used to
@@ -56,13 +56,13 @@ room temperature, humidity, and air movement were neither held constant
 nor systematically recorded. Their precise influence on the plant signal
 therefore cannot be determined from the present data.
 
-## Future Research
+## Future Work
 
 Several directions follow from these findings. First, the comparison
 with Gloor [@gloor2025] suggests that the lower accuracy observed here is more
 plausibly attributable to a more conservative and generalizable
-evaluation framework — grouped cross-validation across 15 participants
-and permutation testing — than to a weaker underlying effect. Future
+evaluation framework, namely grouped cross-validation across 15
+participants and permutation testing, than to a weaker underlying effect. Future
 studies should build on this by using larger and more diverse
 participant samples to narrow the wide confidence intervals observed for
 arousal and emotion classification, ideally under professionally

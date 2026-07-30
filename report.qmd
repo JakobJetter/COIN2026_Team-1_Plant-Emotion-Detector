@@ -24,8 +24,8 @@ paperabstract: >
   ambient CO~2~ were recorded. Emotion was operationalized along the
   circumplex dimensions of valence (from facial expression via HSEmotion)
   and arousal (from HRV), yielding proxy labels for 284 thirty-second
-  windows. Three classifiers --- Random Forest, XGBoost, and Neural
-  Network --- were trained to predict valence, arousal, and a combined
+  windows. Three classifiers, Random Forest, XGBoost, and Neural
+  Network, were trained to predict valence, arousal, and a combined
   emotion label from plant-derived features alone, using
   participant-grouped nested cross-validation and permutation testing.
   The plant signal predicted valence above chance (macro-F1 = 0.42,
