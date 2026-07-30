@@ -7,13 +7,12 @@ about human emotion. The second (H2) is subordinate to it and puts
 ambient CO~2~ forward as a competing explanation for any such
 information. Throughout, emotion is operationalized according to the
 circumplex model [@russell1980] along two dimensions: valence, measured
-via FER using HSEmotion [@savchenko2022], and arousal, measured via HRV,
-which is a valid indicator mainly at higher arousal levels [@choi2017].
+via FER using HSEmotion [@savchenko2022], and arousal, measured via HRV using a Polar H10 sensor.
 
 ## Primary Hypothesis: Plant Signals and Human Emotions
 
 The pilot study shows that bioelectrical plant signals could classify
-"happy" and "sad" with 72.8–73.8% accuracy using ResNet18 and
+"happy" and "sad" with  73% accuracy using ResNet18 and
 mel-spectrograms, providing initial empirical evidence of an association
 [@gloor2025]. Building on this, we test whether the plant signal on its
 own is sufficient to recover the operationalized emotional state.
@@ -22,14 +21,10 @@ Based on this reasoning, we formulate the following hypothesis:
 
 ```{=latex}
 \begin{hypothesis}
-\textbf{H1:} A person's emotional state can be predicted above chance from
+\textbf{H1:} A person's emotional state can be predicted from
 their electrophysiological plant signals alone.
 \end{hypothesis}
 ```
-
-Above chance here means above the distribution of scores the same
-classification procedure attains on randomly relabeled data, rather than
-above an assumed baseline such as the majority-class rate.
 
 ## Secondary Hypothesis: Ambient CO~2~ as a Confounding Variable
 

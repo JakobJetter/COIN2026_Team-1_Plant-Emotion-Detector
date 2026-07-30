@@ -18,32 +18,28 @@ about human emotion classification based on plant bioelectrical signals
 plant could be used to classify environmental conditions (light on/off)
 and human emotions. Using an AD8232 ECG sensor, mel-spectrograms, and a
 ResNet18 CNN, lamp detection was achieved with an accuracy of
-85.4-85.9%. For emotion classification, it is distinguished between
-happy and sad based on automated FER labels, resulting in an accuracy of
-72.8-73.8%. In addition, different time delays between emotional
-expression and the plant signal are used. The optimal time delay is
-identified as one second. Gloor [@gloor2025] used a vehicle acting as a Faraday
-cage as well as aluminum foil acting as dummy electrodes for control
-experiments to reduce (but not completely eliminate) the possibility of
-trivial electromagnetic artifacts. The study explicitly emphasizes the
-preliminary, exploratory nature of the findings and the need for further
-replication [@gloor2025].
+85.4%. For emotion classification, it is distinguished between
+happy and sad based on automated FER labels, resulting in an accuracy of about
+73% at the optimal time lag. Different time delays between emotional expression and the plant signal were tested, with the optimal delay
+identified as one second. For control experiments, Gloor [@gloor2025] recorded inside a
+closed vehicle acting as a Faraday cage and attached the electrodes to aluminum
+foil in place of the plant (a sham control); these reduce, but do not completely
+eliminate, the possibility of trivial electromagnetic or equipment artifacts.
+The study explicitly emphasizes the preliminary, exploratory nature of the
+findings and the need for further replication [@gloor2025].
 
 ## The Circumplex Model
 
 Both the categorization of emotions into positive and negative valence
 classes used by Gloor [@gloor2025] and the IAPS/SAM methodology
-developed by Choi et al. [@choi2017] are based on the influential
+used by Choi et al. [@choi2017] are based on the influential
 circumplex model presented by Russell [@russell1980]. Using four
 methodologically independent scaling procedures, Russell [@russell1980]
 shows that affective states can consistently be
 represented as a two-dimensional, bipolar space along the axes of
-valence (pleasure-displeasure) and arousal (arousal-sleep). This model
-provides the theoretical justification for grouping heterogeneous
-emotion categories (e.g., "happy/surprise" vs. "fear/anger/sad/disgust")
-into higher-order valence classes.
+valence (pleasure-displeasure) and arousal (arousal-sleepiness).
 
-![Circumplex model of affect: the two-dimensional structure of affect, spanned by a valence and an arousal axis, following Russell [@russell1980]. Emotion words within one quadrant agree in the sign of both axes and differ mainly in intensity. Figure reproduced from Lee et al. [@lee2025].](figures/circumplex_model.png){#fig-circumplex width=80%}
+![Circumplex model of affect: the two-dimensional structure of affect, spanned by a valence and an arousal axis, following Russell [@russell1980]. Emotion words within one quadrant agree in the sign of both axes. Figure reproduced from Lee et al. [@lee2025].](figures/circumplex_model.png){#fig-circumplex width=80%}
 
 @fig-circumplex shows this space. The two axes divide it into four
 quadrants, each collecting emotion words that agree in the sign of both
@@ -83,8 +79,7 @@ HRV is frequently used to supplement or validate subjective measures of
 emotion. Choi et al. [@choi2017] evaluated the validity of HRV to label human emotions
 with 30 participants. Five photos were selected for each of the
 categories of "happy," "unhappy," and "neutral" from among the images
-provided by the International Affective Picture System (IAPS)
-[@choi2017]. The extracted R-R interval (RRI) value is compared to the
+provided by the International Affective Picture System (IAPS). The extracted R-R interval (RRI) value is compared to the
 valence, arousal, and dominance value from the self-assessment. The
 results show a significant correlation between RRI and the subjective
 ratings of valence and dominance only for the category of unpleasant and

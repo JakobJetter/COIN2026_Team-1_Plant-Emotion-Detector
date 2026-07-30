@@ -136,7 +136,6 @@
     <text x="1597" y="488" font-size="20">Live dashboard</text>
   </g>
   <polyline points="1380,514 1414,514 1414,470 1458,470" fill="none" stroke="#5A6068" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#A-gray)"/>
-  <polyline points="1380,698 1560,698 1560,584" fill="none" stroke="#7B2D8E" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#A-purple)"/>
 
   <!-- ============ legend ============ -->
   <g font-size="15" fill="#3A4046">

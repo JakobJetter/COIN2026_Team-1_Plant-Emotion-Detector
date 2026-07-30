@@ -189,6 +189,28 @@ placement, plant state, and ambient conditions differ from one recording
 to the next, while preserving the within-session variation that the classifier
 is meant to exploit.
 
+## Example Session Record {#sec-appendix-session}
+
+@fig-session-timeline documents one complete recording, session
+`2026-07-06_19-51_proband_15`, as the labeling algorithm of
+@sec-labeling-algorithm sees it. It is included as a worked example of a
+session record: the same processing was applied unchanged to every
+session, and this one is shown because it is a full-length recording
+whose windows carry labels from all five classes.
+
+The upper four panels hold the quantities the algorithm reads, each
+plotted against the session median it is judged relative to, and the two
+lower panels the labels it produces. Reading the figure downwards
+therefore reproduces the order of the labeling procedure: the two HRV
+measures, the two axis values derived from them and from the facial
+video, the plant voltage that the classifier will later have to recover
+these labels from, and finally the discretized axes and their crossing.
+The plant voltage and the ambient CO~2~ trace share the fourth panel
+because the correlation analysis of @sec-results tests exactly this pair
+against each other.
+
+![Example session record: the full ten-minute recording of session `2026-07-06_19-51_proband_15`, plotted on the non-overlapping 30-second window grid. From top: RMSSD; mean heart rate; the two quantities that decide the labels, FER valence on the left axis (green) and the HRV arousal index in robust z-units on the right axis (orange); the plant voltage (teal, left axis) with ambient CO~2~ overlaid (purple, right axis); the two per-axis labels; and the crossed five-class emotion label. Dotted horizontal lines mark the session medians each window is judged against (@eq-valence-class, @eq-arousal-class). The shaded band at the left and the dashed vertical line mark the 30-second baseline preceding the video. In the two label rows, light grey marks windows excluded rather than labeled, following @eq-coverage. The plant trace is decimated to 1 Hz for display only; the features of @tbl-features are computed on the undecimated signal.](figures/session_timeline.png){#fig-session-timeline width=90%}
+
 ## Experimental Setup and Live Dashboard {#sec-appendix-figures}
 
 The two figures below document the physical side of the study.

@@ -1,6 +1,6 @@
 ---
 title: "Plant Emotion Detector: Do Plants Detect Human Emotions?"
-group: "Group 1"
+group: "COIN-Seminar 2026 - Group 1"
 # One line per member on the title page: name first, then student ID.
 members:
   - name: "Nils Bringewatt"
@@ -29,8 +29,8 @@ paperabstract: >
   emotion label from plant-derived features alone, using
   participant-grouped nested cross-validation and permutation testing.
   The plant signal predicted valence above chance (macro-F1 = 0.42,
-  p = 0.005) and the combined label more weakly (p = 0.015), whereas
-  arousal did not reach significance (p = 0.055). A partial-correlation
+  p = 0.005), whereas the combined label (macro-F1 = 0.21, p = 0.015) and
+  arousal (macro-F1 = 0.36, p = 0.055) did not reach significance . A partial-correlation
   analysis ruled out ambient CO~2~ as a confounder of the plant--valence
   relationship. The results indicate a weak but statistically robust
   association between plant bioelectrical activity and human valence,

@@ -1,14 +1,28 @@
 # Method
 
-In this chapter the approach of this study is described. To answer the
-research question, we performed an experiment to record data. A human
-is sitting in front of a plant watching a video consisting of a lot of
-short video clips to stimulate different emotions. The plant's voltage
-signals and the human's HRV data are recorded as well as CO~2~ data. The
-human's face is filmed during the experiment, which is used to label its
-emotion. This is used as input for the training of the machine learning
-models. CO~2~ is also recorded in order to search for correlations as a
-basis for future research.
+This chapter translates the two hypotheses into a study design and
+describes how that design was realized. Testing H1 requires three things: an experimental setting in which the plant and the person are
+recorded simultaneously, an operational definition of the person's
+emotional state, and a classifier that
+is given the plant signal and nothing else. Testing H2 requires that
+ambient CO~2~ be recorded during the same sessions, so that the
+competing explanation can be examined on the study's data.
+
+Three commitments follow from this and hold for the rest of the chapter.
+First, emotion is measured rather than asked for, on two independent
+channels: FER for valence and HRV for
+arousal, crossed into one proxy label per window. Second, these two
+channels serve only to construct that label. The plant voltage is the
+sole predictor the models ever receive, and the separation is maintained
+through feature extraction, training, and evaluation, so that the result cannot be an artifact of human-derived features
+entering the input. Third, CO~2~ is recorded throughout and reserved for the analysis that tests H2.
+
+The chapter follows the data along this path: an overview of the
+pipeline, the sensor hardware, the recording sessions, the labeling
+algorithm that produces the proxy labels, the features extracted from
+the plant signal, the models and their evaluation, the live dashboard,
+which demonstrates the result in real time, and finally the correlation analysis that closes the argument by
+testing H2.
 
 ## Architecture Overview
 
@@ -17,22 +31,20 @@ raw multimodal sensor recordings into a trained plant-based emotion
 classifier, complemented by a separate real-time inference component, a
 live dashboard. @fig-pipeline provides an overview. The pipeline consists
 of five stages, described in turn below: sensing, preprocessing,
-labeling, modeling, and live application. The CO~2~ correlation
-analysis branches off the same recorded data as a separate confound test
-rather than forming a stage of its own.
+labeling, modeling, and live application.
 
 ![System pipeline overview: colour marks the role each stream plays: green is the plant signal, the only family the classifiers ever see; blue is the human reference from which the proxy labels are derived; purple is the environmental variable used for the confound test. Dashed arrows denote evaluation and downstream use rather than data flow.](figures/pipeline.png){#fig-pipeline width=100%}
 
+{{< pagebreak >}}
+
 **Sensing.** Four independent sensors capture the raw data: plant
-electrodes record the plant bioelectric voltage at a nominal 100 Hz, a
+electrodes record the plant bioelectric voltage, a
 webcam records facial expressions, a Polar H10 chest strap records heart rate
-and R-R intervals, and an SCD41 sensor records ambient CO~2~. Because the
-Polar H10 yields both heart rate and HRV, these four sensors produce five
-distinct data streams. The sensor setup builds on the implementation by
+and R-R intervals, and an SCD41 sensor records ambient CO~2~. The sensor setup builds on the implementation by
 Gloor [@gloor2025].
 
 **Preprocessing.** Each session consists of one participant watching a
-sequence of short emotion-eliciting video clips while the five streams
+sequence of short emotion-eliciting video clips while the four streams
 are recorded. The sensors run independently; their readings are aligned
 into one shared event log only after recording, together with the
 corresponding video file. This common time base is then divided into
@@ -52,14 +64,11 @@ plant-bioelectric features only, and the best model per axis is selected
 by macro-averaged F1.
 
 **Live application.** The selected models are reused in the live
-dashboard, which infers emotion in real time; because the offline
-normalization requires an entire session's data, the dashboard instead
-normalizes each window only against the windows preceding it.
+dashboard, which displays the sensor and model outputs and infers emotion in real time.
 
 Alongside these stages, the CO~2~ correlation analysis tests whether
-ambient CO~2~, rather than the person, could account for whatever
-association the classifiers establish. It therefore addresses H2 and
-contributes nothing to the classifier itself.
+ambient CO~2~, rather than the person's emotional state, could account for whatever
+association the classifiers establish.
 
 The complete implementation of every stage described in this chapter is
 publicly available in the project repository. This covers the firmware,
@@ -71,11 +80,11 @@ the address and maps each stage to the file that implements it.
 
 The sensing stage relies on four independent sensors: plant electrodes,
 a camera, the Polar H10, and the SCD41 CO~2~ sensor. This section
-describes the hardware behind each of them, starting with the plant
-sensing setup itself.
+describes the hardware behind each of them and the program that records
+them, starting with the plant sensing setup itself.
 
 The plant sensing hardware builds on the ESP32 and AD8232 architecture
-previously used for plant biosensing by Gloor's group [@gloor2025]. The
+previously used for plant biosensing by Gloor[@gloor2025]. The
 AD8232, originally designed as a heart-rate front end, is repurposed
 here to amplify the weak bioelectric signal of the plant. The ESP32
 microcontroller samples the amplified signal at 380 Hz internally,
@@ -91,36 +100,37 @@ Only this hardware front end was adopted; the recording,
 synchronization, labeling, and machine-learning pipeline were developed
 independently for this project.
 
+In addition to the plant voltage, the ESP32 is also connected to an SCD41
+sensor, which reports ambient CO~2~ concentration in ppm. The SCD41
+measures on its own fixed cycle of approximately five seconds, so a
+30-second window rests on about six independent readings. 
+
+Two further sensors complete the setup: a Polar H10 chest strap, connected
+via Bluetooth, providing R-R intervals for the later
+HRV-based arousal label, and the laptop's integrated webcam recording the
+participant's face for the FER-based valence label.
+
 A single *Kalanchoe* plant was used throughout all recording sessions.
-Three standard medical electrodes, of the same type used for ECG
-recordings, were attached using their adhesive surface to the three
+Three standard medical electrodes used for ECG recordings were attached to the three
 largest leaves of the plant. Each electrode was connected to the AD8232
 board, which forwarded the resulting voltage signal to the ESP32 for
 transmission.
 
-In addition to the plant voltage, the ESP32 also measures an SCD41
-sensor, which reports ambient CO~2~ concentration in ppm. CO~2~ is not
-sampled at a fixed rate but logged once per received data batch. Two
-further sensors complete the setup: a Polar H10 chest strap, connected
-via Bluetooth Low Energy, providing R-R intervals for the later
-HRV-based arousal label, and a standard webcam recording the
-participant's face for the FER-based valence label.
+A recording program was developed to drive each session. It opens the three
+acquisition paths, the WebSocket connection to the ESP32, the Bluetooth
+connection to the Polar H10, and the webcam capture, and runs them
+concurrently for the duration of the session. None of the four
+sensors acts as a master clock; instead, each sensor writes its readings
+independently into one shared event log, timestamping every entry
+against the local system clock of the recording laptop. The
+output of a completed session is this shared event log together with the
+corresponding video recording, which together form the raw input to
+every following processing step.
 
 The entire sensor setup was assembled and operated in the Digital Lab of
 the Cologne Institute for Information Systems.
 
 ## Field Work
-
-Recording is orchestrated by the recording component. None of the four
-sensors acts as a master clock; instead, each sensor writes its readings
-independently into one shared event log, timestamping every entry
-against the local system clock of the recording computer. This design
-avoids the need for a common hardware trigger, at the cost of requiring
-the four streams to be aligned after the fact rather than during
-acquisition. The output of a completed session is this shared event log
-together with the
-corresponding video recording, which together form the raw input to
-every following processing step.
 
 Participants were recruited from fellow students, personal
 acquaintances, and other students unknown to the team beforehand. All
@@ -145,18 +155,24 @@ asked whether there were any topics they did not want to be confronted
 with. Each participant completed the session alone in the room, and the
 room was ventilated between sessions.
 
+Each session opens with a 30-second resting baseline, before the video
+starts, during which the participant is asked to sit still. This ensures that the session starts from a resting state. Plant
+voltage and R-R intervals are recorded from the start of the session,
+including this baseline, while the camera stays open but writes no
+frames until the baseline has ended. The windows covering the baseline
+therefore carry no valence value and are excluded rather than labeled.
+
 The participant sat at the table directly in front of the laptop running
 the video and the recording code. The plant with the attached electrodes
 stood on the table to the left of the laptop, well within the
-participant's field of view, and the breadboard carrying the AD8232 and
+participant's field of view, and the breadboard carrying the AD8232, the SCD41 and
 the ESP32 sat in front of the plant, connected to it by the electrode
 leads. @fig-setup in @sec-appendix-figures documents this arrangement.
 
 ## Labeling Algorithm {#sec-labeling-algorithm}
 
 Self-assessment ratings, for instance following the Self-Assessment
-Manikin [@bradleylang1994], would provide a direct subjective report
-("honest signal") for each window. They were deliberately not used here,
+Manikin [@bradleylang1994], would provide a direct subjective report of the emotional state for each window. They were deliberately not used here,
 because such ratings may be influenced by conscious or unconscious
 response bias and therefore do not serve as an independent ground truth.
 Instead, valence and arousal are derived from separate physiological and
@@ -174,9 +190,7 @@ follows Baek et al. [@baek2015], who show that 30 seconds is the shortest interv
 from which HRV metrics can still reliably approximate the much longer
 five-minute windows recommended by standard HRV guidelines. These
 30-second windows are non-overlapping and form the grid used for
-calibration and model training; a denser, overlapping 5-second grid is
-additionally computed only for the inspection plots shown later in this
-chapter and plays no role in calibration or training.
+calibration and model training.
 
 Before any HRV measure is computed, the raw R-R interval series recorded
 by the Polar H10 is corrected for artifacts using the beat
@@ -205,47 +219,37 @@ session's own median and spread (@eq-robust-z), yielding the single
 arousal index of @eq-arousal.
 
 Because resting heart rate, HRV, and facial expression differ
-substantially between individuals, no single threshold could separate an
+substantially between individuals, no fixed threshold could separate an
 emotionally salient window from a neutral one across all participants: a
 resting heart rate of 90 bpm might indicate heightened activation for
-one person and be entirely unremarkable for another. The labeling
-algorithm therefore has no fixed notion of "normal"; instead, each
-session's own data is used to establish what counts as this
-participant's baseline on that day, against which deviations are then
-judged.
+one person and be entirely unremarkable for another. Each session's own
+data therefore establishes what counts as that participant's baseline on
+that day, and every threshold below is expressed relative to it.
 
-Both axes are then discretized using the same logic, independently
-applied and centered on the participant's own session median. A window
-is classified as positive or negative in valence, or as activated or
-calm in arousal, when its value lies outside a deadband of half-width
-$\tau$ around that median; otherwise it falls into the respective
-neutral category (@eq-valence-class and @eq-arousal-class). The deadband
-is sized from the spread of the session's own values, as given in
-@eq-tau. Median and MAD are recomputed independently for each session,
-from that session's own non-overlapping 30-second windows introduced
-above, so that a participant's individual resting level and spread
-define the reference against which their own windows are judged. The
-multiplier $k$ in @eq-tau, by contrast, is fixed at 0.5 for both axes,
-setting the half-width of the neutral deadband to about half a robust
-standard deviation around the median. This value was chosen once, before
-the main analysis, by inspecting a pilot session, so that a substantial
-share of windows still received a directional (non-neutral) label rather
-than collapsing into the neutral category; it was deliberately not
-re-estimated per participant, keeping the labeling rule identical across
-all sessions. The two resulting labels are then crossed into the final
-emotion label (@eq-crossing), following the logic of the circumplex
-model presented by Russell [@russell1980] and shown in
-@fig-circumplex: if either the valence or the arousal label is neutral, the
-window is assigned the overall label *neutral*; only if both axes are
-non-neutral is the window assigned one of the four directional labels,
-*negative activated*, *negative calm*, *positive activated*, or
-*positive calm*, formed by combining the non-neutral valence category
-(negative/positive) with the non-neutral arousal category
-(calm/activated). This crossing rule follows directly from the quadrant
-structure of the circumplex model [@russell1980], in which only the four
-outer quadrants correspond to a clearly directional affective state,
-while any window touching the neutral zone on either axis is treated as
-affectively unspecific.
+Both axes are discretized by the same rule, applied independently. A
+window is classified as positive or negative in valence, or as activated
+or calm in arousal, when its value lies more than a deadband half-width
+$\tau$ from that session's median on that axis; otherwise it falls into
+the respective neutral category (@eq-valence-class,
+@eq-arousal-class). Median and MAD are recomputed for each session from
+its own non-overlapping 30-second windows, and $\tau$ follows from that
+spread (@eq-tau). Only the multiplier $k$ in @eq-tau is fixed, at 0.5
+for both axes, setting the deadband half-width to about half a robust
+standard deviation. It was chosen once before the main analysis by
+inspecting a pilot session, so that a substantial share of windows still
+received a directional label rather than collapsing into the neutral
+category.
+
+The two axis labels are then crossed into the final emotion label
+(@eq-crossing). A window is labeled *neutral* whenever either axis is
+neutral; only when both are directional does it receive one of the four
+combinations, *negative activated*, *negative calm*, *positive
+activated*, or *positive calm*. This follows the quadrant structure of
+Russell's circumplex model [@russell1980], shown in @fig-circumplex.
+
+@fig-session-timeline in @sec-appendix-session shows the procedure
+applied to one complete recording, from the two input channels through
+the session medians to the crossed label of every window.
 
 ## Feature Engineering
 
@@ -276,19 +280,11 @@ recorded session, producing one file of non-overlapping labeled windows
 per session (one row per window). The presence of a labeled file is
 verified for each session; all files are then loaded, checked for an
 identical column schema, and concatenated into one consolidated dataset.
-Duplicate windows (identified by session and window start time) are
-removed, and windows the labeling pipeline could not classify (label
-"excluded") are dropped. The final dataset therefore contains only
-successfully labeled, non-duplicate windows.
 
 ## Machine Learning Models
 
 The classifier predicts the arousal, valence, and emotion label of each
-30-second window from the plant-bioelectric features only. For a given
-target, the other label axis, the crossed emotion label, and all HRV-
-and FER-derived columns are excluded from the features, so the model
-sees nothing derived from heart rate or facial expression. The plant
-signal is the sole predictor family. The classes are: arousal (calm,
+30-second window from the plant-bioelectric features only. The classes are: arousal (calm,
 neutral, activated), valence (negative, neutral, positive), and emotion
 (negative calm, negative activated, neutral, positive calm, positive
 activated).
@@ -303,16 +299,14 @@ target:
 - **Random Forest** with balanced class weights;
 - **XGBoost**;
 - **Neural Network** (multilayer perceptron) wrapped in a
-  StandardScaler pipeline, since, unlike the tree-based models, it is not
-  scale-invariant.
+  StandardScaler pipeline
 
 These three names are used throughout the paper. The comparison figures in
 @sec-results are generated by the pipeline itself and therefore label the
 same models with their code identifiers `RandomForest`, `XGBoost`, and
 `NeuralNet`, and the two representations as `raw` and `session_norm`.
 
-Because the classes are imbalanced, with a large neutral class dominating
-each target, overall accuracy would largely reflect the majority class.
+Because the emotion target is strongly imbalanced, with a large neutral class dominating (62.3%), overall accuracy would largely reflect the majority class.
 Macro-averaged F1, which weights every class equally, is therefore used
 as the primary selection and comparison metric, complemented by
 accuracy, one-vs-rest ROC-AUC, a confusion matrix, and a per-class
@@ -331,19 +325,12 @@ k-fold cross-validation:
   grid search on each outer fold's training data only, so the test folds
   never influence tuning.
 
-For each target, the (model, representation) combination with the
-highest macro-F1 is selected as the winner and used in the live
-dashboard, and its significance is assessed with a label-permutation test
-over 200 shuffles of the target. Re-running the nested search inside every
-permutation is computationally out of reach, so the test instead holds the
-winning architecture fixed at its full-dataset-tuned hyperparameters and
-refits only that, once on the real labels and once per shuffle, across the
-same participant-grouped folds. The observed statistic the null
-distribution is compared against is recomputed the same way, so the two
-are commensurable and the resulting p-value is calibrated against its own
-null rather than against the nested estimate. A separate tuning on the
-full dataset supplies those fixed hyperparameters, the feature-importance
-rankings, and the model persisted for the live dashboard.
+For each target, the model with the
+highest macro-F1 wins and is persisted for the live dashboard. Whether
+that score could have arisen by chance is then checked with a
+label-permutation test: the target is shuffled 200 times, and each
+shuffle is rescored by refitting the winning architecture across the
+same participant-grouped folds. The null distribution is then compared against the observed score to evaluate the significance of the observed score.
 
 ## Live Demonstration {#sec-live-demonstration}
 
