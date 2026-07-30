@@ -21,6 +21,32 @@
 \titlespacing*{\subsection}   {0pt}{1.0em}{0.3em}
 \titlespacing*{\subsubsection}{0pt}{0.8em}{0.3em}
 
+% ---- Float placement: keep every figure inside the section it belongs to ----
+%      Without this, LaTeX may defer a float past the next heading, which in a
+%      figure-dense chapter such as the appendix pushes images into the wrong
+%      section. placeins puts a \FloatBarrier before every \section; the
+%      \AtBeginDocument patch extends the same barrier to \subsection and
+%      \subsubsection -- the appendix is organised at subsection level and the
+%      results chapter at subsubsection level, so both need one. The float
+%      parameters below then let a page carry more of its own floats, so
+%      barriers rarely have to flush several figures onto a page of their own.
+\usepackage[section]{placeins}
+\makeatletter
+\AtBeginDocument{%
+  \expandafter\renewcommand\expandafter\subsection\expandafter{%
+    \expandafter\@fb@secFB\subsection}%
+  \expandafter\renewcommand\expandafter\subsubsection\expandafter{%
+    \expandafter\@fb@secFB\subsubsection}%
+}
+\makeatother
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.7}
+
 % ---- Hypothesis statements: centred, italic, and set off from the body ----
 %      \centering (not the center environment) keeps the surrounding vertical
 %      space under our own control; \par must precede \endgroup so the final

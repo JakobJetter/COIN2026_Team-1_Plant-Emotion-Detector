@@ -30,16 +30,19 @@ represents all six combinations sorted by their macro-F1 value.
 
 ![Classifier comparison for the target variable valence.](figures/valence_comparison.png){#fig-valence width=80%}
 
+![Confusion matrices for the target variable valence: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_valence.png){#fig-cm-valence width=95%}
+
 Of the six (model, representation) combinations compared, Random Forest on
 the session-normalized features performed the best, with an accuracy of
 43% and a macro-F1 of 0.42. The permutation test confirms that this result
-is statistically significant (p = 0.005). Zero out of 200 random label
-permutations matched or exceeded the result actually observed.
+is statistically significant (p = 0.005; @fig-perm-valence). Zero out of
+200 random label permutations matched or exceeded the result actually
+observed.
 Therefore, valence is the target variable for which the plant signal
 shows the clearest and most robustly validated predictability. In
 addition, all three classes of valence were recognized with similar
 accuracy: this combination predicted negative, neutral, and positive with
-per-class F1 scores of 0.43, 0.45, and 0.40 respectively. In contrast to
+per-class F1 scores of 0.43, 0.45, and 0.40 respectively (@fig-cm-valence). In contrast to
 the emotion classification, there was no significant bias toward a
 dominant class in this case. Averaged across all three models, the effect
 of session normalization increases the macro-F1 scores by 0.031 for this
@@ -84,14 +87,17 @@ approximately 33% expected by chance with three classes (see @fig-arousal).
 
 ![Classifier comparison for the target variable arousal.](figures/arousal_comparison.png){#fig-arousal width=80%}
 
+![Confusion matrices for the target variable arousal: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_arousal.png){#fig-cm-arousal width=95%}
+
 Nevertheless, the Neural Network on the session-normalized features
 performed the best, at an accuracy of 37% and a macro-F1 of 0.36. The
 result does not quite reach the threshold to be statistically significant
-(p = 0.055; 10 of 200 permutations matched or exceeded it). The
+(p = 0.055; 10 of 200 permutations matched or exceeded it;
+@fig-perm-arousal). The
 classification report shows that this combination classified all three
 classes with similarly low accuracy, at per-class F1 scores of 0.35
 (activated), 0.30 (calm), and 0.42 (neutral), so no class is recognized
-appreciably better than the others. However, it must be
+appreciably better than the others (@fig-cm-arousal). However, it must be
 noted that there is an unbalanced distribution of the classes: "neutral"
 is clearly the largest class, with 115 out of 284 cases (approximately
 40.5%), while
@@ -117,6 +123,8 @@ macro-F1 score of 0.21 (see @fig-emotion).
 
 ![Classifier comparison for the target variable emotion.](figures/emotion_comparison.png){#fig-emotion width=80%}
 
+![Confusion matrices for the target variable emotion: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_emotion.png){#fig-cm-emotion width=95%}
+
 This is the only case where the raw representation performs better than
 the session-normalized one, contradicting the otherwise consistent
 trend. Regarding the target variable emotion, there is a significant
@@ -126,11 +134,11 @@ This is the reason why the accuracy of 42% appears so much
 higher than the macro-F1 score of 0.21. The model largely
 predicts the majority class well while barely distinguishing the
 minority classes (F1 0.08 for "positive activated", 0.07 for "negative
-calm"), as reflected in the much lower macro-F1 of 0.211. So while emotion
+calm"), as reflected in the much lower macro-F1 of 0.211 (@fig-cm-emotion). So while emotion
 prediction is statistically better than a random classifier, accuracy
 alone overstates how much the model actually understands about emotional
 states. The permutation test verified the statistical significance
-(p = 0.015), but it is weaker than for valence. The feature ranking for
+(p = 0.015; @fig-perm-emotion), but it is weaker than for valence. The feature ranking for
 this target is led by `plant_max`, `ratio_bp1_5_bp5_15`, and
 `plant_median`, that is by amplitude and spectral-shape descriptors, with
 the Hjorth dynamics descriptors following. This is a different profile

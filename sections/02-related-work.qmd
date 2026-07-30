@@ -21,7 +21,7 @@ ResNet18 CNN, lamp detection was achieved with an accuracy of
 85.4%. For emotion classification, it is distinguished between
 happy and sad based on automated FER labels, resulting in an accuracy of about
 73% at the optimal time lag. Different time delays between emotional expression and the plant signal were tested, with the optimal delay
-identified as one second. For control experiments, Gloor [@gloor2025] recorded inside a
+identified as one second. For control experiments, @gloor2025 recorded inside a
 closed vehicle acting as a Faraday cage and attached the electrodes to aluminum
 foil in place of the plant (a sham control); these reduce, but do not completely
 eliminate, the possibility of trivial electromagnetic or equipment artifacts.
@@ -31,15 +31,15 @@ findings and the need for further replication [@gloor2025].
 ## The Circumplex Model
 
 Both the categorization of emotions into positive and negative valence
-classes used by Gloor [@gloor2025] and the IAPS/SAM methodology
-used by Choi et al. [@choi2017] are based on the influential
-circumplex model presented by Russell [@russell1980]. Using four
-methodologically independent scaling procedures, Russell [@russell1980]
+classes used by @gloor2025 and the IAPS/SAM methodology
+used by @choi2017 are based on the influential
+circumplex model presented by @russell1980. Using four
+methodologically independent scaling procedures, @russell1980
 shows that affective states can consistently be
 represented as a two-dimensional, bipolar space along the axes of
 valence (pleasure-displeasure) and arousal (arousal-sleepiness).
 
-![Circumplex model of affect: the two-dimensional structure of affect, spanned by a valence and an arousal axis, following Russell [@russell1980]. Emotion words within one quadrant agree in the sign of both axes. Figure reproduced from Lee et al. [@lee2025].](figures/circumplex_model.png){#fig-circumplex width=80%}
+![Circumplex model of affect: the two-dimensional structure of affect, spanned by a valence and an arousal axis, following @russell1980. Emotion words within one quadrant agree in the sign of both axes. Figure reproduced from @lee2025.](figures/circumplex_model.png){#fig-circumplex width=80%}
 
 @fig-circumplex shows this space. The two axes divide it into four
 quadrants, each collecting emotion words that agree in the sign of both
@@ -59,7 +59,7 @@ crossing.
 
 ## Automated Emotion Recognition Using HSEmotion
 
-Savchenko [@savchenko2022] presents HSEmotion, an open-source library
+@savchenko2022 presents HSEmotion, an open-source library
 for FER. It is based on EfficientNet architectures and is optimized for
 speed and mobile use. The models were first trained on a face
 identification task (VGGFace2 dataset) and then fine-tuned on images from
@@ -76,7 +76,7 @@ that relates those labels to physiological or bioelectrical signals.
 ## Heart Rate Variability as Emotional Scale
 
 HRV is frequently used to supplement or validate subjective measures of
-emotion. Choi et al. [@choi2017] evaluated the validity of HRV to label human emotions
+emotion. @choi2017 evaluated the validity of HRV to label human emotions
 with 30 participants. Five photos were selected for each of the
 categories of "happy," "unhappy," and "neutral" from among the images
 provided by the International Affective Picture System (IAPS). The extracted R-R interval (RRI) value is compared to the

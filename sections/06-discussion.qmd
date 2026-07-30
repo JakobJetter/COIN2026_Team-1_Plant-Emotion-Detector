@@ -62,7 +62,7 @@ Arousal remained the weakest target variable overall, with performance
 close to chance and the best result narrowly missing statistical
 significance (p = 0.055). This is consistent with a known limitation of
 the arousal axis, which relies exclusively on RMSSD and mean heart rate:
-the work of Choi et al. [@choi2017] suggests these markers are reliable
+the work of @choi2017 suggests these markers are reliable
 indicators of emotional state only for unpleasant, highly arousing stimuli, not for
 neutral or pleasant ones. Since the video stimulus combines strongly
 negative segments with comparatively mild or neutral ones, only part of
@@ -80,7 +80,7 @@ under CO~2~ control at either level.
 ## Comparison with Previous Studies
 
 The present study directly addresses the two central limitations that
-Gloor [@gloor2025] explicitly identified: the lack of a standardized elicitation
+@gloor2025 explicitly identified: the lack of a standardized elicitation
 protocol and the single-subject design. By employing a fixed, ten-minute
 video stimulus instead of post-hoc labeling of unconstrained behaviour,
 and by recording 15 participants with grouped cross-validation to
@@ -99,14 +99,14 @@ first place.
 Both studies validate their findings via permutation testing, supporting
 the conclusion that the reported results in either case are unlikely to
 be driven by data leakage. However, a direct comparison of raw accuracy
-values (72.8-73.8% in Gloor [@gloor2025] versus 36-43% across the six
+values (72.8-73.8% in @gloor2025 versus 36-43% across the six
 valence combinations in the present study) is
 complicated by differences in class distribution and evaluation metrics:
-Gloor [@gloor2025] reports accuracy figures from an imbalanced (60/40)
+@gloor2025 reports accuracy figures from an imbalanced (60/40)
 classification task without a macro-F1 or comparable metric. Because
 accuracy alone may overestimate performance when classifiers favor the
 majority class, it is difficult to assess to what extent the accuracy
-reported by Gloor [@gloor2025] reflects genuinely balanced discriminative
+reported by @gloor2025 reflects genuinely balanced discriminative
 performance rather than class-imbalance effects. This limits the
 comparability of the two accuracy figures beyond a coarse indication
 that both are above chance level.

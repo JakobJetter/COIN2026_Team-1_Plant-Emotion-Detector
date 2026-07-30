@@ -41,7 +41,7 @@ labeling, modeling, and live application.
 electrodes record the plant bioelectric voltage, a
 webcam records facial expressions, a Polar H10 chest strap records heart rate
 and R-R intervals, and an SCD41 sensor records ambient CO~2~. The sensor setup builds on the implementation by
-Gloor [@gloor2025].
+@gloor2025.
 
 **Preprocessing.** Each session consists of one participant watching a
 sequence of short emotion-eliciting video clips while the four streams
@@ -84,7 +84,7 @@ describes the hardware behind each of them and the program that records
 them, starting with the plant sensing setup itself.
 
 The plant sensing hardware builds on the ESP32 and AD8232 architecture
-previously used for plant biosensing by Gloor[@gloor2025]. The
+previously used for plant biosensing by @gloor2025. The
 AD8232, originally designed as a heart-rate front end, is repurposed
 here to amplify the weak bioelectric signal of the plant. The ESP32
 microcontroller samples the amplified signal at 380 Hz internally,
@@ -186,7 +186,7 @@ window whose interval contains its timestamp; only once the plant
 voltage, facial video, and R-R interval series have been aligned in this
 way can values from different sensors within the same window be treated
 as referring to the same moment in the session. This window length
-follows Baek et al. [@baek2015], who show that 30 seconds is the shortest interval
+follows @baek2015, who show that 30 seconds is the shortest interval
 from which HRV metrics can still reliably approximate the much longer
 five-minute windows recommended by standard HRV guidelines. These
 30-second windows are non-overlapping and form the grid used for
@@ -194,7 +194,7 @@ calibration and model training.
 
 Before any HRV measure is computed, the raw R-R interval series recorded
 by the Polar H10 is corrected for artifacts using the beat
-classification method of Lipponen and Tarvainen [@lipponen2019],
+classification method of @lipponen2019,
 implemented in NeuroKit2 [@makowski2021]. A single misdetected heartbeat
 can otherwise distort every downstream HRV value, so correction is
 applied per window before the arousal signal is derived.

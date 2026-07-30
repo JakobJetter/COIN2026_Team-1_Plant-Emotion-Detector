@@ -225,6 +225,29 @@ are collected here rather than in the method chapter.
 
 ![The live dashboard: the camera panel shows the HSEmotion result for the current frame, the centre column contrasts the plant-model prediction with the labeling algorithm's proxy label for each of the three axes, and the remaining panels show the live plant voltage, heart rate, and CO~2~ streams. The footer of the prediction column reports the window counter and the time until the next update.](figures/live_demo.png){#fig-live-dashboard width=95%}
 
+## Permutation Tests {#sec-appendix-permutation}
+
+The three figures below document the permutation tests behind the
+p-values reported in @sec-results, one per target variable and in the
+order in which the targets are discussed there. Each test repeatedly
+shuffles the labels, re-runs the complete participant-grouped five-fold
+loop with the winning architecture held fixed, and thereby builds the
+distribution of macro-F1 that this architecture attains when no
+systematic relationship between the plant features and the label is left.
+The p-value is the share of those 200 permutations that matched or
+exceeded the value observed on the real labels. In each figure the grey
+histogram is that null distribution, the solid red line the observed
+value, and the dashed blue line the pooled nested cross-validation
+estimate reported in @tbl-perf; the latter is the more conservative of
+the two, because it re-tunes the model inside every fold instead of
+holding one architecture fixed.
+
+![Permutation test for the target variable valence: null distribution of the pooled macro-F1 over 200 label permutations for Random Forest on the session-normalized features, against the observed value. None of the 200 permutations reached it (p = 0.005).](figures/permutation_valence.png){#fig-perm-valence width=85%}
+
+![Permutation test for the target variable arousal: null distribution of the pooled macro-F1 over 200 label permutations for the Neural Network on the session-normalized features, against the observed value. Ten of the 200 permutations matched or exceeded it (p = 0.055), so this target misses the conventional significance threshold.](figures/permutation_arousal.png){#fig-perm-arousal width=85%}
+
+![Permutation test for the target variable emotion: null distribution of the pooled macro-F1 over 200 label permutations for Random Forest on the raw features, against the observed value. Two of the 200 permutations matched or exceeded it (p = 0.015).](figures/permutation_emotion.png){#fig-perm-emotion width=85%}
+
 ## Code Availability {#sec-appendix-code}
 
 Every component described in this paper is hosted at

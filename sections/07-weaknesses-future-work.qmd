@@ -40,10 +40,10 @@ without applying a correction for multiple comparisons, which should be
 taken into account when interpreting the reported significance levels.
 
 The experimental setup itself imposes additional constraints. As in
-Gloor [@gloor2025], a single plant species (*Kalanchoe*) was used throughout all
+@gloor2025, a single plant species (*Kalanchoe*) was used throughout all
 recording sessions. Consequently, the extent to which the observed
 plant-valence association generalizes across different plant species or
-individual specimens remains untested. Unlike Gloor [@gloor2025], the present
+individual specimens remains untested. Unlike @gloor2025, the present
 study did not include sham or shielding controls, such as electrodes
 attached to a non-living conductor or recordings inside a Faraday cage,
 to rule out the possibility that classification performance is partly
@@ -59,7 +59,7 @@ therefore cannot be determined from the present data.
 ## Future Work
 
 Several directions follow from these findings. First, the comparison
-with Gloor [@gloor2025] suggests that the lower accuracy observed here is more
+with @gloor2025 suggests that the lower accuracy observed here is more
 plausibly attributable to a more conservative and generalizable
 evaluation framework, namely grouped cross-validation across 15
 participants and permutation testing, than to a weaker underlying effect. Future

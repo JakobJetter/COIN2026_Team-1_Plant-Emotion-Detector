@@ -34,6 +34,38 @@ for the accuracy and integrity of the final content.
 \tableofcontents
 \endgroup
 
+% ---- List of abbreviations -------------------------------------------------
+% Set with \section* so the heading matches \listoffigures / \listoftables,
+% which article also typesets as an unnumbered section and likewise does not
+% add to the table of contents.
+\clearpage
+\section*{List of Abbreviations}
+\begingroup
+\renewcommand{\arraystretch}{1.3}
+\noindent
+\begin{tabular}{@{}p{2.8cm}p{\dimexpr\linewidth-2.8cm\relax}@{}}
+ADC          & Analog-to-digital converter \\
+AI           & Artificial intelligence \\
+bpm          & Beats per minute \\
+CNN          & Convolutional neural network \\
+CO\textsubscript{2} & Carbon dioxide \\
+COIN         & Collaborative Innovation Networks \\
+DC           & Direct current \\
+ECG          & Electrocardiography \\
+FER          & Facial Emotion Recognition \\
+HR           & Heart rate \\
+HRV          & Heart Rate Variability \\
+IAPS         & International Affective Picture System \\
+MAD          & Median absolute deviation \\
+ppm          & Parts per million \\
+RMSSD        & Root mean square of successive differences \\
+ROC-AUC      & Receiver operating characteristic --- area under the curve \\
+RRI          & R-R interval \\
+SAM          & Self-Assessment Manikin \\
+VOC          & Volatile organic compound \\
+\end{tabular}
+\endgroup
+
 \clearpage
 \listoffigures
 \listoftables
