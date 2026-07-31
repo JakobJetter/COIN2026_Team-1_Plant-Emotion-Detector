@@ -24,13 +24,18 @@ for the accuracy and integrity of the final content.
 
 ```{=latex}
 \clearpage
-% Compact table of contents: article inserts 1em of vertical padding before
-% every top-level entry, which is enough to push the final line onto a page
-% of its own. Scaling that padding down keeps the contents on one page. The
-% redefinition is scoped to this group, so no other list is affected.
+% Compact table of contents. Two things are scaled down so the contents stay
+% on a single page, both scoped to this group so no other list is affected:
+%   - article inserts 1em of vertical padding before every top-level entry,
+%     which alone is worth about three lines over the ten of them;
+%   - the leading of the entries themselves, at 0.95 of the body value.
+% Together these leave about two lines of slack at the foot of the page, so
+% a couple more sections can be added before the list outgrows it again. The
+% \selectfont is what makes the changed \baselinestretch take effect.
 \begingroup
 \let\coinaddvspace\addvspace
-\renewcommand{\addvspace}[1]{\coinaddvspace{0.35em}}
+\renewcommand{\addvspace}[1]{\coinaddvspace{0.25em}}
+\renewcommand{\baselinestretch}{0.95}\selectfont
 \tableofcontents
 \endgroup
 

@@ -338,9 +338,9 @@ To demonstrate the whole setup, we developed a single dashboard that
 shows every data source at once. This includes the live signals detected
 by the sensors: plant bioelectric voltage, CO~2~, heart rate, and camera
 feed. In addition, two values per axis (arousal, valence, emotion) are
-calculated and displayed side by side. On the one hand, it shows the
+calculated and displayed side by side. On the right side, it shows the
 proxy labels, applied live to HRV and FER using the same labeling rule.
-On the other hand, it presents the corresponding plant-model predictions
+On the left side, it presents the corresponding plant-model predictions
 of arousal, valence, and emotion. These predictions originate from the
 pre-trained models; for each axis, the model with the best macro-F1
 score is applied to every 30-second window.
@@ -355,49 +355,27 @@ qualitative pattern that the quantitative results in @sec-results reproduce.
 Every live signal updates continuously. Only the two predictions per
 axis are window-based. Both recompute once every window of data has been
 collected. There is no training here; the winning models are only loaded
-once. To teach what is "normal" for the participant in the particular
-session (e.g. heart rate), the labeling algorithm performs a one-time
-calibration based on the entire recorded session and knowing all
-windows. However, the live dashboard has no fixed session end to
-batch over, which is why the calibration is recomputed after each
-completed window. Therefore, it is growing across the live session and
+once. To include the participant's individual variability, 
+the session normalization calibration is recomputed after each
+completed window in the live demonstration. Therefore, it is growing across the live session and
 updates in real time. After each new window, the median and MAD are
-recalculated based on all previous windows, and the longer the session
-runs, the more stable and accurate the "normal value" becomes. At the
+recalculated based on all previous windows. At the
 beginning of a session, the classification is therefore less reliable
 than later on.
 
-The same pipeline was also operated in a reduced configuration for
-demonstration purposes, independently of the recording sessions; this is
-the state the photograph in @fig-setup was taken in. Two differences to
-the recording configuration are deliberate. First, the CO~2~
-sensor is omitted: CO~2~ is recorded only as a candidate confounder for
-the correlation analysis and enters none of the trained models, so
-dropping it removes hardware without affecting inference. Second, the
-screen runs a German-language variant of the dashboard, built for the
-Phaenomena exhibition, at which a comparable live plant-emotion
-demonstration was shown in 2025. It reduces the
-panel layout of @fig-live-dashboard to the single comparison that carries
-the project's message. What the camera-based FER recognizes ("Das
-erkennt die KI") is placed next to what the plant model infers ("Das
-spürt die Pflanze"), above one live voltage trace and a confidence bar. The plant,
-electrodes, AD8232, and ESP32 are unchanged, so the signal path feeding
-the models is identical to the one used during recording.
+## Correlation Analysis {#sec-correlation-analysis}
 
-## Correlation Analysis
+The correlation analysis is the study's secondary test and is used to examine H2.
 
-The correlation analysis is the study's secondary test. It examines H2,
-and is run on valence only.
-
-We test the three pairwise relationships forming the confounding triangle
-(plant–valence, plant–CO~2~, CO~2~–valence) and use the partial Spearman
-correlation $\rho(\text{plant}, \text{valence} \mid \text{CO}_2)$ as the
-decisive test. It is computed across all 22 plant features
-(@tbl-features) in two complementary variants: a raw analysis (variance
-both between and within sessions) and a session-normalized analysis
-(variance within-session only). Two conditions must hold together for
-H2 to survive: both branches of the CO~2~ pathway must be present, and
-controlling for CO~2~ must collapse the plant–valence correlation toward
-zero. If either branch is absent, or if the correlation persists once
-CO~2~ is controlled for, CO~2~ cannot account for the plant–valence
-relationship and H2 is rejected.
+We test the three pairwise relationship branches a CO~2~ confound would require
+(plant–label, plant–CO~2~, CO~2~–label) and use the partial Spearman
+correlation $\rho(\text{plant}, \text{label} \mid \text{CO}_2)$ as the
+decisive test. Both are computed across all 22 plant features
+(@tbl-features) in two complementary variants: a raw analysis and a session-normalized analysis. A
+branch counts as present when it reaches $|\rho| = 0.15$ at $p < 0.05$,
+and on the two branches measured per feature at least 40 % of the
+features must clear that bar. The threshold for the amount of features is arbitrary and was chosen so that a significant amount of plant features actually needs to correlate with CO~2~ for the branch to be considered present. Every correlation relates values of the same
+30-second window, so the branches and the partial correlation all refer
+to the same CO~2~ values. If the plant–label
+association collapses after controlling for the partial correlation, CO~2~ is assumed to account for it; if it survives, H2 is
+rejected.

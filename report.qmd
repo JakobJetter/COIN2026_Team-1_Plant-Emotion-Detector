@@ -30,11 +30,11 @@ paperabstract: >
   participant-grouped nested cross-validation and permutation testing.
   The plant signal predicted valence above chance (macro-F1 = 0.42,
   p = 0.005), whereas the combined label (macro-F1 = 0.21, p = 0.015) and
-  arousal (macro-F1 = 0.36, p = 0.055) did not reach significance . A partial-correlation
+  arousal (macro-F1 = 0.36, p = 0.055) did not reach significance. A partial-correlation
   analysis ruled out ambient CO~2~ as a confounder of the plant--valence
   relationship. The results indicate a weak but statistically robust
   association between plant bioelectrical activity and human valence,
-  warranting replication with larger samples and validated ground-truth
+  suggesting replication with larger samples and validated ground-truth
   measures.
 ---
 

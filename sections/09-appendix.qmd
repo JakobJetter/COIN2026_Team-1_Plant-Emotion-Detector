@@ -1,3 +1,5 @@
+{{< pagebreak >}}
+
 # Appendix {#sec-appendix}
 
 ## Plant Feature Columns {#sec-appendix-features}
@@ -54,6 +56,8 @@ powers stop at 30 Hz and no band covering the mains frequency is formed.
 | `plant_suspect_flag` | Quality | Derived from `plant_quality`: signal usable but degraded |
 
 : Plant feature columns: features extracted from the plant voltage signal per 30-second window. The 22 continuous columns additionally exist in a session-normalised variant with the suffix `_snorm`. {#tbl-features tbl-colwidths="[33,13,54]"}
+
+{{< pagebreak >}}
 
 ## Labeling Equations {#sec-appendix-labeling}
 
@@ -189,6 +193,8 @@ placement, plant state, and ambient conditions differ from one recording
 to the next, while preserving the within-session variation that the classifier
 is meant to exploit.
 
+{{< pagebreak >}}
+
 ## Example Session Record {#sec-appendix-session}
 
 @fig-session-timeline documents one complete recording, session
@@ -211,6 +217,8 @@ against each other.
 
 ![Example session record: the full ten-minute recording of session `2026-07-06_19-51_proband_15`, plotted on the non-overlapping 30-second window grid. From top: RMSSD; mean heart rate; the two quantities that decide the labels, FER valence on the left axis (green) and the HRV arousal index in robust z-units on the right axis (orange); the plant voltage (teal, left axis) with ambient CO~2~ overlaid (purple, right axis); the two per-axis labels; and the crossed five-class emotion label. Dotted horizontal lines mark the session medians each window is judged against (@eq-valence-class, @eq-arousal-class). The shaded band at the left and the dashed vertical line mark the 30-second baseline preceding the video. In the two label rows, light grey marks windows excluded rather than labeled, following @eq-coverage. The plant trace is decimated to 1 Hz for display only; the features of @tbl-features are computed on the undecimated signal.](figures/session_timeline.png){#fig-session-timeline width=90%}
 
+{{< pagebreak >}}
+
 ## Experimental Setup and Live Dashboard {#sec-appendix-figures}
 
 The two figures below document the physical side of the study.
@@ -225,11 +233,33 @@ are collected here rather than in the method chapter.
 
 ![The live dashboard: the camera panel shows the HSEmotion result for the current frame, the centre column contrasts the plant-model prediction with the labeling algorithm's proxy label for each of the three axes, and the remaining panels show the live plant voltage, heart rate, and CO~2~ streams. The footer of the prediction column reports the window counter and the time until the next update.](figures/live_demo.png){#fig-live-dashboard width=95%}
 
+{{< pagebreak >}}
+
+## Confusion Matrices {#sec-appendix-confusion}
+
+The three figures below hold the confusion matrices behind the per-class
+scores quoted in @sec-results, one per target variable. Each figure covers all six (model,
+representation) combinations, not only the winning one, so the per-class
+behaviour of a combination can be compared against the alternatives it was
+selected over. The counts are pooled over the five outer folds of the
+nested cross-validation, which is why every panel sums to the 284 windows
+of the dataset: each window is held out exactly once and is therefore
+predicted exactly once. Rows hold the proxy label and columns the model's
+prediction, so the diagonal counts the correctly classified windows and
+mass off the diagonal shows which classes a model confuses for which.
+
+![Confusion matrices for the target variable emotion: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_emotion.png){#fig-cm-emotion width=95%}
+
+![Confusion matrices for the target variable arousal: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_arousal.png){#fig-cm-arousal width=95%}
+
+![Confusion matrices for the target variable valence: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_valence.png){#fig-cm-valence width=95%}
+
+{{< pagebreak >}}
+
 ## Permutation Tests {#sec-appendix-permutation}
 
 The three figures below document the permutation tests behind the
-p-values reported in @sec-results, one per target variable and in the
-order in which the targets are discussed there. Each test repeatedly
+p-values reported in @sec-results, one per target variable. Each test repeatedly
 shuffles the labels, re-runs the complete participant-grouped five-fold
 loop with the winning architecture held fixed, and thereby builds the
 distribution of macro-F1 that this architecture attains when no
@@ -247,6 +277,53 @@ holding one architecture fixed.
 ![Permutation test for the target variable arousal: null distribution of the pooled macro-F1 over 200 label permutations for the Neural Network on the session-normalized features, against the observed value. Ten of the 200 permutations matched or exceeded it (p = 0.055), so this target misses the conventional significance threshold.](figures/permutation_arousal.png){#fig-perm-arousal width=85%}
 
 ![Permutation test for the target variable emotion: null distribution of the pooled macro-F1 over 200 label permutations for Random Forest on the raw features, against the observed value. Two of the 200 permutations matched or exceeded it (p = 0.015).](figures/permutation_emotion.png){#fig-perm-emotion width=85%}
+
+{{< pagebreak >}}
+
+## Feature Importances {#sec-appendix-importance}
+
+The three figures below document the feature rankings quoted in
+@sec-results, one per target variable. Only the two tree-based architectures expose
+`feature_importances_`; the multilayer perceptron does not, which is why
+the arousal ranking is read from the tree models rather than from the
+combination that won that target. Each figure pairs the two tree models on
+the representation the winning combination uses, so a ranking that holds
+for both can be told apart from one that only a single model produces. The
+importances come from the models tuned on the full dataset, which is the
+only place the pipeline exposes them; that pass is separate from the nested
+cross-validation behind every reported score in @tbl-perf, so these
+rankings are diagnostic and are not themselves a performance metric.
+
+![Feature importances for the target variable emotion: the top 15 features of the two tree-based models on the raw representation, which is the representation the winning Random Forest uses.](figures/importance_emotion.png){#fig-imp-emotion width=100%}
+
+![Feature importances for the target variable arousal: the top 15 features of the two tree-based models on the session-normalized representation. The winning multilayer perceptron exposes no feature importances, so the ranking is read from the tree models on the same representation.](figures/importance_arousal.png){#fig-imp-arousal width=100%}
+
+![Feature importances for the target variable valence: the top 15 features of the two tree-based models on the session-normalized representation, which is the representation the winning Random Forest uses.](figures/importance_valence.png){#fig-imp-valence width=100%}
+
+{{< pagebreak >}}
+
+## CO~2~ Confound Analysis {#sec-appendix-co2}
+
+The two figures below document the correlation analysis of @sec-results,
+one per variant: @fig-co2 the raw analysis, whose correlations carry both
+within- and between-session variation, and @fig-co2-snorm the
+session-normalized analysis, in which every signal is centred on its own
+session so that only within-session variation is left. Both are read the
+same way. The left panel is the confounding triangle, with a solid edge
+where the relationship is present by the criterion of
+@sec-correlation-analysis and a dashed one where it is not, and the
+plant--valence edge additionally labelled with its strength before and
+after CO~2~ is controlled for. The right panel resolves that same edge by
+feature: for each of the 22 plant features it plots the absolute
+correlation with valence before (purple) and after (vermillion) removing
+CO~2~, joined by a line, so a feature whose association is carried by CO~2~
+appears as a long line pointing toward zero.
+
+![Confounding triangle and partial correlations, raw analysis: the plant, valence and CO~2~ triangle, and the per-feature partial correlation with valence before and after removing CO~2~. Both within- and between-session variation contribute.](figures/co2_correlation.png){#fig-co2 width=95%}
+
+![Confounding triangle and partial correlations, session-normalized analysis: the same three edges and the same per-feature comparison after the plant features, CO~2~ and valence have each been centred on their own session, so that only within-session variation remains.](figures/co2_correlation_snorm.png){#fig-co2-snorm width=95%}
+
+{{< pagebreak >}}
 
 ## Code Availability {#sec-appendix-code}
 
