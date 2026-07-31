@@ -10,6 +10,9 @@ variability and facial expression. These are combined into proxy emotion
 labels, which are then used to train and compare ML models (Random Forest,
 XGBoost, Neural Network) that predict emotion from the plant signal alone.
 
+The full write-up, including methodology, results and limitations, is in
+[project_report.pdf](project_report.pdf).
+
 ---
 
 ## Repository Structure
@@ -21,27 +24,40 @@ XGBoost, Neural Network) that predict emotion from the plant signal alone.
 │
 ├── notebooks/                      Pipeline, run in numeric order
 │   ├── 01_init_recording.ipynb     Records one session (Polar H10, camera, ESP32)
-│   │                                → data/sessions/<session>/{events.jsonl, video.mp4}
+│   │                                → data/sessions/<session>/{events.jsonl,
+│   │                                  session_meta.json, video.mp4}
 │   ├── 02_emotion_labelling.ipynb  Turns one session's raw signals into per-window
 │   │                                proxy emotion labels (HRV → arousal, FER → valence)
-│   ├── 03_dataset_creation.ipynb   Runs 02 over every session and merges the result
+│   │                                → fer_events_mtcnn.jsonl, labelled_windows_ml.csv,
+│   │                                  labelled_windows_overlapping.csv
+│   ├── 03_dataset_creation.ipynb   Runs 02 over every session (jupyter nbconvert
+│   │                                --execute) and merges the result
 │   │                                → data/datasets/consolidated_dataset.csv
 │   ├── 04_01/02/03_ml_pipeline_*.ipynb
 │   │                                Train & compare RF / XGBoost / NN for emotion,
 │   │                                arousal, and valence → models/*.pkl
-│   └── 06_Correlation_Analysis_V02.ipynb
+│   └── 05_Correlation_Analysis.ipynb
 │                                    Spearman correlation of the plant signal against
 │                                    HRV, FER and CO2 (independent of the trained models)
+│                                    → data/datasets/correlation_co2_valence_results.csv
 │
-├── models/                         Trained model artifacts (output of the 04_* notebooks)
+├── models/                         Best model per axis (output of the 04_* notebooks)
+│   ├── random_forest_emotion.pkl
+│   ├── neural_network_arousal.pkl
+│   └── random_forest_valence.pkl
+│
 ├── data/
-│   ├── sessions/                   Raw per-session recordings
+│   ├── sessions/                   15 recorded participant sessions (raw signals,
+│   │                                per-session labels, executed 02 notebook copy)
+│   ├── baseline/                   Plant-only reference recording (no participant)
 │   └── datasets/                   Consolidated dataset + analysis result CSVs
 │
 ├── phaenomena/
-│   └── emotion_live_dashboard.py   Flask app for live sensor visualisation and
-│                                    real-time inference with the trained models
+│   ├── emotion_live_dashboard.py   Flask app for live sensor visualisation and
+│   │                                real-time inference with the trained models
+│   └── assets/                     Static assets for the dashboard
 │
+├── project_report.pdf              Final seminar report
 └── requirements.txt
 ```
 
@@ -78,11 +94,13 @@ Then run the notebooks in order:
    run it manually)
 3. `04_01_ml_pipeline_emotion.ipynb`, `04_02_ml_pipeline_arousal.ipynb`,
    `04_03_ml_pipeline_valence.ipynb` — train and compare the models
-4. `05_Correlation_Analysis_V02.ipynb` — correlation analysis between the plant signal
+4. `05_Correlation_Analysis.ipynb` — correlation analysis between the plant signal
    and HRV / FER / CO₂
 
-`data/datasets/consolidated_dataset.csv` is already included, so steps 3 and 4 can be run
-directly without re-recording or re-labelling anything.
+All 15 recorded sessions and `data/datasets/consolidated_dataset.csv` are included in the
+repository, so steps 2–4 can be run directly without re-recording anything. Only the
+session videos are excluded (`*.mp4` is gitignored) — every signal derived from them is
+already stored in each session's `fer_events_mtcnn.jsonl`.
 
 To try the live dashboard (real-time sensor view + live model predictions):
 
@@ -90,4 +108,6 @@ To try the live dashboard (real-time sensor view + live model predictions):
 python phaenomena/emotion_live_dashboard.py
 ```
 
-then open `http://localhost:5004` in a browser.
+then open `http://localhost:5004` in a browser. This needs the actual hardware connected —
+set `ESP32_IP` near the top of the script to the address shown on the OLED display, and
+make sure the Polar H10 and webcam are reachable.

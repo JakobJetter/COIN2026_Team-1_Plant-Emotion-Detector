@@ -1,17 +1,18 @@
-# ── Core (always needed, both notebooks) ───────────────────────
+# ── Core (always needed, all notebooks) ────────────────────────
 numpy>=1.24,<3.0
 pandas>=2.0
 matplotlib>=3.7
 seaborn>=0.13
 scipy>=1.11
-scikit-learn>=1.4
+scikit-learn>=1.4         # also provides the MLPClassifier used as the "NN" model
 xgboost>=2.1
-statsmodels>=0.14
 
 # ── Jupyter ────────────────────────────────────────────────────
 jupyter>=1.0
 ipykernel>=6.25
 notebook>=7.0
+nbconvert>=7.0            # 03_dataset_creation.ipynb runs 02 per session via
+                          # `python -m jupyter nbconvert --execute`
 
 # ══════════════════════════════════════════════════════════════
 # Hardware-side requirements (real recording, not mock)
@@ -23,24 +24,31 @@ bleak>=0.21
 # Camera + HSEmotion FER
 opencv-python>=4.8
 hsemotion-onnx>=0.3.1      # CPU, recommended
-# hsemotion>=0.4            # PyTorch variant (heavier)
-# torch>=2.1                # only if you use hsemotion instead of hsemotion-onnx
+# hsemotion>=0.4            # PyTorch variant (heavier), drop-in alternative
 
-# ESP32 plant-voltage + VOC streamer (WebSocket client)
+# ESP32 plant-voltage + CO2 streamer (WebSocket client)
 websockets>=11
 
-# CO2 sensor (SCD41) — placeholder, not yet wired.
-# Uncomment once the sensor is connected to the host (NOT the ESP32):
+# CO2 (SCD4x) is read by the ESP32 itself and arrives over the same WebSocket,
+# so no host-side driver is needed. Uncomment only if you move the sensor off
+# the ESP32 and wire it directly to the host:
 # adafruit-circuitpython-scd4x
 
 # ══════════════════════════════════════════════════════════════
-# phaenomena/emotion_unified_phaenomena.py + emotion_live_dashboard.py
+# phaenomena/emotion_live_dashboard.py
 # ══════════════════════════════════════════════════════════════
 flask>=3.0
 flask-socketio>=5.3
 
 # ══════════════════════════════════════════════════════════════
-# 02_emotion_labelling.ipynb — face detection (MTCNN, required to stay inside
+# 02_emotion_labelling.ipynb + live dashboard — signal processing
 # ══════════════════════════════════════════════════════════════
+
+# MTCNN face detection, run ahead of HSEmotion so the FER stage only ever
+# sees a properly cropped face
 facenet-pytorch>=2.5.3
+torch>=2.1                 # imported directly by the dashboard for MTCNN;
+                           # also pulled in by facenet-pytorch via torchvision
+
+# HRV / RR-interval analysis of the Polar H10 stream
 neurokit2>=0.2.10

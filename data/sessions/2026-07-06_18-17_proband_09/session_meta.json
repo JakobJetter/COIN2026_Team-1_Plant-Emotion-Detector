@@ -1,9 +1,0 @@
-{
-  "session_id": "2026-07-06_18-17_proband_09",
-  "proband_id": "proband_09",
-  "t0_ms": 1783354670516,
-  "duration_s": 600,
-  "baseline_s": 30,
-  "esp32_uri": "ws://10.152.182.238:81",
-  "recorded_at": "2026-07-06T18:17:50.516938"
-}
