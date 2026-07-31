@@ -101,5 +101,26 @@
 }
 \makeatother
 
+% ---- Reference list: a smaller gap between entries ----
+%      Pandoc opens the bibliography as \begin{CSLReferences}{1}{1}, and its own
+%      definition turns that second argument into \itemsep = 1\baselineskip, i.e.
+%      a full blank line between entries. That is more air than the printed
+%      template uses and pushed the last entry onto a page of its own. The
+%      definition below is pandoc's, with the entry spacing scaled down; it is
+%      placed here because this file is included after the template has defined
+%      the environment, so the redefinition wins. The hanging indent (#1) and
+%      \cslhangindent stay untouched.
+\renewenvironment{CSLReferences}[2]
+ {\begin{list}{}{%
+   \setlength{\itemindent}{0pt}%
+   \setlength{\leftmargin}{0pt}%
+   \setlength{\parsep}{0pt}%
+   \ifodd #1
+    \setlength{\leftmargin}{\cslhangindent}%
+    \setlength{\itemindent}{-1\cslhangindent}%
+   \fi
+   \setlength{\itemsep}{#2\dimexpr 0.4\baselineskip\relax}}}
+ {\end{list}}
+
 % ---- Black links, like the printed template ----
 \AtBeginDocument{\hypersetup{hidelinks}}

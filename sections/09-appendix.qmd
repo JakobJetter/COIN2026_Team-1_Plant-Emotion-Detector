@@ -1,28 +1,25 @@
-{{< pagebreak >}}
-
 # Appendix {#sec-appendix}
 
 ## Plant Feature Columns {#sec-appendix-features}
 
 @tbl-features lists every column extracted from the plant voltage signal
-for one 30-second window, in the order of the three feature families
-introduced in the Feature Engineering section. The 22 continuous columns
-are the ones entering the correlation analysis; in the classification
-design matrix they are accompanied by the six quality columns at the foot
-of the table, which describe the state of the electrode signal rather
-than its shape. Each of the 22 continuous columns appears in the dataset
-twice, once on its original scale and once as a per-session robust
-z-score carrying the suffix `_snorm` (@eq-snorm); the two representations
-are never mixed within one model.
+for one 30-second window, ordered by the three feature families of the
+Feature Engineering section. The 22 continuous columns are the ones
+entering the correlation analysis; the classification design matrix adds
+the six quality columns at the foot of the table, which describe the
+state of the electrode signal rather than its shape. Each continuous
+column appears in the dataset twice, once on its original scale and once
+as a per-session robust z-score carrying the suffix `_snorm`
+(@eq-snorm); the two representations are never mixed within one model.
 
 Two implementation details apply throughout. The time-domain and
 signal-dynamics columns are computed after a zero-phase 46–54 Hz
 band-stop filter removes mains interference, which on the recorded
 sessions accounts for the majority of the raw signal's total power and
-would otherwise dominate every amplitude statistic. The spectral columns,
-by contrast, are computed from the unfiltered signal so that the Welch
-spectrum reflects the true spectral content; for the same reason the band
-powers stop at 30 Hz and no band covering the mains frequency is formed.
+would otherwise dominate every amplitude statistic. The spectral columns
+are computed from the unfiltered signal so that the Welch spectrum stays
+faithful; for the same reason the band powers stop at 30 Hz and no band
+covering the mains frequency is formed.
 
 | Column | Family | Description |
 |:-----------------------|:---------|:-------------------------------|
@@ -47,7 +44,7 @@ powers stop at 30 Hz and no band covering the mains frequency is formed.
 | `hjorth_activity` | Dynamics | Signal variance |
 | `hjorth_mobility` | Dynamics | Mean-frequency proxy, from the variance of the first difference |
 | `hjorth_complexity` | Dynamics | Frequency-change proxy, from the variance of the second difference |
-| `spike_rate` | Dynamics | Share of samples deviating more than $3 \cdot \mathrm{MAD}$ from the window median |
+| `spike_rate` | Dynamics | Share of samples deviating more than $3 \cdot 1.4826 \cdot \mathrm{MAD}$ from the window median |
 | `plant_sat_pos_frac` | Quality | Share of samples at the upper ADC rail |
 | `plant_sat_neg_frac` | Quality | Share of samples at the lower ADC rail |
 | `plant_const_flag` | Quality | All samples in the window identical |
@@ -57,7 +54,9 @@ powers stop at 30 Hz and no band covering the mains frequency is formed.
 
 : Plant feature columns: features extracted from the plant voltage signal per 30-second window. The 22 continuous columns additionally exist in a session-normalised variant with the suffix `_snorm`. {#tbl-features tbl-colwidths="[33,13,54]"}
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
 ## Labeling Equations {#sec-appendix-labeling}
 
@@ -66,6 +65,10 @@ The equations below formalise the labeling procedure described in
 30-second window and the subscript $s$ marks a statistic computed over
 all windows of the same session, which is what makes every threshold
 relative to the individual participant rather than to an absolute scale.
+Continuous per-window quantities are written in lower case
+($\mathrm{val}_w$, $\mathrm{aro}_w$) and the discrete labels derived
+from them as $L^{\mathrm{val}}_w$, $L^{\mathrm{aro}}_w$ and
+$L^{\mathrm{emo}}_w$.
 
 **Valence from facial expression.** Frames are sampled at 5 Hz. Let $F_w$
 be the sampled frames of window $w$ in which HSEmotion detected a face,
@@ -79,9 +82,9 @@ $$
   -1,\; +1 \right)
 $$ {#eq-fer-valence}
 
-Weighting by confidence lets frames in which the face was clearly visible
-dominate over frames the model itself rates as uncertain. A window is only
-labeled if a face was found in at least half of its sampled frames:
+Confidence weighting lets clearly visible faces dominate over frames the
+model itself rates as uncertain. A window is only labeled if a face was
+found in at least half of its sampled frames:
 
 $$
 \mathrm{cov}_w \;=\; \frac{|F_w|}{n_w}\,,
@@ -120,7 +123,7 @@ with it, RMSSD is inverted before the two are averaged into one arousal
 index:
 
 $$
-a_w \;=\; \tfrac{1}{2}\left(
+\mathrm{aro}_w \;=\; \tfrac{1}{2}\left(
   -\,z_s(\mathrm{RMSSD}_w) + z_s(\overline{\mathrm{HR}}_w)\right)
 $$ {#eq-arousal}
 
@@ -130,22 +133,21 @@ derived from the spread of that axis' own values within the session:
 $$
 \tau_{\text{val}} = k \cdot 1.4826 \cdot \mathrm{MAD}_s(\mathrm{val}),
 \quad
-\tau_{\text{aro}} = k \cdot 1.4826 \cdot \mathrm{MAD}_s(a)
+\tau_{\text{aro}} = k \cdot 1.4826 \cdot \mathrm{MAD}_s(\mathrm{aro})
 $$ {#eq-tau}
 
-The multiplier is fixed at $k = 0.5$ for both axes, so the deadband spans
-roughly one robust standard deviation in total. This value was selected
-on a pilot session as the largest deadband that still left a substantial
-share of windows with a directional label: raising it collapses the
-dataset into the neutral class, lowering it labels windows whose
-deviation from the participant's baseline is within their ordinary
-resting fluctuation.
+The multiplier is fixed at $k = 0.5$ on both axes, so the deadband spans
+roughly one robust standard deviation in total. It was selected on a
+pilot session as the largest value that still left a substantial share
+of windows directional: larger values collapse the dataset into the
+neutral class, smaller ones label deviations that lie within the
+participant's ordinary resting fluctuation.
 
 **Discretisation.** Both axes are discretised by the same rule, each
 against its own median and its own deadband:
 
 $$
-d_w = \begin{cases}
+L^{\mathrm{val}}_w = \begin{cases}
 \text{positive} & \text{if } \mathrm{val}_w >
   \mathrm{med}_s(\mathrm{val}) + \tau_{\text{val}} \\
 \text{negative} & \text{if } \mathrm{val}_w <
@@ -155,9 +157,11 @@ d_w = \begin{cases}
 $$ {#eq-valence-class}
 
 $$
-l_w = \begin{cases}
-\text{activated} & \text{if } a_w > \mathrm{med}_s(a) + \tau_{\text{aro}} \\
-\text{calm}      & \text{if } a_w < \mathrm{med}_s(a) - \tau_{\text{aro}} \\
+L^{\mathrm{aro}}_w = \begin{cases}
+\text{activated} & \text{if } \mathrm{aro}_w >
+  \mathrm{med}_s(\mathrm{aro}) + \tau_{\text{aro}} \\
+\text{calm}      & \text{if } \mathrm{aro}_w <
+  \mathrm{med}_s(\mathrm{aro}) - \tau_{\text{aro}} \\
 \text{neutral}   & \text{otherwise}
 \end{cases}
 $$ {#eq-arousal-class}
@@ -168,14 +172,14 @@ circumplex model (@fig-circumplex). A window only receives a directional
 label if both axes are directional:
 
 $$
-y_w = \begin{cases}
-\text{neutral} & \text{if } d_w = \text{neutral}
-  \ \lor\ l_w = \text{neutral} \\
-(d_w,\, l_w)   & \text{otherwise}
+L^{\mathrm{emo}}_w = \begin{cases}
+\text{neutral} & \text{if } L^{\mathrm{val}}_w = \text{neutral}
+  \ \lor\ L^{\mathrm{aro}}_w = \text{neutral} \\
+\left(L^{\mathrm{val}}_w,\, L^{\mathrm{aro}}_w\right)   & \text{otherwise}
 \end{cases}
 $$ {#eq-crossing}
 
-so that $y_w$ takes one of the five values *negative calm*, *negative
+so that $L^{\mathrm{emo}}_w$ takes one of the five values *negative calm*, *negative
 activated*, *positive calm*, *positive activated*, or *neutral*.
 
 **Session normalisation of the plant features.** The `_snorm`
@@ -188,65 +192,62 @@ x^{\mathrm{snorm}}_w \;=\;
   \frac{x_w - \mathrm{med}_s(x)}{1.4826 \cdot \mathrm{MAD}_s(x)}
 $$ {#eq-snorm}
 
-This removes constant offsets between sessions, since electrode
-placement, plant state, and ambient conditions differ from one recording
-to the next, while preserving the within-session variation that the classifier
-is meant to exploit.
+This removes the constant offsets that electrode placement, plant state,
+and ambient conditions introduce between recordings, while preserving
+the within-session variation the classifier is meant to exploit.
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
 ## Example Session Record {#sec-appendix-session}
 
 @fig-session-timeline documents one complete recording, session
 `2026-07-06_19-51_proband_15`, as the labeling algorithm of
-@sec-labeling-algorithm sees it. It is included as a worked example of a
-session record: the same processing was applied unchanged to every
-session, and this one is shown because it is a full-length recording
-whose windows carry labels from all five classes.
-
+@sec-labeling-algorithm sees it. The same processing was applied
+unchanged to every session; this one is shown because it is a
+full-length recording whose windows carry labels from all five classes.
 The upper four panels hold the quantities the algorithm reads, each
 plotted against the session median it is judged relative to, and the two
-lower panels the labels it produces. Reading the figure downwards
-therefore reproduces the order of the labeling procedure: the two HRV
-measures, the two axis values derived from them and from the facial
-video, the plant voltage that the classifier will later have to recover
-these labels from, and finally the discretized axes and their crossing.
-The plant voltage and the ambient CO~2~ trace share the fourth panel
-because the correlation analysis of @sec-results tests exactly this pair
-against each other.
+lower panels the labels it produces, so reading the figure downwards
+reproduces the order of the labeling procedure. The plant voltage and
+the ambient CO~2~ trace share the fourth panel because the correlation
+analysis of @sec-results tests exactly this pair against each other.
 
-![Example session record: the full ten-minute recording of session `2026-07-06_19-51_proband_15`, plotted on the non-overlapping 30-second window grid. From top: RMSSD; mean heart rate; the two quantities that decide the labels, FER valence on the left axis (green) and the HRV arousal index in robust z-units on the right axis (orange); the plant voltage (teal, left axis) with ambient CO~2~ overlaid (purple, right axis); the two per-axis labels; and the crossed five-class emotion label. Dotted horizontal lines mark the session medians each window is judged against (@eq-valence-class, @eq-arousal-class). The shaded band at the left and the dashed vertical line mark the 30-second baseline preceding the video. In the two label rows, light grey marks windows excluded rather than labeled, following @eq-coverage. The plant trace is decimated to 1 Hz for display only; the features of @tbl-features are computed on the undecimated signal.](figures/session_timeline.png){#fig-session-timeline width=90%}
+![Example session record: the full ten-minute recording of session `2026-07-06_19-51_proband_15`, plotted on the non-overlapping 30-second window grid. From top: RMSSD; mean heart rate; the two quantities that decide the labels, FER valence on the left axis (green) and the HRV arousal index in robust z-units on the right axis (orange); the plant voltage (teal, left axis) with ambient CO~2~ overlaid (purple, right axis); the two per-axis labels; and the crossed five-class emotion label. Dotted horizontal lines mark the session medians each window is judged against (@eq-valence-class, @eq-arousal-class). The shaded band at the left and the dashed vertical line mark the 30-second baseline preceding the video. In the two label rows, light grey marks windows excluded rather than labeled, following @eq-coverage. The plant trace is decimated to 1 Hz for display only; the features of @tbl-features are computed on the undecimated signal.](figures/session_timeline.png){#fig-session-timeline width=72% fig-pos="H"}
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
 ## Experimental Setup and Live Dashboard {#sec-appendix-figures}
 
 The two figures below document the physical side of the study.
-@fig-setup shows the sensor setup described in the Sensor Setup and Field
-Work sections, and @fig-live-dashboard the real-time component of
-@sec-live-demonstration. Neither is required to follow the argument of
-the paper, since the live component demonstrates the trained models
-rather than contributing evidence for the hypotheses. That is why both
-are collected here rather than in the method chapter.
+@fig-setup shows the sensor setup described in the Sensor Setup and
+Field Work sections, and @fig-live-dashboard the real-time component of
+@sec-live-demonstration. Both are collected here rather than in the
+method chapter because neither is required to follow the argument of the
+paper: the live component demonstrates the trained models rather than
+contributing evidence for the hypotheses.
 
-![Physical setup of the experiment: the *Kalanchoe* plant with its three leaf electrodes, the AD8232 and the ESP32 on the breadboard, and the laptop the participant faces during a session. The photograph was taken while the reduced demonstration configuration was running, so the CO~2~ sensor is not attached and the screen shows the Phaenomena variant of the dashboard rather than the recording software.](figures/setup_without_co2_with_phaenomena.png){#fig-setup width=95%}
+![Physical setup of the experiment: the *Kalanchoe* plant with its three leaf electrodes, the AD8232 and the ESP32 on the breadboard, and the laptop the participant faces during a session. The photograph was taken while the reduced demonstration configuration was running, so the CO~2~ sensor is not attached and the screen shows the Phaenomena variant of the dashboard rather than the recording software.](figures/setup_without_co2_with_phaenomena.png){#fig-setup width=75% fig-pos="H"}
 
-![The live dashboard: the camera panel shows the HSEmotion result for the current frame, the centre column contrasts the plant-model prediction with the labeling algorithm's proxy label for each of the three axes, and the remaining panels show the live plant voltage, heart rate, and CO~2~ streams. The footer of the prediction column reports the window counter and the time until the next update.](figures/live_demo.png){#fig-live-dashboard width=95%}
+![The live dashboard: the camera panel shows the HSEmotion result for the current frame, the centre column contrasts the plant-model prediction with the labeling algorithm's proxy label for each of the three axes, and the remaining panels show the live plant voltage, heart rate, and CO~2~ streams. The footer of the prediction column reports the window counter and the time until the next update.](figures/live_demo.png){#fig-live-dashboard width=75% fig-pos="H"}
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
 ## Confusion Matrices {#sec-appendix-confusion}
 
 The three figures below hold the confusion matrices behind the per-class
-scores quoted in @sec-results, one per target variable. Each figure covers all six (model,
-representation) combinations, not only the winning one, so the per-class
-behaviour of a combination can be compared against the alternatives it was
-selected over. The counts are pooled over the five outer folds of the
-nested cross-validation, which is why every panel sums to the 284 windows
-of the dataset: each window is held out exactly once and is therefore
-predicted exactly once. Rows hold the proxy label and columns the model's
-prediction, so the diagonal counts the correctly classified windows and
-mass off the diagonal shows which classes a model confuses for which.
+scores quoted in @sec-results, one per target variable. Each figure
+covers all six (model, representation) combinations rather than only the
+winning one, so the per-class behaviour of a combination can be compared
+against the alternatives it was selected over. The counts are pooled
+over the five outer folds of the nested cross-validation, which is why
+every panel sums to the 284 windows of the dataset: each window is held
+out, and therefore predicted, exactly once.
 
 ![Confusion matrices for the target variable emotion: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_emotion.png){#fig-cm-emotion width=95%}
 
@@ -254,22 +255,24 @@ mass off the diagonal shows which classes a model confuses for which.
 
 ![Confusion matrices for the target variable valence: pooled over the five outer folds of the nested cross-validation, for all six (model, representation) combinations. Rows hold the proxy label and columns the model's prediction, so the diagonal counts the correctly classified windows and each panel sums to the 284 windows of the dataset.](figures/confusion_valence.png){#fig-cm-valence width=95%}
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
 ## Permutation Tests {#sec-appendix-permutation}
 
 The three figures below document the permutation tests behind the
-p-values reported in @sec-results, one per target variable. Each test repeatedly
-shuffles the labels, re-runs the complete participant-grouped five-fold
-loop with the winning architecture held fixed, and thereby builds the
-distribution of macro-F1 that this architecture attains when no
-systematic relationship between the plant features and the label is left.
-The p-value is the share of those 200 permutations that matched or
-exceeded the value observed on the real labels. In each figure the grey
-histogram is that null distribution, the solid red line the observed
-value, and the dashed blue line the pooled nested cross-validation
-estimate reported in @tbl-perf; the latter is the more conservative of
-the two, because it re-tunes the model inside every fold instead of
+p-values reported in @sec-results, one per target variable. Each test
+repeatedly shuffles the labels and re-runs the complete
+participant-grouped five-fold loop with the winning architecture held
+fixed, building the distribution of macro-F1 this architecture attains
+when no systematic relationship between the plant features and the label
+is left. The p-value is the share of those 200 permutations that matched
+or exceeded the value observed on the real labels. In each figure the
+grey histogram is that null distribution, the solid red line the
+observed value, and the dashed blue line the pooled nested
+cross-validation estimate of @tbl-perf, which is the more conservative
+of the two because it re-tunes the model inside every fold instead of
 holding one architecture fixed.
 
 ![Permutation test for the target variable valence: null distribution of the pooled macro-F1 over 200 label permutations for Random Forest on the session-normalized features, against the observed value. None of the 200 permutations reached it (p = 0.005).](figures/permutation_valence.png){#fig-perm-valence width=85%}
@@ -278,21 +281,24 @@ holding one architecture fixed.
 
 ![Permutation test for the target variable emotion: null distribution of the pooled macro-F1 over 200 label permutations for Random Forest on the raw features, against the observed value. Two of the 200 permutations matched or exceeded it (p = 0.015).](figures/permutation_emotion.png){#fig-perm-emotion width=85%}
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
 ## Feature Importances {#sec-appendix-importance}
 
 The three figures below document the feature rankings quoted in
-@sec-results, one per target variable. Only the two tree-based architectures expose
-`feature_importances_`; the multilayer perceptron does not, which is why
-the arousal ranking is read from the tree models rather than from the
-combination that won that target. Each figure pairs the two tree models on
-the representation the winning combination uses, so a ranking that holds
-for both can be told apart from one that only a single model produces. The
-importances come from the models tuned on the full dataset, which is the
-only place the pipeline exposes them; that pass is separate from the nested
-cross-validation behind every reported score in @tbl-perf, so these
-rankings are diagnostic and are not themselves a performance metric.
+@sec-results, one per target variable. Only the two tree-based
+architectures expose `feature_importances_`, which is why the arousal
+ranking is read from the tree models rather than from the multilayer
+perceptron that won that target. Each figure pairs the two tree models
+on the representation the winning combination uses, so a ranking that
+holds for both can be told apart from one that only a single model
+produces. The importances come from the models tuned on the full
+dataset, the only place the pipeline exposes them; that pass is separate
+from the nested cross-validation behind every reported score in
+@tbl-perf, so these rankings are diagnostic rather than a performance
+metric.
 
 ![Feature importances for the target variable emotion: the top 15 features of the two tree-based models on the raw representation, which is the representation the winning Random Forest uses.](figures/importance_emotion.png){#fig-imp-emotion width=100%}
 
@@ -300,7 +306,9 @@ rankings are diagnostic and are not themselves a performance metric.
 
 ![Feature importances for the target variable valence: the top 15 features of the two tree-based models on the session-normalized representation, which is the representation the winning Random Forest uses.](figures/importance_valence.png){#fig-imp-valence width=100%}
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
 ## CO~2~ Confound Analysis {#sec-appendix-co2}
 
@@ -308,24 +316,25 @@ The two figures below document the correlation analysis of @sec-results,
 one per variant: @fig-co2 the raw analysis, whose correlations carry both
 within- and between-session variation, and @fig-co2-snorm the
 session-normalized analysis, in which every signal is centred on its own
-session so that only within-session variation is left. Both are read the
-same way. The left panel is the confounding triangle, with a solid edge
-where the relationship is present by the criterion of
-@sec-correlation-analysis and a dashed one where it is not, and the
-plant--valence edge additionally labelled with its strength before and
-after CO~2~ is controlled for. The right panel resolves that same edge by
-feature: for each of the 22 plant features it plots the absolute
+session so that only within-session variation remains. Both are read the
+same way. The left panel is the confounding triangle, drawn with a solid
+edge where the relationship is present by the criterion of
+@sec-correlation-analysis and a dashed one where it is not, and with the
+plant--valence edge labelled before and after CO~2~ is controlled for.
+The right panel resolves that edge per feature, plotting the absolute
 correlation with valence before (purple) and after (vermillion) removing
-CO~2~, joined by a line, so a feature whose association is carried by CO~2~
-appears as a long line pointing toward zero.
+CO~2~, so a feature whose association is carried by CO~2~ appears as a
+long line pointing toward zero.
 
-![Confounding triangle and partial correlations, raw analysis: the plant, valence and CO~2~ triangle, and the per-feature partial correlation with valence before and after removing CO~2~. Both within- and between-session variation contribute.](figures/co2_correlation.png){#fig-co2 width=95%}
+![Confounding triangle and partial correlations, raw analysis: the plant, valence and CO~2~ triangle, and the per-feature partial correlation with valence before and after removing CO~2~. Both within- and between-session variation contribute.](figures/co2_correlation.png){#fig-co2 width=78% fig-pos="H"}
 
-![Confounding triangle and partial correlations, session-normalized analysis: the same three edges and the same per-feature comparison after the plant features, CO~2~ and valence have each been centred on their own session, so that only within-session variation remains.](figures/co2_correlation_snorm.png){#fig-co2-snorm width=95%}
+![Confounding triangle and partial correlations, session-normalized analysis: the same three edges and the same per-feature comparison after the plant features, CO~2~ and valence have each been centred on their own session, so that only within-session variation remains.](figures/co2_correlation_snorm.png){#fig-co2-snorm width=78% fig-pos="H"}
 
-{{< pagebreak >}}
+```{=latex}
+\clearpage
+```
 
-## Code Availability {#sec-appendix-code}
+## Code Repository {#sec-appendix-code}
 
 Every component described in this paper is hosted at
 
@@ -341,15 +350,14 @@ AD8232 and the CO~2~ sensor and streams both over WebSocket. The
 notebooks under `notebooks/` then run in numeric order:
 `01_init_recording` records one session into a shared event log and a
 video file, `02_emotion_labelling` derives the per-window HRV, FER and
-plant features and applies the labeling rule of
-@sec-labeling-algorithm, `03_dataset_creation` runs that labeling over
-every session and merges the result into the consolidated dataset, and
-the three `04_*_ml_pipeline` notebooks train and compare the
-classifiers for emotion, arousal and valence respectively.
-`05_correlation_analysis` performs the CO~2~ confound analysis reported
-in @sec-results. The live dashboard of @sec-live-demonstration is
-implemented in `emotion_live_dashboard.py` under `phaenomena/`. The
-consolidated dataset and the correlation result tables ship under
-`data/datasets/`, so the modelling and correlation notebooks can be
-re-run without repeating the recordings.
+plant features and applies the labeling rule of @sec-labeling-algorithm,
+`03_dataset_creation` runs that labeling over every session and merges
+the result into the consolidated dataset, the three `04_*_ml_pipeline`
+notebooks train and compare the classifiers for emotion, arousal and
+valence respectively, and `05_Correlation_Analysis` performs the CO~2~
+confound analysis reported in @sec-results. The live dashboard of
+@sec-live-demonstration is implemented in `emotion_live_dashboard.py`
+under `phaenomena/`. The consolidated dataset and the correlation result
+table ship under `data/datasets/`, so the modelling and correlation
+notebooks can be re-run without repeating the recordings.
 

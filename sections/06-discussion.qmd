@@ -1,15 +1,16 @@
 # Discussion
 
 Returning to the hypotheses, the results provide partial support for
-**H1**: the plant signal predicts valence above chance (p = 0.005) and,
-more weakly, the crossed emotion label (p = 0.015), whereas arousal
-does not reach conventional significance (p = 0.055). H1 is therefore
+H1: the plant signal predicts valence above chance (macro-F1 = 0.42,
+p = 0.005) and, although very weakly, the crossed emotion label
+(macro-F1 = 0.21, p = 0.015), whereas arousal does not reach
+conventional significance (macro-F1 = 0.36, p = 0.055). H1 is therefore
 supported for valence and for the crossed emotion label, but not for
 arousal.
 
-The secondary analysis addresses the most plausible alternative
-explanation for that result. **H2** is rejected, tested on valence as the
-dimension for which H1 holds. Both
+The secondary analysis addresses a plausible alternative
+explanation for that result. H2 is rejected, tested on valence as the
+dimension for which H1 shows the strongest evidence. Both
 branches of the confounding pathway are in fact present. CO~2~
 correlates with valence ($\rho$ = 0.308, p \< 0.0001) and, in the raw
 analysis, with most plant features, so the alternative explanation was
@@ -20,62 +21,110 @@ ambient CO~2~.
 
 ## Interpretation of our Findings
 
-For each target variable, two feature representations were compared:
-raw, in which plant-derived features enter the model on their original
-absolute scale, and session-normalized, in which each feature is expressed as
-a robust z-score relative to the median and spread of its respective
-recording session. This distinction addresses a key property of the
-sensing setup: the DC level of the plant voltage drifts between sessions
-due to factors such as ambient temperature and room-level CO~2~
-baseline. These factors are unrelated to emotional state but can shift
-the absolute voltage range across sessions.
+Valence is the target on which the positive claim of this study rests.
+The winning model recognizes all three valence classes at comparable
+rates, with per-class F1 scores of 0.43, 0.45, and 0.40
+(@fig-cm-valence), so its macro-F1 of 0.42 does not arise from following
+the largest class but from a discrimination spread across the entire
+label space, and none of the 200 label permutations matched the observed
+score (@fig-perm-valence). The effect is nonetheless small in absolute
+terms: 43% accuracy against the approximately 33% expected by chance
+with three classes. What the plant signal supports is therefore a
+statistical association that becomes visible across 284 windows and 15
+participants, not a channel from which the emotional state of an
+individual person could be read off at a practically useful rate.
 
-Since each session corresponds to exactly one participant, a classifier
-trained on raw voltage levels could implicitly associate specific
-voltage ranges with specific participants, rather than learning a
-genuine relationship between signal dynamics and emotional state. This
-constitutes a form of session-level leakage that may inflate apparent
-performance without reflecting true predictive signal. Session
-normalization mitigates this issue by removing session-identity
-information and re-expressing each feature relative to its
-session-specific center and spread prior to training.
+The feature ranking of that model indicates which properties of the
+signal carry the association. The two highest-ranked predictors are
+Hjorth mobility and complexity, dimensionless descriptors of how quickly
+the voltage changes and how variable that rate of change itself is, and
+Random Forest and XGBoost place the same pair at the top independently
+of one another (@fig-imp-valence). The amplitude descriptors ranked
+behind them, `plant_min` and `plant_range`, enter only in their
+session-normalized form and therefore express how far a window departs
+from the baseline of its own session rather than where that session lies
+on the absolute voltage scale. The comparison of the two feature
+representations is consistent with this. Session normalization raised
+the average macro-F1 across the three classifiers by 0.031 for valence,
+with the Random Forest gaining 0.068, and the best combination for this
+target used session-normalized features. Since every recording session
+contains exactly one participant, the absolute voltage level contained 
+in the raw session data partly
+encodes the session itself, carrying the ambient conditions of the
+recording and the state of the electrode contact. That performance
+improves once this level is removed indicates that the association is
+carried by the dynamics of the signal rather than by properties that
+distinguish one recording from another.
 
-The results support this interpretation. For valence, session
-normalization increased the average macro-F1 score across all three
-classifiers by 0.031, with the largest gain observed for Random Forest
-(+0.068). For arousal, the average macro-F1 score improved by 0.035. In
-both cases, the best-performing models used session-normalized features,
-and the features those models ranked highest are either level-invariant by
-construction or expressed relative to the session's own baseline, which
-is what the leakage argument above predicts.
+The crossed emotion label behaves differently. Its macro-F1 of 0.21 lies
+close to the 0.20 expected from uniform guessing across five classes,
+and the winning model attains its 42% accuracy almost entirely on the
+dominant neutral class, with an F1 of 0.64 there against 0.07 and 0.08
+for the two smallest classes (@fig-cm-emotion). Two effects work against
+this target at once. First, crossing the axes distributes 284 windows
+over five cells, leaving as few as 21 windows in the smallest of them,
+so the minority classes are rare. Second, one of the two
+constituent axes carries no usable signal: a label formed by crossing
+valence with arousal cannot be more informative than its weaker
+component, and arousal does not separate above chance. The crossed label
+therefore does not aggregate the two dimensions; it combines an axis
+that separates above chance with one that does not. The near-chance
+emotion result is thus consistent with the valence result rather than in
+tension with it, and supports treating valence and arousal as
+analytically distinct targets rather than collapsing them into a single
+categorical label.
 
-Emotion classification is the only case in which this pattern did not
-hold: Random Forest performed slightly better on raw features (0.21)
-than on session-normalized features (0.19). However, this difference is
-small relative to the overall variation across all six model-feature
-combinations (macro-F1 0.17 to 0.21) and is therefore more
-likely attributable to performance variability among similarly
-performing models than to a failure of session normalization for this
-target variable.
+Emotion is also the only target whose best combination uses raw
+features, which does not reverse the general trend. The other two
+classifiers improve under session normalization on this target as well,
+XGBoost from 0.17 to 0.19 and the Neural Network from 0.18 to 0.19, so
+the reversal is confined to the Random Forest, whose raw advantage rests
+on the neutral class alone (F1 0.64 raw against 0.57 session-normalized)
+rather than on any better separation of the minority classes. Given that
+all six combinations fall between macro-F1 0.17 and 0.21, this
+difference is within the variation among near-equivalent models.
 
-Arousal remained the weakest target variable overall, with performance
-close to chance and the best result narrowly missing statistical
-significance (p = 0.055). This is consistent with a known limitation of
-the arousal axis, which relies exclusively on RMSSD and mean heart rate:
-the work of @choi2017 suggests these markers are reliable
-indicators of emotional state only for unpleasant, highly arousing stimuli, not for
-neutral or pleasant ones. Since the video stimulus combines strongly
-negative segments with comparatively mild or neutral ones, only part of
-the recorded material may fall within the range where HRV is expected to
-track arousal at all, independently of any limitation in the plant
-signal itself.
+Arousal is the weakest target, missing conventional significance at
+p = 0.055 with 10 of 200 permutations matching or exceeding the observed
+score (@fig-perm-arousal). This null result is difficult to attribute to
+the plant, because valence and arousal were operationalized through
+proxies of unequal quality: a facial expression model reading the
+emotional display itself on the one side, a single index derived from
+RMSSD and mean heart rate on the other. HRV markers of this kind track
+emotional state reliably mainly for unpleasant and highly arousing
+stimuli [@choi2017], while the video combines strongly negative segments
+with mild, happy and neutral ones, so part of the recorded material falls
+outside the range in which the arousal label is expected to be
+informative at all. A weak label bounds the performance attainable by
+any predictor of it, including a fully informative one. The arousal
+result is therefore best read as uninformative about the plant rather
+than as evidence against it.
 
-The correlation analysis adds one nuance to the H2 verdict. The
-substantial raw correlations between CO~2~ and the plant features shrink
-markedly once between-session variance is removed, so most of that
-coupling is slow, room-level drift rather than a within-session
-physiological interaction. The plant-valence relationship is stable
-under CO~2~ control at either level.
+The correlation analysis reports much weaker numbers than the
+classification, and the two can easily be read as contradicting each
+other. Within sessions, the average absolute correlation between a
+single plant feature and valence is 0.07, and only 5 of the 22 features
+reach significance, yet a classifier trained on those same features
+reaches a macro-F1 of 0.42. The two quantities measure different things.
+A Spearman coefficient asks whether one feature on its own rises and
+falls with valence, whereas the classifier may use all 22 features at
+once and split each of them at several thresholds, so it can exploit
+combinations that no individual coefficient registers. The weak
+correlations therefore do not undercut the classification result. They
+indicate that the information lies in the combination of the features
+rather than in any one of them.
+
+Beyond rejecting H2, the CO~2~ analysis provides a further result.
+Separating between-session from within-session variance distinguishes
+the three edges of the confounding triangle. The plant--CO~2~ coupling
+nearly disappears within sessions (mean $|\rho|$ = 0.067, significant in
+3 of 22 features), identifying it as slow, room-level drift across the
+recording day. The CO~2~--valence edge, in contrast, persists
+undiminished within sessions ($\rho$ = 0.33, p \< 0.0001), which could be attributed to respiration changing alongside emotional state on a
+timescale of minutes. Ambient CO~2~ therefore does track the
+participant, but the plant does not track ambient CO~2~ on the timescale
+at which the classification operates. Ambient CO~2~ is thus not a
+plausible carrier of the valence information that is picked up by the classifier, and the mechanism behind the association remains open.
 
 ## Comparison with Previous Studies
 
@@ -96,17 +145,24 @@ informative for valence but not for arousal, a distinction that could
 not have been captured within a binary classification framework in the
 first place.
 
-Both studies validate their findings via permutation testing, supporting
-the conclusion that the reported results in either case are unlikely to
-be driven by data leakage. However, a direct comparison of raw accuracy
-values (72.8-73.8% in @gloor2025 versus 36-43% across the six
-valence combinations in the present study) is
-complicated by differences in class distribution and evaluation metrics:
-@gloor2025 reports accuracy figures from an imbalanced (60/40)
-classification task without a macro-F1 or comparable metric. Because
-accuracy alone may overestimate performance when classifiers favor the
-majority class, it is difficult to assess to what extent the accuracy
-reported by @gloor2025 reflects genuinely balanced discriminative
-performance rather than class-imbalance effects. This limits the
-comparability of the two accuracy figures beyond a coarse indication
-that both are above chance level.
+Both studies validate their findings via permutation testing, so neither
+rests on cross-validation scores alone. A direct comparison of the
+reported accuracies is nevertheless of limited value. @gloor2025 reports
+72.8–73.8% at the optimal 1 s lag on a binary valence task (positive:
+happy/surprise, n = 968; negative: fear/anger/sad/disgust, n = 651), a
+60/40 split. That accuracy sits about 13 points above the majority
+baseline he reports (59.9%), but his published confusion matrices show
+the classifier leans heavily on the majority class: sad-class recall is
+only about 0.52–0.57, giving a macro-F1 of about 0.71, slightly below
+the headline figure. More important than the accuracy gap, the two
+evaluation protocols differ in kind: our estimates come from
+participant-grouped nested cross-validation, whereas Gloor uses
+stratified k-fold on non-overlapping snippets without grouping by
+session or day, so temporally adjacent snippets from the same 30-minute
+session can fall in both train and test. His label-permutation test does
+not rule this out, since shuffling labels leaves no session structure
+for the null model to exploit. The three-class valence result here
+(36–43%; chance about 33%) therefore cannot be placed on the same scale
+as his within-subject binary figure, and the comparison supports little
+beyond the coarse observation that both studies report performance above
+chance.

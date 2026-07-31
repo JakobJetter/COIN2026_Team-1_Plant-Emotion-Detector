@@ -28,9 +28,7 @@ paperabstract: >
   Network, were trained to predict valence, arousal, and a combined
   emotion label from plant-derived features alone, using
   participant-grouped nested cross-validation and permutation testing.
-  The plant signal predicted valence above chance (macro-F1 = 0.42,
-  p = 0.005), whereas the combined label (macro-F1 = 0.21, p = 0.015) and
-  arousal (macro-F1 = 0.36, p = 0.055) did not reach significance. A partial-correlation
+  The plant signal predicted valence above chance (macro-F1 = 0.42, p = 0.005). The emotion label was statistically significant but weak in absolute terms (macro-F1 = 0.21, p = 0.015), and arousal did not reach significance (macro-F1 = 0.36, p = 0.055). A partial-correlation
   analysis ruled out ambient CO~2~ as a confounder of the plant--valence
   relationship. The results indicate a weak but statistically robust
   association between plant bioelectrical activity and human valence,

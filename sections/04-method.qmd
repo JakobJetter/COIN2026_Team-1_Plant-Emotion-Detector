@@ -1,3 +1,4 @@
+
 # Method
 
 This chapter translates the two hypotheses into a study design and
@@ -33,9 +34,7 @@ live dashboard. @fig-pipeline provides an overview. The pipeline consists
 of five stages, described in turn below: sensing, preprocessing,
 labeling, modeling, and live application.
 
-![System pipeline overview: colour marks the role each stream plays: green is the plant signal, the only family the classifiers ever see; blue is the human reference from which the proxy labels are derived; purple is the environmental variable used for the confound test. Dashed arrows denote evaluation and downstream use rather than data flow.](figures/pipeline.png){#fig-pipeline width=100%}
-
-{{< pagebreak >}}
+![System pipeline overview: colour marks the role each stream plays: green is the plant signal, the only family the classifiers ever see; blue is the human reference from which the proxy labels are derived; purple is the environmental variable used for the confound test. Dashed arrows denote evaluation and downstream use rather than data flow.](figures/pipeline.png){#fig-pipeline width=100% fig-pos="b"}
 
 **Sensing.** Four independent sensors capture the raw data: plant
 electrodes record the plant bioelectric voltage, a

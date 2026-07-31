@@ -1,3 +1,4 @@
+
 # Results {#sec-results}
 
 ## Model Performance
@@ -126,6 +127,10 @@ session sits in absolute terms. The model therefore relies mainly on how
 the curve moves within the window, not on where it lies overall. This is
 an indication that the model is learning about the actual signal dynamics
 and not recognizing a session based on its random baseline.
+
+```{=latex}
+\clearpage
+```
 
 @tbl-perf summarizes the best combination per target variable.
 
