@@ -94,8 +94,7 @@ The confounds identified above translate directly into design
 refinements. Counterbalancing stimulus order across participants
 decorrelates the emotion timeline from session time, a time-only
 baseline model provides a reference point against which classification
-performance can be judged, and block-wise permutation preserves the
-autocorrelation structure that free shuffling destroys. Motion energy
+performance can be judged. Motion energy
 extracted from the existing video recordings offers a low-cost control
 for movement-mediated coupling.
 
@@ -111,9 +110,7 @@ the Self-Assessment Manikin [@bradleylang1994] may further strengthen
 interpretation, provided they complement rather than replace the
 physiological channels employed here.
 
-Environmental variables such as CO~2~ should be recorded explicitly and
-controlled statistically, an issue that has received little attention in
-research on plant bioelectrical signals; the present analysis indicates
+The present analysis indicates
 that CO~2~ does not confound the plant-valence relationship. Future
 studies could extend this by including volatile organic compound (VOC)
 measurements alongside CO~2~ to assess whether other airborne chemical
@@ -124,11 +121,7 @@ The finding that level-invariant and session-relative features
 consistently outranked absolute-level ones contributes to feature
 engineering in this domain and helps explain why session-normalized
 features tend to yield better performance. The descriptors in question
-are Hjorth mobility and complexity, dimensionless ratios and therefore
+are Hjorth mobility and complexity, both ratios and therefore
 scale-invariant, unlike Hjorth activity, a variance measure sharing the
 level dependence of the amplitude descriptors. Whether the pattern is
-physiological or instrumental can only be resolved with instrumentation
-matched to the timescale of plant bioelectrical activity: a DC-coupled
-electrometer amplifier with high input impedance, non-polarizable
-electrodes, and shielded leads would preserve the slow components
-attenuated by the ECG front end used here.
+physiological or instrumental can be subject to future research.
