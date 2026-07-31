@@ -81,7 +81,7 @@ excluded as an alternative pathway.
 Several directions follow from these findings. The lower accuracy
 observed here relative to @gloor2025 is consistent with the more
 conservative and generalizable evaluation framework applied, namely
-grouped cross-validation across 15 participants and permutation testing.
+grouped cross-validation across 15 participants.
 This interpretation is directly testable: re-evaluating the present data
 under a non-grouped, randomly split cross-validation would indicate how
 much of the difference is attributable to evaluation protocol rather
