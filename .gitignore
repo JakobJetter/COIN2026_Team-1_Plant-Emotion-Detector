@@ -7,17 +7,3 @@ __pycache__/
 sessions/            # matches at any depth, incl. data/sessions/ - raw recordings, not tracked
 *.mp4
 
-# Quarto / build artifacts
-/_output/
-/.quarto/
-*_files/
-report.tex
-report.pdf
-
-# Python / uv
-.venv/
-__pycache__/
-*.pyc
-uv.lock
-
-**/*.quarto_ipynb
