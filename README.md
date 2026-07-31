@@ -97,10 +97,9 @@ Then run the notebooks in order:
 4. `05_Correlation_Analysis.ipynb` — correlation analysis between the plant signal
    and HRV / FER / CO₂
 
-All 15 recorded sessions and `data/datasets/consolidated_dataset.csv` are included in the
-repository, so steps 2–4 can be run directly without re-recording anything. Only the
-session videos are excluded (`*.mp4` is gitignored) — every signal derived from them is
-already stored in each session's `fer_events_mtcnn.jsonl`.
+All 15 recorded sessions from the experiment are included in `data/datasets/consolidated_dataset.csv`, so step 4 
+can be run directly without re-recording anything. Only the
+raw session data is excluded.
 
 To try the live dashboard (real-time sensor view + live model predictions):
 
