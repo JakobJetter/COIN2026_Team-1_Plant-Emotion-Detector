@@ -1,0 +1,323 @@
+{
+ "valence": {
+  "n": 265,
+  "best": "XGBoost/raw",
+  "nested": {
+   "macro_f1": 0.404,
+   "accuracy": 0.404,
+   "per_class_f1": {
+    "negative": 0.41,
+    "neutral": 0.4,
+    "positive": 0.41
+   }
+  },
+  "fixed_obs": 0.415,
+  "perm_mean": 0.325,
+  "perm_max": 0.427,
+  "n_exceed": 1,
+  "p": 0.01,
+  "all": {
+   "RandomForest/raw": {
+    "macro_f1": 0.372,
+    "accuracy": 0.377,
+    "per_class_f1": {
+     "negative": 0.45,
+     "neutral": 0.34,
+     "positive": 0.33
+    }
+   },
+   "XGBoost/raw": {
+    "macro_f1": 0.404,
+    "accuracy": 0.404,
+    "per_class_f1": {
+     "negative": 0.41,
+     "neutral": 0.4,
+     "positive": 0.41
+    }
+   },
+   "NeuralNet/raw": {
+    "macro_f1": 0.373,
+    "accuracy": 0.381,
+    "per_class_f1": {
+     "negative": 0.34,
+     "neutral": 0.46,
+     "positive": 0.32
+    }
+   },
+   "RandomForest/snorm": {
+    "macro_f1": 0.364,
+    "accuracy": 0.366,
+    "per_class_f1": {
+     "negative": 0.34,
+     "neutral": 0.4,
+     "positive": 0.36
+    }
+   },
+   "XGBoost/snorm": {
+    "macro_f1": 0.336,
+    "accuracy": 0.343,
+    "per_class_f1": {
+     "negative": 0.29,
+     "neutral": 0.41,
+     "positive": 0.31
+    }
+   },
+   "NeuralNet/snorm": {
+    "macro_f1": 0.371,
+    "accuracy": 0.37,
+    "per_class_f1": {
+     "negative": 0.33,
+     "neutral": 0.38,
+     "positive": 0.4
+    }
+   }
+  },
+  "time_only": {
+   "models": {
+    "RandomForest": [
+     0.518,
+     0.517
+    ],
+    "XGBoost": [
+     0.546,
+     0.543
+    ],
+    "NeuralNet": [
+     0.564,
+     0.562
+    ]
+   },
+   "best": "NeuralNet",
+   "fixed_obs": 0.565,
+   "p": 0.005
+  },
+  "time_preserving": {
+   "obs": 0.415,
+   "null_mean": 0.33,
+   "null_max": 0.406,
+   "n_exceed": 0,
+   "p": 0.005
+  },
+  "plant_plus_time_f1": 0.525,
+  "co2_raw": {
+   "plant_val_mean_abs_rho": 0.14,
+   "plant_val_sig": 14,
+   "plant_co2_mean_abs_rho": 0.43,
+   "plant_co2_sig": 19,
+   "co2_val_rho": 0.354,
+   "co2_val_p": 3e-09,
+   "partial_mean_abs_rho": 0.102,
+   "partial_sig": 7
+  },
+  "co2_snorm": {
+   "plant_val_mean_abs_rho": 0.078,
+   "plant_val_sig": 5,
+   "plant_co2_mean_abs_rho": 0.079,
+   "plant_co2_sig": 3,
+   "co2_val_rho": 0.297,
+   "co2_val_p": 9e-07,
+   "partial_mean_abs_rho": 0.072,
+   "partial_sig": 5
+  }
+ },
+ "arousal": {
+  "n": 265,
+  "best": "RandomForest/snorm",
+  "nested": {
+   "macro_f1": 0.34,
+   "accuracy": 0.351,
+   "per_class_f1": {
+    "activated": 0.28,
+    "calm": 0.33,
+    "neutral": 0.41
+   }
+  },
+  "fixed_obs": 0.362,
+  "perm_mean": 0.334,
+  "perm_max": 0.449,
+  "n_exceed": 47,
+  "p": 0.239,
+  "all": {
+   "RandomForest/raw": {
+    "macro_f1": 0.305,
+    "accuracy": 0.321,
+    "per_class_f1": {
+     "activated": 0.25,
+     "calm": 0.26,
+     "neutral": 0.41
+    }
+   },
+   "XGBoost/raw": {
+    "macro_f1": 0.284,
+    "accuracy": 0.325,
+    "per_class_f1": {
+     "activated": 0.19,
+     "calm": 0.22,
+     "neutral": 0.45
+    }
+   },
+   "NeuralNet/raw": {
+    "macro_f1": 0.299,
+    "accuracy": 0.343,
+    "per_class_f1": {
+     "activated": 0.23,
+     "calm": 0.18,
+     "neutral": 0.49
+    }
+   },
+   "RandomForest/snorm": {
+    "macro_f1": 0.34,
+    "accuracy": 0.351,
+    "per_class_f1": {
+     "activated": 0.28,
+     "calm": 0.33,
+     "neutral": 0.41
+    }
+   },
+   "XGBoost/snorm": {
+    "macro_f1": 0.332,
+    "accuracy": 0.351,
+    "per_class_f1": {
+     "activated": 0.26,
+     "calm": 0.3,
+     "neutral": 0.44
+    }
+   },
+   "NeuralNet/snorm": {
+    "macro_f1": 0.291,
+    "accuracy": 0.309,
+    "per_class_f1": {
+     "activated": 0.22,
+     "calm": 0.25,
+     "neutral": 0.41
+    }
+   }
+  },
+  "time_only": {
+   "models": {
+    "RandomForest": [
+     0.433,
+     0.434
+    ],
+    "XGBoost": [
+     0.45,
+     0.468
+    ],
+    "NeuralNet": [
+     0.389,
+     0.408
+    ]
+   },
+   "best": "XGBoost",
+   "fixed_obs": 0.455,
+   "p": 0.005
+  }
+ },
+ "emotion": {
+  "n": 265,
+  "best": "NeuralNet/snorm",
+  "nested": {
+   "macro_f1": 0.206,
+   "accuracy": 0.502,
+   "per_class_f1": {
+    "negative activated": 0.1,
+    "negative calm": 0.05,
+    "neutral": 0.69,
+    "positive activated": 0.11,
+    "positive calm": 0.09
+   }
+  },
+  "fixed_obs": 0.241,
+  "perm_mean": 0.197,
+  "perm_max": 0.255,
+  "n_exceed": 8,
+  "p": 0.045,
+  "all": {
+   "RandomForest/raw": {
+    "macro_f1": 0.183,
+    "accuracy": 0.34,
+    "per_class_f1": {
+     "negative activated": 0.12,
+     "negative calm": 0.05,
+     "neutral": 0.55,
+     "positive activated": 0.13,
+     "positive calm": 0.06
+    }
+   },
+   "XGBoost/raw": {
+    "macro_f1": 0.184,
+    "accuracy": 0.574,
+    "per_class_f1": {
+     "negative activated": 0.05,
+     "negative calm": 0.0,
+     "neutral": 0.74,
+     "positive activated": 0.07,
+     "positive calm": 0.06
+    }
+   },
+   "NeuralNet/raw": {
+    "macro_f1": 0.196,
+    "accuracy": 0.585,
+    "per_class_f1": {
+     "negative activated": 0.05,
+     "negative calm": 0.0,
+     "neutral": 0.77,
+     "positive activated": 0.16,
+     "positive calm": 0.0
+    }
+   },
+   "RandomForest/snorm": {
+    "macro_f1": 0.199,
+    "accuracy": 0.37,
+    "per_class_f1": {
+     "negative activated": 0.14,
+     "negative calm": 0.1,
+     "neutral": 0.59,
+     "positive activated": 0.12,
+     "positive calm": 0.06
+    }
+   },
+   "XGBoost/snorm": {
+    "macro_f1": 0.17,
+    "accuracy": 0.566,
+    "per_class_f1": {
+     "negative activated": 0.05,
+     "negative calm": 0.0,
+     "neutral": 0.74,
+     "positive activated": 0.0,
+     "positive calm": 0.06
+    }
+   },
+   "NeuralNet/snorm": {
+    "macro_f1": 0.206,
+    "accuracy": 0.502,
+    "per_class_f1": {
+     "negative activated": 0.1,
+     "negative calm": 0.05,
+     "neutral": 0.69,
+     "positive activated": 0.11,
+     "positive calm": 0.09
+    }
+   }
+  },
+  "time_only": {
+   "models": {
+    "RandomForest": [
+     0.279,
+     0.291
+    ],
+    "XGBoost": [
+     0.156,
+     0.57
+    ],
+    "NeuralNet": [
+     0.154,
+     0.626
+    ]
+   },
+   "best": "RandomForest",
+   "fixed_obs": 0.286,
+   "p": 0.005
+  }
+ }
+}
